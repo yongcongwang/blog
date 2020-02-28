@@ -4,11 +4,13 @@
 set -e  # exit if err
 
 # vars
-HEXO_DIR=$(cd $(dirname $0); pwd)
+HEXO_DIR=$(cd $(dirname $0); pwd)/..
 
-# cmd
+# src filse
 cd ${HEXO_DIR}
 git add .
 git commit -m "update src files"
-git push origin hexo
+git push origin write
 
+# publish
+hexo g -d
