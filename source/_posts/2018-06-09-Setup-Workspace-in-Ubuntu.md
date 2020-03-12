@@ -123,7 +123,7 @@ add add the following extensions:
 ## git
 
 ```
-sudo apt-get install git
+sudo apt install git
 # config
 git config --global user.name "YongcongWang"
 git config --global user.email "yongcong.wang@outlook.com"
@@ -146,7 +146,7 @@ ssh-keygen -t rsa -C "yongcong.wang@outlook.com"
 ## vim
 
 ```
-sudo apt-get install vim-gnome
+sudo apt install vim-gnome
 ```
 
 ### Config
@@ -156,7 +156,7 @@ bash <(curl -s https://raw.githubusercontent.com/yongcongwang/dotfiles/master/de
 
 ## tmux
 ```
-sudo apt-get install tmux
+sudo apt install tmux
 ```
 
 ### Config
@@ -193,4 +193,9 @@ switches:
     states: [ 汉字, 漢字 ]
   - name: ascii_punct
     states: [ 。，, ．， ]
+```
+
+## Translate Shell
+```bash
+sudo apt install translate-shell
 ```
