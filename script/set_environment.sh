@@ -14,7 +14,7 @@ sudo apt-get install -y nodejs
 
 # hexo
 sudo npm install -g hexo-cli
-npm install hexo --save
+sudo npm install hexo --save
 
 # theme
 THEME_NEXT_DIR=${REPO_DIR}/themes/next

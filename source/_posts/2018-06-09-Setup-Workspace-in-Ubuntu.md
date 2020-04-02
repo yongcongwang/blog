@@ -91,14 +91,15 @@ systemctl enable v2ray
 needs a working C compiler, preferably gcc
 
 ```
-./configure --prefix=/usr --sysconfdir=/etc
-make
+git clone git@github.com:rofl0r/proxychains-ng.git &&
+./configure --prefix=/usr --sysconfdir=/etc &&
+make &&
 sudo make install-config
 ```
 
 ### Config
 ```
-sudo echo "sock5 127.0.0.1" >> /etc/proxychains.con
+sudo echo "sock5 127.0.0.1" >> /etc/proxychains.conf
 ```
 
 ## Chrome
@@ -108,10 +109,21 @@ wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb &
 sudo dpkg -i google-chrome-stable_current_amd64.deb
 ```
 
+### gnome extension
+```
+sudo apt install gnome-shell-extensions
+```
+add add the following extensions:
+- [coverflow-alt-tab](https://extensions.gnome.org/extension/97/coverflow-alt-tab/)
+- [dash-to-panel](https://extensions.gnome.org/extension/1160/dash-to-panel/)
+- [hide-top-bar](https://extensions.gnome.org/extension/545/hide-top-bar/)
+- [screenshot-tool](https://extensions.gnome.org/extension/1112/screenshot-tool/)
+- [sound-output-device-chooser](https://extensions.gnome.org/extension/906/sound-output-device-chooser/)
+
 ## git
 
 ```
-sudo apt-get install git
+sudo apt install git
 # config
 git config --global user.name "YongcongWang"
 git config --global user.email "yongcong.wang@outlook.com"
@@ -134,7 +146,7 @@ ssh-keygen -t rsa -C "yongcong.wang@outlook.com"
 ## vim
 
 ```
-sudo apt-get install vim-gnome
+sudo apt install vim-gnome
 ```
 
 ### Config
@@ -144,7 +156,7 @@ bash <(curl -s https://raw.githubusercontent.com/yongcongwang/dotfiles/master/de
 
 ## tmux
 ```
-sudo apt-get install tmux
+sudo apt install tmux
 ```
 
 ### Config
@@ -167,4 +179,23 @@ ascii_composer:
   switch_key:
   #  Shift_L: inline_ascii
   #  Shift_R: commit_text
+```
+
+Modify `$HOME/.config/ibus/rime/luna_pinyin.schema.yaml`:
+```yaml
+switches:
+  - name: ascii_mode
+    reset: 0
+    states: [ 西文, 中文 ]
+  - name: full_shape
+    states: [ 半角, 全角 ]
+  - name: simplification
+    states: [ 汉字, 漢字 ]
+  - name: ascii_punct
+    states: [ 。，, ．， ]
+```
+
+## Translate Shell
+```bash
+sudo apt install translate-shell
 ```

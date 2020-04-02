@@ -1,6 +1,7 @@
 #!/bin/bash
 # By yongcong.wang @ 24/11/2019
 
+set -x
 set -e  # exit if err
 
 # vars
