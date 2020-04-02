@@ -20,7 +20,7 @@ What is $f(2)$? We can find $f(x)$ is really really close to $2$, when $x$ is re
 $$
 \lim_{x \to 2}f(x) = 1
 $$
-which read as `the limit, as $x$ goes to $2$, of $f(x)$ is equal to $1$`.
+which read as: the limit, as $x$ goes to $2$, of $f(x)$ is equal to $1$.
 This means when $x$ is near $2$(but not equal to it), the value of $f(x)$ is near $1$.
 
 The above function $f$ has a domain without $2$, but what if the domain is all real number? We defines a new function $g(x)$:
