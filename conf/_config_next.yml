@@ -49,7 +49,7 @@ favicon:
 
 footer:
   # Specify the date when the site was setup. If not defined, current year will be used.
-  #since: 2015
+  since: 2018
 
   # Icon between year and copyright info.
   icon:
@@ -72,9 +72,9 @@ footer:
 
   theme:
     # Theme & scheme info link (Theme - NexT.scheme).
-    enable: true
+    enable: false
     # Version info of NexT after scheme info (vX.X.X).
-    version: true
+    version: false
 
   # Beian ICP and gongan information for Chinese users. See: http://www.beian.miit.gov.cn, http://www.beian.gov.cn
   beian:
@@ -388,7 +388,7 @@ back2top:
 
 # Reading progress bar
 reading_progress:
-  enable: true
+  enable: false
   # Available values: top | bottom
   position: top
   color: "#37c6c0"
@@ -406,7 +406,7 @@ bookmark:
 # `Follow me on GitHub` banner in the top-right corner.
 github_banner:
   enable: true
-  permalink: https://github.com/yourname
+  permalink: https://github.com/yongcongwang
   title: Follow me on GitHub
 
 
