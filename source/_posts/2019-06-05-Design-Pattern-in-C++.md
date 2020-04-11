@@ -1,7 +1,7 @@
 ---
 title: Design Patterns in C++
 date: 2019-06-05 20:44:42
-categories: algorithm
+categories: coding
 ---
 
 # Strategy Pattern

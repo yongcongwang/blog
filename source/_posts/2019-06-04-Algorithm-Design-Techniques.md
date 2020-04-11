@@ -1,7 +1,7 @@
 ---
 title: Algorithm Design Techniques
 date: 2019-06-04 21:03:05
-categories: algorithm
+categories: coding
 ---
 
 ## Greedy Algorithm
