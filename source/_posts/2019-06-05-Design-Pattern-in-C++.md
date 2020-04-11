@@ -439,11 +439,14 @@ ConcreteComponentA methodA ConcreteDecoratorA methodA ConcreteDecoratorB methodA
 ```
 
 # Factory Pattern
-定义一个创建对象的接口, 但由子类决定要实例化的类是哪一个. 工厂模式让类把实例化推迟到子类.
-按照解决的问题类型, 工厂模式分为三种: 简单工程模式(Simple Factory), 工厂模式(Factory Method), 抽象工厂模式(Abstract Factory).
+The factory pattern is a creational pattern that uses factory methods to deal with the problem of creating objects without having to specify the exact calss of the object that will be created. This is done by creating objects by calling a factory method, either specified in an interface and implemented by child classes, or implemented in a base class and optionally overridden by derived classes rather than by calling a constructor.
+According to the type of problems, there are three kinds of `Factory Pattern`:
+- Simple Factory
+- Normal Factory
+- Abstract Factory
 
-## 简单工厂模式(Simple Factory)
-简单工厂模式主要是为了定义一个用于创建对象的接口, 缺点是对修改不封闭, 新增加产品需要修改工厂代码, 违反了开闭法则(OCP).
+## Simple Factory
+Simple Factory defines a method to create an object. It voilates the `Open/close Principle(OCP)`
 
 ```puml
 
@@ -547,9 +550,9 @@ ConcreteProductA called!
 ConcreteProductB called!
 ```
 
-## 工厂方法模式(Factory Method)
-简单工厂模式和工厂方法模式的区别之处在于, 工厂方法模式并不是只是为了封装对象的创建, 而是将对象的创建放到子类中实现, `Factory`类中只是提供了对象创建的接口, 实现放在了子类`ConcreteFacotory`中进行.
-缺点: 每增加一个工厂对象, 都需要增加一个类, 如果工厂比较多, 工厂对象的类也会非常多.
+## Normal Factory
+Normal Factory not only encapsulates the creation of object but also put the creation of object into derived class. It only provides the method of creating objects, and the realization is in `ConcreteFactory`.
+Disadvantage: the addition of factory object will cause the increasing of classes.
 ```puml
 class Product {
 + operation() = 0: virtual void
@@ -680,8 +683,9 @@ ConcreteProductB called!
 ```
 
 
-## 抽象工厂模式(Abstract Factory)
-抽象工厂模式扩展了工厂子类的产品能力, 它给客户端提供了接口, 可以创建多个产品的产品对象.
+## Abstract Factory
+`Abstract Factory` improves the ablility of production of factory child, it provides methods for client. You can create multiple production objects via those methods.
+
 ```puml
 class Factory {
 + createProductA() = 0 : virtual ProductA
@@ -739,23 +743,3 @@ ConcreteFactoryB ..> ConcreteProductBb
 ```
 
 # Singleton Pattern
-
-
-# OO(Object Orient) Principle
-
-## The Open-Closed Principle: 
-Class should be open for extension, but closed for modification.
-
-## 针对接口编程, 而不是针对实现编程: 
-函数继承自基类, 或者继承基类接口由子类来实现, 这两种做法都是依赖于`实现`. 实现被绑定在子类上, 不利于更改. 针对接口编程将接口分离出来, 放在分开的类中, 子类不需要知道也不需要负责具体实现.
-
-## 多用组合, 少用继承: 
-使用组合(Composition)建立系统具有很大的弹性, 不仅可以将算法族封装成类, 更可以在运行时动态地改变行为, 只要组合的行为对象符合正确的接口标准即可.
-
-## 为交互对象之间的松耦合设计而努力:
-当两个对象之间松耦合, 他们依然可以交互, 但是不太清楚彼此的细节. 松耦合设计之所以能让我们建立有弹性的OO系统, 能够应对变化, 是因为对象之间的相互依赖降到最低.
-
-## 类应该对扩展开放, 对修改关闭:
-我们的目标是允许类容易扩展, 在不修改现有代码的情况下, 就可以搭配新的行为. 这样的设计具有弹性能够应对改变, 可以接受新的功能来应对改变的需求.
-
-
