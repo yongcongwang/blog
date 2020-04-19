@@ -12,32 +12,32 @@ By default, bash command line uses the shortcuts of `emacs`, so the following co
 
 ## Move
 
-### Charactor
+### Move in Charactor
 - `C-b`: Move `back` one charactor(`C` is for `Ctrl`)
 - `C-f`: Move `forward` one charactor
 
-### Word
+### Move in Word
 - `A-f`: Move `forward` a word(`A` is for `Alt`)
 - `A-b`: Move `backward` a word
 
-### Line
+### Move in Line
 - `C-a`: Move to the `ahead` of the line
 - `C-e`: Move to the `end` of the line
 
 ## Edit
 
-### Cut Charactor
+### Cut in Charactor
 - `C-d`: `Delete` current charactor
 - `Backspace`: Delete previous charactor
 - `C--`: Undo
 
-### Cut Word
+### Cut in Word
 - `A-d`: Cut from cursor to the end of word
 - `A-Backspace`: Cut from cursor to the start of word
 - `C-w`: Cut from cursor to previous whitespace
 
 
-### Cut Line
+### Cut in Line
 - `C-k`: Cut(`kill`) from cursor to the end of line
 - `C-x-Backspace`: Cut from cursor to the start of line
 
