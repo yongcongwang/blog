@@ -43,9 +43,9 @@ ctags -R .
 ```
 
 ### Usage
-- Use `^]` to jump to tag under cursor
-- Use `g^]` to show ambiguous tags
-- Use `^t` or `^o` to jump back
+- Use `C-]` to jump to tag under cursor
+- Use `g-C-]` to show ambiguous tags
+- Use `C-t` or `C-o` to jump back
 
 ## Auto Complete
 
@@ -53,11 +53,11 @@ ctags -R .
 None
 
 ### Usage
-- Use `^x^n` to complete in this file
-- Use `^x^f` to complete filenames
-- Use `^x^]` to complete in tags
-- Use `^n` to complete anything specified by the `complete` option
-- Once the matching iterms appear, you can use `^n` to jump to next one and `^p` to previous
+- Use `C-x-C-n` to complete in this file
+- Use `C-x-C-f` to complete filenames
+- Use `C-x-C-]` to complete in tags
+- Use `C-n` to complete anything specified by the `complete` option
+- Once the matching iterms appear, you can use `C-n` to jump to next one and `C-p` to previous
 
 ## File Browser
 ### Settings
