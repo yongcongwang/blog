@@ -35,9 +35,10 @@ int GetDuplicateNum(std::vector<int> &arr) {
   return -1;
 }
 ```
+Every number needs only twice exchange at most to find its location, so the time complexity is $O(n)$. All the operations are on the input array, so the space complexity is $O(1)$.
 
 ## Solution 2
-The following method changes the input array, to protect the input array:
+The above solution changes the input array, to protect the input array:
 ```C++
 int NumCnt(const std::vector<int> &arr, const int start, const int end) {
   int cnt(0);
@@ -74,3 +75,4 @@ int GetDuplicatedNum(const std::vector<int> &arr) {
 }
 
 ```
+The function will be called $log(n)$ times, and every time costs $O(n)$, so the time complexity is $O(nlog(n))$. There is no other space needed, so the space complexity is $O(1)$
