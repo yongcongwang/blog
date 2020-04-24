@@ -1,5 +1,5 @@
 ---
-title: CodingInterview 04 Lookup in 2D Vector
+title: CodingInterview | 04 Lookup in 2D Vector
 mathjax: true
 comments: true
 date: 2020-04-25 00:55:39
