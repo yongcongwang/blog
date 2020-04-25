@@ -1,5 +1,5 @@
 ---
-title: CodingInterview | Print the Reverse of a Linked List
+title: CodingInterview | 06 Print the Reverse of a Linked List
 mathjax: true
 comments: true
 date: 2020-04-25 22:15:53
