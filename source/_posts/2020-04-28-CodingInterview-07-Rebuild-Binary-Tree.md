@@ -7,13 +7,16 @@ categories: coding
 ---
 
 > Please rebuild the binary tree with the preorder and inorder vectors of this binary tree. Assuming preorder and inorder vectors have no repeat numbers. For example, with the preorder vector `{1, 2, 4, 7, 3, 5, 6, 8}` and inorder vector `{4, 7, 2, 1, 5, 3, 8, 6}`, the binary tree is:
->       1
->      / \
->     2   3
->    /   / \
->   4   5   6
->    \     /
->     7   8
+
+ ```C++
+       1
+      / \
+     2   3
+    /   / \
+   4   5   6
+    \     /
+     7   8
+```
 
 # Solution
 ```C++
