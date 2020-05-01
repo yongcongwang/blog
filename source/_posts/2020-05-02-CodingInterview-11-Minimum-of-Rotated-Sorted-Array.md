@@ -1,5 +1,5 @@
 ---
-title: CodingInterview | Minimum of Rotated Sorted Array
+title: CodingInterview | 11 Minimum of Rotated Sorted Array
 mathjax: true
 comments: true
 date: 2020-05-02 00:23:50
