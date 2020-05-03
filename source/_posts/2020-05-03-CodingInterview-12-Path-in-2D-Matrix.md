@@ -64,4 +64,28 @@ bool IsPathInMatrixCore(
 
   return result;
 }
+
+bool IsPathInMatrix(const std::vector<std::vector<char>> &matrix,
+                    const std::vector<char> &path) {
+  if (matrix.empty() || path.empty()) {
+    return false;
+  }
+
+  std::vector<std::vector<bool>> map(
+      matrix.size(), std::vector<bool>(matrix.front().size(), true));
+
+  std::vector<char> path_to_find(path);
+
+  for (int row = 0; row < matrix.size(); ++row) {
+    for (int col = 0; col < matrix.front().size(); ++col) {
+      if (matrix[row][col] == path.front()) {
+        auto temp = map;
+        temp[row][col] = false;
+        return IsPathInMatrixCore(matrix, row, col, temp, path_to_find, 1);
+      }
+    }
+  }
+
+  return false;
+}
 ```
