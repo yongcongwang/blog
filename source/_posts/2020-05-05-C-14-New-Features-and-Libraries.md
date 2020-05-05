@@ -78,6 +78,7 @@ int& z = g(y); // reference to `y`
 ## decltype(auto)
 The `decltype(auto)` type-specifier also deduces a type like `auto` does. The difference is:
 - `decltype(auto)` keeps the reference and cv-qulifiers while `auto` not.
+
 ```C++
 const int x = 0;
 auto x1 = x; // int
@@ -112,7 +113,9 @@ In C++11 `constexpr` function bodies can only contain a very limited set of synt
 - `typedef`
 - `using`
 - `return`
+
 In C++14, the set of allowable syntaxes expands greatly to include the most common syntaxes such as `if` statements, multiple `return`s, loops, etc.
+
 ```C++
 constexpr int factorial(int n) {
   if (n <= 1) {
@@ -156,6 +159,7 @@ std::chrono::duration_cast<std::chrono::minutes>(day).count(); // == 1440
 The class template `std::integar_sequence` represents a compile-time sequence of integar. There are a few helpers built on top:
 - `std::make_integar_sequence<T, N>`: creates a sequence of `0, ..., N - 1` with type `T`.
 - `std::index_sequence_for<T...>`: converts a template parameter pack into an integar sequence.
+
 ```C++
 template<typename Array, std::size_t... I>
 decltype(auto) a2t_impl(const Array& a, std::integer_sequence<std::size_t, I...>) {
@@ -173,6 +177,7 @@ decltype(auto) a2t(const std::array<T, N>& a) {
 - Avoid having to use the `new` operator.
 - Prevents code repetition when specifying the underlying type the pointer shall hold.
 - Most importantly, it provides exception-safety. Suppose we were calling a function `foo` like:
+
 ```C++
 foo(std::unique_ptr<T>{new T{}}, function_that_throws(), std::unique_ptr<T>{new T{}});
 ```
