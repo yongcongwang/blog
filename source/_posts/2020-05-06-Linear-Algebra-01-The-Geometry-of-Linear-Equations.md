@@ -37,5 +37,7 @@ $$
 There are three vectors on the picture:
 ![](/images/2020-05-07-geometry-linear-equations/column_space_2d.png)
 
-And if we take $x = 0$ and $y = 3$ into the equation, we'll get the result that one of the vector $(2, -1)$ add two of the vector $(-1, 2)$ is the result vector$(0, 3)$.:w
+And if we take $x = 0$ and $y = 3$ into the equation, we'll get the result that one of the vector $(2, -1)$ add two of the vector $(-1, 2)$ is the result vector$(0, 3)$.
 
+## Row Picutre and Column Picture in High Dimensions
+If we take the following equations into consider, the 
