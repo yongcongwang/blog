@@ -7,7 +7,7 @@ categories: coding
 ---
 > If there is a line with the length of $n$, please cut the line into $m$ sections($m$ and $n$ are int, and $n > 1$, $m > 1$) and the product of all sections is maximum.
 > For example, the line is $18$ long, and we cut it into 3 sections: $2, 3, 3$, the product is maximum: $18$.
-
+<!-- more -->
 ## Solution 1
 ```C++
 int GetMaxCuttingDP(const int length) {

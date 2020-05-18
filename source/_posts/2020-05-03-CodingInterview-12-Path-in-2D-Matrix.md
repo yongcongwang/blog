@@ -13,7 +13,7 @@ a b t g
 c f c s
 j d e h
 ```
-
+<!-- more -->
 ## Solution
 ```C++
 bool IsPathInMatrixCore(

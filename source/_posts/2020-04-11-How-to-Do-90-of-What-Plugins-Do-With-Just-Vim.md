@@ -7,7 +7,7 @@ categories: software
 ---
 
 Vim plugins can buy us a lot of functionality, but they also add a lot of burden in the form of dependency complexity. Origin vim has the ability to implement many features that plugins do, for example:
-
+<!-- more -->
 - file jumping(FuzzyFinder, Ctrl+P)
 - tag jumping
 - auto complete

@@ -3,10 +3,11 @@ title: Setup Workspace in Windows
 date: 2018-04-20 18:10:03
 categories: software
 ---
+
 ## Windows 10 Pro License
 
 `696DK-ND9C6-R992T-KB7QY-X4R9M`
-
+<!-- more -->
 ## Shadowsocks
 
 ### Download

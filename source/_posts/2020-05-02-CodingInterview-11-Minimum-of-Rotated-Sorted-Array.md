@@ -8,7 +8,7 @@ categories: coding
 
 > The rotation is that putting a few elements ahead of the array to the end. With a rotated sorted array, please output the minimum of the array.
 > For example, `{3, 4, 5, 1, 2}` is a rotation of `{1, 2, 3, 4, 5}` and its min value is `1`.
-
+<!-- more -->
 ## Solution 1
 Loop to find the minimum, and the time complexity is $O(n)$
 ```C++

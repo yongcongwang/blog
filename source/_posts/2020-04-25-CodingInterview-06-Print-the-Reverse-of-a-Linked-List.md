@@ -7,7 +7,7 @@ categories: coding
 ---
 
 > Please print the reverse of a linked list, for example, the linked list is `3->5->7->9`, then the output should be `9<-7<-5<-3`.
-
+<!-- more -->
 ## Solution
 ```C++
 void reverse_print(Node *node) {

@@ -4,6 +4,7 @@ date: 2018-06-09 17:53:25
 categories: software
 ---
 > environment: ubuntu 18.04
+<!-- more -->
 
 ## v2ray
 ```

@@ -8,7 +8,7 @@ categories: coding
 > In a 2D vector, all the rows and colums are sorted. Please write a function to check if a number is in the vector.
 
 For example, the following vector contains the number `7`, then the function returns true; as for `5`, the functions returns false;
-
+<!-- more -->
 ## Solution
 ```C++
 bool IsVectorContainNum(

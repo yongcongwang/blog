@@ -9,7 +9,7 @@ categories: coding
 > Please relize a function to match the regular expression with "." and "\*".
 > The "." represents for any char, and "\*" represents that the char before it can appears any times(0 or more).
 > For example, "aaa" matches with the pattern of "a.a" and "ab\*ac\*a" but dismatches with the pattern of "aa.a" and "ab\*a".
-
+<!-- more -->
 ## Solution
 ```C++
 bool IsMatchRecursive(char* str, char* pattern) {

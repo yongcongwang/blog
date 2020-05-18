@@ -6,7 +6,7 @@ date: 2020-04-21 00:29:05
 categories: coding
 ---
 > The following is the declaration of type `MyString`, please add assignment operator function for it.
-
+<!-- more -->
 ```c++
 class MyString {
  public:

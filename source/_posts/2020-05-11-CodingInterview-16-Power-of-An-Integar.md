@@ -7,7 +7,7 @@ categories: coding
 ---
 
 > Realize a function to get the integar exponent of a number without the usage of library. You don't need to consider about the big number.
-
+<!-- more -->
 ## Solution
 ```C++
 double pos_power(const double base, const int exponent) {

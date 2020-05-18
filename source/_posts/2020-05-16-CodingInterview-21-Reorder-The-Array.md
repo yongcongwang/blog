@@ -8,7 +8,7 @@ categories: coding
 
 > Input an array of integar, please reorder the array so that all the odd numbers are in the first half part, and all the even numbers are in the latter half part.
 > For example, after reordering, {1, 2, 3, 4, 5} may change to {1, 3, 5, 2, 4}.
-
+<!-- more -->
 ## Solution
 ```C++
 #include <algorithm>

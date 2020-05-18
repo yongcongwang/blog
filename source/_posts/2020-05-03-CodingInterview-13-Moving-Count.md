@@ -9,7 +9,7 @@ categories: coding
 > There is a $m * n$ matrix. A robot moves from $(0, 0)$ and it can move to left/right/up/down cell, but not the cell whose digital sum of row index and column index is bigger than k.
 > For example, $k = 18$, robot can move to $(35, 37)$, because $3 + 5 + 3 + 7 = 18$. But it cannot move to $(35, 38)$, because $3 + 5 + 3 + 8 = 19 > 18$.
 > How many cells the robot can reach?
-
+<!-- more -->
 ## Solution
 ```C++
 int GetDigitalSum(const int num) {

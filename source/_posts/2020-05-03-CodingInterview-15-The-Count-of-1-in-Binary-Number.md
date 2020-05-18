@@ -8,7 +8,7 @@ categories: coding
 
 > Input a integar and output the count of 1 in its binary.
 > For example, $9$ in binary is $1001$, so the count of 1 is $2$.
-
+<!-- more -->
 ## Solution 1
 ```C++
 int NumOfOneMethod1(int n) {

@@ -10,7 +10,7 @@ Write a function that takes a string of arithmetic equation and return a scalar 
 Priority: &, | higher than * higher than +
 
 Your algorithm should handle space, decimal and negative numbers. For any invalid input, output should be zero.
-
+<!-- more -->
 ```C++
 // By yongcong.wang @ 15/08/2019
 #include <iostream>

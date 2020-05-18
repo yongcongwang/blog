@@ -9,7 +9,7 @@ categories: coding
 > If a node list contains a loop, how to find the entrance? 
 > For example, the following node list has the loop entrnace of node 3.
 > `1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 3`
-
+<!-- more -->
 ## Solution
 ```C++
 struct Node {

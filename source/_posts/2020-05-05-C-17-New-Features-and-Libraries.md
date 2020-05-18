@@ -20,7 +20,7 @@ struct MyContainer {
 MyContainer c1 {1}; // OK MyContainer<int>
 MyContainer c2; // OK MyContainer<float>
 ```
-
+<!-- more -->
 ## Declaring non-type template parameters with auto
 Following the deduction rules of `auto`, while respecting the non-type template parameter list of allowable types[\*], template arguments can be deduced from the type ot its arguments:
 ```C++

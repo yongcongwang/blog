@@ -6,7 +6,7 @@ categories: software
 
 > Environment: ubuntu 18.04
 > Time: about 3h
-
+<!-- more -->
 ## Deploy GitHubPages
 Create a new [repo](https://github.com/new) in `github` named `yourname.github.io`
 

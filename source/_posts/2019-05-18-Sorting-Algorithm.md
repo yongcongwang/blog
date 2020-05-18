@@ -11,7 +11,7 @@ To simplify matters, we will assume that the algorithms we describe will all be 
 2. The `N` is the number of elements passed to our sorting routines;
 3. the `>` and `<` operators exists, which can be used to place a consistant ordering on the input.
 Sorting under these conditions is known as comparision-based sorting.
-
+<!-- more -->
 ## Visualization
 To show the sorting process more in detail, we can draw each step of the algorithm with a bar graph and then combine them to a `gif`. Firstly, I plot the figure while two elements comparing, the code is below(take bubblesort as an example):
 ```python

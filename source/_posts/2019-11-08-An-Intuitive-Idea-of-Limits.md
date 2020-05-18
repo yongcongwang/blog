@@ -6,7 +6,7 @@ date: 2019-11-08 00:14:33
 categories: math
 ---
 Calculus wouldn't exist without the concept of limits. It's pretty tricky to define a limit properly, but we can get an intuitive understanding of limits even without going into gory details.
-
+<!-- more -->
 ## Basic Idea
 Limits solve this problem: what does $f(x)$ looks like when $x$ is really really close to $a$, but not equal to $a$?
 

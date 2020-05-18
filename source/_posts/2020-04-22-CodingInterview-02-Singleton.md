@@ -7,7 +7,7 @@ categories: coding
 ---
 
 > Design a `Singleton`
-
+<!-- more -->
 ## Solution
 ```c++
 class Singleton {

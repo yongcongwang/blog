@@ -13,7 +13,7 @@ Binary literals provide a convenient way to represent a number in binary. It is 
 0b110  // == 6
 0b1111'1111 // == 255
 ```
-
+<!-- more -->
 ## Generic lambda expressions
 C++14 now allows the `auto` type-specifier in the param list, enabling polymorphic lambdas.
 ```C++

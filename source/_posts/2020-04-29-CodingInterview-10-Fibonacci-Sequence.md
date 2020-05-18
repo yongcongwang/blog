@@ -15,7 +15,7 @@ f(n) =
 f(n - 1) + f(n - 2), & if & n > 1
 \end{cases}
 $$
-
+<!-- more -->
 ## Solution 1
 ```C++
 int FibonacciRecursion(const int n) {

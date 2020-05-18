@@ -9,7 +9,7 @@ categories: coding
 > Find the duplicated number in a list. You are given a list with or without duplicated numbers. All the numbers in the list are positive. If there are duplicated numbers in the list, please output them; if not, return -1;
 
 For example, `{2, 3, 5, 4, 2, 0, 1}`, the duplicated number is `2`.
-
+<!-- more -->
 ## Solution 1
 ```C++
 void swap(int &a, int &b) {

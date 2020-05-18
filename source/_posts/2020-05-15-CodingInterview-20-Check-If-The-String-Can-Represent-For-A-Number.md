@@ -7,7 +7,7 @@ categories: coding
 ---
 
 > Please check if a string can represent for a number. For example, "+100", "5e2", "-123", "3.1415" can represent for a number; "12e", "1a3.22", "1.2.3", "+-5" and "1e+5.2" not.
-
+<!-- more -->
 ## Solution
 ```C++
 bool ScanUnsignedIntegar(std::string& str) {

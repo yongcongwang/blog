@@ -14,7 +14,7 @@ Moving an object means to transfer ownership of some resource it manage to anoth
 Benefits:
 - Performance optimization: while copying a temporary object(for example, a `vector`) to a list, without `std::move` you have to copy every element in vector and store them in new place. `Moving` a vector is just copying some pointer and internal state over to the new one.
 - Make it possible to have only one instance at a time: for example, `std::unique_ptr` is non-copyable, but you can use `move` to transfer an instance between scopes at the language level.
-
+<!-- more -->
 ## Rvalue references
 `Rvalue reference` is a new reference. It's a non-template type(such as `int`) and can be created with the syntax `T &&`. It can be binded only to rvalues.
 

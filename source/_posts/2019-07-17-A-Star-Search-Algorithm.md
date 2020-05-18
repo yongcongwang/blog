@@ -5,7 +5,7 @@ categories: algorithm
 mathjax: true
 ---
 In computer science, `A*`(pronounced *A-Star*) is a computer algorithm that is widely used in pathfinding and graph traversal, which is the process of finding a path between multiple points, called "nodes". It enjoys widespread use due to its performance and accuracy. Peter Hart, Nils Nilsson and Bertram Raphael of Stanford Research Institude(now SRI International) first published the algorithm in 1968. It can be seen as an extension of Edsger Dijkstra's 1959 algorithm. `A*` achieves better performance by using heuristics to guide its search.
-
+<!-- more -->
 ## Problem
 In real world, we often want to find a path from one location to another, it may be the shortest one or the most suitable one. Movement for a single object seems easy, pathfinding is complex, but pathfinder let you plan a path before you meet the obstacles, then you can move the short or suitable path. Path planning generally is slow, but gives better results.
 

@@ -12,7 +12,7 @@ $$
 $$
 -x + 2y = 3
 $$
-
+<!-- more -->
 The equations can be written as:
 $$
 \begin{bmatrix}2 & -1 \\\\ -1 & 2\end{bmatrix} \begin{bmatrix} x \\\\ y \end{bmatrix} = \begin{bmatrix} 0 \\\\ 3 \end{bmatrix} \tag1

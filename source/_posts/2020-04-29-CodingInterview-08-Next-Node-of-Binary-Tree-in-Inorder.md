@@ -7,7 +7,7 @@ categories: coding
 ---
 
 > Given a binary tree and a node, please find the next node in inorder. The binary tree node has a pointer to its parent.
-
+<!-- more -->
 ## Solution
 ```C++
 struct BinaryTree {

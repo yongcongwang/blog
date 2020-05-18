@@ -7,7 +7,7 @@ categories: coding
 ---
 
 > With a head node pointer and a node pointer of a singly linked node, delete the node in $O(1)$ time.
-
+<!-- more -->
 ## Solution
 ```C++
 struct ListNode {

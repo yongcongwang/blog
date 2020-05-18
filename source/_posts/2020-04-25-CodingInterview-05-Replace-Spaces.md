@@ -9,7 +9,7 @@ categories: coding
 > Design a function to replace all the spaces in a string with "%20".
 
 For instance, input: "We are happy.", output: "We%20are%20happy.".
-
+<!-- more -->
 ## Solution
 ```C++
 void ReplaceSpace(char *const arr, const int length) {

@@ -7,7 +7,7 @@ categories: coding
 ---
 
 > Input the number $n$, please print 1 to maximum nth digits in order. For example, input 3, output: 1, 2, 3, ..., 998, 999.
-
+<!-- more -->
 ## Solution
 ```C++
 void PrintNoneZeroNumber(const std::vector<char> &digits) {

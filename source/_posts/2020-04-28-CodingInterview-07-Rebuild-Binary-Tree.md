@@ -17,7 +17,7 @@ categories: coding
     \     /
      7   8
 ```
-
+<!-- more -->
 # Solution
 ```C++
 struct BinaryTree {

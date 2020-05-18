@@ -7,7 +7,7 @@ categories: coding
 ---
 
 > Delete the last kth node of a list.
-
+<!-- more -->
 ## Solution
 ```C++
 #include <iostream>

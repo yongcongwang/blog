@@ -9,6 +9,8 @@ categories: coding
 > Please merege two sorted lists, the new list should also be sorted.
 > For example, input node1: `1->3->5->7` and `2->4->6->8`, the new list should be `1->2->3->4->5->6->7->8`.
 
+<!-- more -->
+
 ## Solution
 ```C++
 Node* MergeTwoSortedLists(Node* head1, Node* head2) {

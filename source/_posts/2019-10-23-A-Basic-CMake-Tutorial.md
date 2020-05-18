@@ -7,7 +7,7 @@ categories: software
 ---
 Below is a step-by-step tutorial covering common build system use cases that CMake helps to address. Many of these topics have been introduced in Mastering CMake as separate issues but seeing how they all work together in an example project can be very helpful. This tutorial can be found in the Tests/Tutorial directory of the CMake source code tree. Each step has its own subdirectory containing a complete copy of the tutorial for that step.
 See also the introductory sections of the cmake-buildsystem(7) and cmake-language(7) manual pages for an overview of CMake concepts and source tree organization.
-
+<!-- more -->
 ## A Basic Starting Point (Step1)
 The most basic project is an executable built from source code files. For simple projects a two line CMakeLists.txt file is all that is required. This will be the starting point for our tutorial. The CMakeLists.txt file looks like:
 ```CMake

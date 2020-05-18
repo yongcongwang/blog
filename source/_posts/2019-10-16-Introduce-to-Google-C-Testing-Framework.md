@@ -9,7 +9,7 @@ categories: coding
 ## Introduction: Why googletest?
 
 *googletest* helps you write better C++ tests.
-
+<!-- more -->
 googletest is a testing framework developed by the Testing Technology team with Google's specific requirements and constraints in mind. Whether you work on Linux, Windows, or a Mac, if you write C++ code, googletest can help you. And it supports *any* kind of tests, not just unit tests.
 
 So what makes a good test, and how does googletest fit in? We believe:

@@ -8,7 +8,7 @@ categories: Algorithm
 
 After collecting map data, we need to describe the map in detail and store it, which needs `HD Map` format.
 There are two generally used data standards in the world for `HD Map`: NDS(Navigation Data Standard) and OpenDRIVE. Based on OpenDRIVE format, Baidu develop its own format, `appollo OpenDRIVE`.
-
+<!-- more -->
 ## Navigation Data Standard
 
 The Navigation Data Standard(NDS) is a standardized format for automotive-grade navigation databases, jointly developed by automobile manufactures and supplies. NDS is an association registered in Germany, members are automotive OEMs, map data providers, and navigation device/applications providers.

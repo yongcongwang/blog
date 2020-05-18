@@ -7,7 +7,7 @@ categories: math
 ---
 
 A `function` is a rule for transforming an object into another object. The object you start with is called the `input`, and comes from some set called the `domain`. Waht you get back is called the `output`; it comes from some set called the `domain`, and the output's value is within a `range`. A function must assign a unique output for each valid input.
-
+<!-- more -->
 We say that:
 - a function $f$ is `even` if $f(-x) = f(x)$ for all $x$ in the domain of $f$; 
 - a function $f$ is `odd` if $f(-x) = -f(x)$ for all $x$ in the domain of $f$.

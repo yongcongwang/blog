@@ -7,7 +7,7 @@ categories: coding
 ---
 
 > Realize a function to reverse a node list. Input a head pointer of a node list, please output a pointer of the reversed node list head.
-
+<!-- more -->
 ## Solution
 ```C++
 struct Node {

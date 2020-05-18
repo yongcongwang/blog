@@ -7,7 +7,7 @@ categories: coding
 ---
 
 > Using two stacks to implement a queue and realize the queue's two functions: `AppendTail` and `DeleteHead`.
-
+<!-- more -->
 ## Solution
 ```C++
 template <typename T> class MyQueue {

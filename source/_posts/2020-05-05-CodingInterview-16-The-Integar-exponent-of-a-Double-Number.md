@@ -7,7 +7,7 @@ categories: coding
 ---
 
 > Realize a function to calculate the exponent of a double number. Don't use library and no need to care about big number.
-
+<!-- more -->
 ## Solution
 ```C++
 double pos_power(const double base, const int exponent) {
