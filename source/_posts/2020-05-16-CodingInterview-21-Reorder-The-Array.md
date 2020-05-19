@@ -1,5 +1,5 @@
 ---
-title: CodeInterview | 21 Reorder The Array
+title: CodingInterview | 21 Reorder The Array
 mathjax: true
 comments: true
 date: 2020-05-16 01:56:17
