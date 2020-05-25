@@ -52,3 +52,99 @@ void PrintBinTree(const BinNode* root) {
   std::cout << std::endl;
 }
 ```
+
+## Print Binary Tree With Line Split
+> Please print the binary tree with line split, the output of the tree is:
+```C++
+8
+6 10
+5 7 9 11
+```
+
+### Solution
+```C++
+void PrintBinTreeLineSplit(const BinNode* root) {
+  if (root == nullptr) {
+    return;
+  }
+
+  std::deque<const BinNode*> out;
+  out.push_back(root);
+  std::size_t curr_level_cnt = 1;
+  std::size_t next_level_cnt = 0;
+  while (!out.empty()) {
+    const BinNode* parrent = out.front();
+    out.pop_front();
+    std::cout << parrent->value << " ";
+    curr_level_cnt--;
+
+    if (parrent->left != nullptr) {
+      out.push_back(parrent->left);
+      next_level_cnt++;
+    }
+    if (parrent->right != nullptr) {
+      out.push_back(parrent->right);
+      next_level_cnt++;
+    }
+
+    if (curr_level_cnt == 0) {
+      std::cout << std::endl;
+      curr_level_cnt = next_level_cnt;
+      next_level_cnt = 0;
+    }
+  }
+
+  std::cout << std::endl;
+}
+```
+
+## Print Binary Tree in z order
+> Please print the binary tree with line split in z order, the output of the tree is:
+```C++
+8
+6 10
+5 7 9 11
+```
+
+### Solution
+```C++
+void PrintBinTreeLineZ(const BinNode* root) {
+  if (root == nullptr) {
+    return;
+  }
+
+  std::array<std::stack<const BinNode*>, 2> out;
+  std::size_t curr_index = 0;
+  std::size_t next_index = 1;
+  out[curr_index].push(root);
+  while (!out[0].empty() || !out[1].empty()) {
+    const BinNode* parrent = out[curr_index].top();
+    out[curr_index].pop();
+    std::cout << parrent->value << " ";
+
+    if (curr_index == 0) {
+      if (parrent->left != nullptr) {
+        out[next_index].push(parrent->left);
+      }
+      if (parrent->right != nullptr) {
+        out[next_index].push(parrent->right);
+      }
+    } else {
+      if (parrent->right != nullptr) {
+        out[next_index].push(parrent->right);
+      }
+      if (parrent->left != nullptr) {
+        out[next_index].push(parrent->left);
+      }
+    }
+
+    if (out[curr_index].empty()) {
+      std::cout << std::endl;
+      curr_index = 1 - curr_index;
+      next_index = 1 - next_index;
+    }
+  }
+
+  std::cout << std::endl;
+}
+```
