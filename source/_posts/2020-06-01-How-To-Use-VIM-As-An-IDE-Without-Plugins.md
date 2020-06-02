@@ -19,6 +19,8 @@ sudo make install
 ```bash
 bash <(curl -s https://raw.githubusercontent.com/yongcongwang/dotfiles/master/deploy.sh) vim
 ```
+<!-- more -->
+
 ## General Usage
 ### New To Vim
 #### Start Vim
