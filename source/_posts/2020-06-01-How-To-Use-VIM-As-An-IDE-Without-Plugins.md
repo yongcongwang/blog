@@ -511,17 +511,137 @@ Try:
 
 ### Communicate With Terminal
 
+#### Execute Bash Commands
+You can excute a bash command with the pattern `:! [command]`:
+- `:! bash build.sh` to build the project;
+- `:! git status` to check the file change.
+
+#### Builtin Commands
+Some builtin commands are available and useful.
+
+##### grep
+`:grep [pattern] -r .` will grep all `pattern` lines and put them in `quickfix` window.
+You can use
+- `:cw` to open `quickfix` window;
+- `:cn` to jump to next matching item;
+- `:cp` to jump to previous matching item;
+
+##### read
+`:read ! [command]` will read the command executing result to cursor position.
+Try:
+- `:r ! ls` to copy all filenames to current file;
+- `:r ! date` to copy date to the file.
+
+#### Jump Between Terminal And Vim
+1. Use `:shell` to start a shell; when the shell exits(after `exit` command or `CTRL-d`) you return to Vim.
+2. Use `CTRL-z` to suspend current process; after your work, use `fg` to bring it to the foreground.
+
+#### Terminal Mode
+The `terminal` feature is supported after `Vim 8.2`. This feature is for running a terminal emulator in a Vim window.
+You can use:
+- `:terminal` to create a new terminal window;
+- `:vertical terminal` to create a new vertical terminal window;
+- `CTRL-w h/j/k/l` to jump between terminal windows;
+- `CTRL-w H/J/K/L` to move terminal window;
+- `CTRL-w N` to back to normal mode;
+
 ## Compile(C++)
+Generally, if you want to compile a single cpp file, you can use g++. For a large project with lots of source file, you can use the builtin command `make`.
 
 ### g++
+```
+:! g++ % -g -o out
+```
+- `%` represents for current file, you can replace it with its real name;
+- `-g` to generate symbols for `gdb`;
+- `-o out` to place output to the file `out`;
+- you can add other flags.
 
-### cmake
+### make
+The following command runs the program `make`(supplying it with any argument you give) and captures the results:
+```
+:make {arguments}
+```
+If errors were generated, they are captured and the editor positions you where the first error occured.
+
+For example, `:make -directory=build` will make the project in the folder `build` and put the warnings and errors to `quickfix` window.
+You can use
+- `:cw` to open `quickfix` window;
+- `:cn` to jump to next error;
+- `:cp` to jump to previous error;
+- `:cfirst` to jump to the first error;
+- `:clast` to jump to the last error;
 
 ## Debug
+Vim has a useful builtin debugger plugin, `termdebug`, which provides a visual interface for interacting with `gdb`.
 
-### Gdb
+### Load The **termdebug** Plugin
+After loading source code in current window, you can load the plugin with:
+```
+:packadd termdebug
+:Termdebug
+```
 
-### Gdb And Apollo
+This will open two other windows:
+- gdb window: A terminal window in which `gdb` is executed.
+- program window: A terminal window for the executed program. The output of program will appear here.
+
+```
++------------------------+
+|                        |
+|       gdb window       |
+|                        |
++------------------------+
+|                        |
+|     program window     |
+|                        |
++------------------------+
+|                        |
+|     current window     |
+|                        |
++------------------------+
+```
+
+### General Debug(gdb)
+Firstly, make sure the program you generated contains symbols. 
+If you compile the program with:
+- g++, you should add the `-g` option;
+- make, you should add the `-ggdb` option.
+
+Then, you can load the program in `gdb` window with the command:
+```
+file program
+```
+
+This works the same as any command a gdb running in a terminal.
+
+Some gdb commands:
+- `b`: set a break point;
+- `d`: delete a break point;
+- `set args`: set running args;
+- `show args`: show args;
+- `r`: run the program;
+- `start`: run the program and stop at the `main` function;
+- `c`: continue current process;
+- `n`: next step;
+- `s`: step in;
+- `finish`: stop current program;
+- `until`: jump out of current loop;
+- `until+linenumber`: run util the `linenumber`;
+- `info locals`: show current local variables;
+- `p+variable`: print the value of a variable;
+- `set var key=value`: set the variable key to a new value;
+- `p key=value`: same as `set var key=value`;
+- `bt`: show trace of where you are currently, which functions you are in. Prints stack backtrace.
+- `CTRL-c`: stop current gdb command;
+- `q`: quit gdb.
+
+### Core Dump
+
+### Debug Cyberrt Module
+
+#### Use Termdebug To Load Module
+#### Attach To A Running Module
 
 ## Use Vim Mode In Other apps
 
