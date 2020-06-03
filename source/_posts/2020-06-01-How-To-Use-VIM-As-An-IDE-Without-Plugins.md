@@ -8,23 +8,23 @@ categories: software
 
 ## Environment
 ### Update Vim
-The default version of vim in `ubuntu 18.04 LTS` is 8.0, and the newest version of vim is 8.2.
+The default version of Vim in `ubuntu 18.04 LTS` is 8.0, and the newest version of Vim is 8.2.
 ```bash
-git clone git@github.com:vim/vim.git
-cd vim
+git clone git@github.com:Vim/Vim.git
+cd Vim
 make
 sudo make install
 ```
 ### Config
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/yongcongwang/dotfiles/master/deploy.sh) vim
+bash <(curl -s https://raw.githubusercontent.com/yongcongwang/dotfiles/master/deploy.sh) Vim
 ```
 <!-- more -->
 
 ## General Usage
 ### New To Vim
 #### Start Vim
-To start vim, type the command `vim file.txt` at any command prompt. Because this is a new file, you get a blank window:
+To start Vim, type the command `Vim file.txt` at any command prompt. Because this is a new file, you get a blank window:
 ```
         +---------------------------------------+
         |#                                      |
@@ -37,10 +37,10 @@ To start vim, type the command `vim file.txt` at any command prompt. Because thi
 ```
 - `#` is the cursor position;
 - `~` indicates lines not in the file;
-- at the bottom of vim is a message line that indicates the file is named file.txt and shows you are creating a new file.
+- at the bottom of Vim is a message line that indicates the file is named file.txt and shows you are creating a new file.
 
 #### Insert Text
-The vim editor is a modal editor, which means that the editor behaves differently depending on which mode you are in.
+The Vim editor is a modal editor, which means that the editor behaves differently depending on which mode you are in.
 The two basic modes are:
 - Normal mode, the characters you type are treated as commands;
 - Insert mode, the characters you type are treated as text.
@@ -68,19 +68,19 @@ And if you **undo** too much, you can press `CTRL-R` to **redo** them.
 
 #### Other Editing Commands
 - `a`: since `i` **inserts** a character before the cursor, you can use `a` to **append** a character after the cursor.
-- `o`: creates a new and empty line below the cursor and puts vim in `Insert` mode.
-- `O`: creates a new and empty line above the cursor and puts vim in `Insert` mode.
+- `o`: creates a new and empty line below the cursor and puts Vim in `Insert` mode.
+- `O`: creates a new and empty line above the cursor and puts Vim in `Insert` mode.
 - `[cnt]-command`: you can add a number `cnt` before command to repeat the command `cnt` times. For example, you want to move up 9 lines, you can either type `kkkkkkkkk` or you can type `9k`.
 
 #### Getting Out
 After modifying the file, you can use:
 - `w`: to **write** the file;
-- `q`: to **quite** the vim;
-- `wq`: to **write** the file and then **quit**  the vim;
-- `q!`: to ignore the changes and **force** **quit** vim.
+- `q`: to **quite** the Vim;
+- `wq`: to **write** the file and then **quit**  the Vim;
+- `q!`: to ignore the changes and **force** **quit** Vim.
 
 #### Find Help
-Everything you always wanted to know can be found in the vim help files. To get help on **something**, use the command:
+Everything you always wanted to know can be found in the Vim help files. To get help on **something**, use the command:
 - `:help {something}`
 
 ### Move Faster
@@ -264,7 +264,7 @@ For commands, you can use a count befor them:
 ```
 
 #### Repeating A Command
-The `.` may be the most simple yet powerful commands in vim. It repeats the last change. For instance, suppose you are editing an HTML file and want to delete all the <B> tags:
+The `.` may be the most simple yet powerful commands in Vim. It repeats the last change. For instance, suppose you are editing an HTML file and want to delete all the <B> tags:
 ```
                               To <B>generate</B> a table of <B>contents 
         f<   find first <     --->
@@ -276,6 +276,7 @@ The `.` may be the most simple yet powerful commands in vim. It repeats the last
 ```
 
 #### Visual Mode
+
 ##### Select characters
 To delete simple items the operator-range works quite well. But often it's not so easy to decide which command will move over the text you want to change. Then you can use press `v` to enter the `Visual` mode.
 You move the cursor over the text you want to work on. While you do this, the text is highlighted. Finally, you type the operator command.
@@ -305,7 +306,7 @@ If you want to work on a rectangular block of characters, use `CTRL-v` to start 
 If you have selected some text in `Visual` mode, and discover that you need to change other end of seleqction, use `o` to go to **other** side.
 
 ##### Copy And Paste
-Yanking is a vim name for copying, and you can use the operator `yw` to copy a word, a count is possible as usual.
+Yanking is a Vim name for copying, and you can use the operator `yw` to copy a word, a count is possible as usual.
 ```
         let sqr = LongVariable * 
                  -------------->
@@ -332,23 +333,183 @@ And stil, you can first use visual mode to select some characters and then yank 
 - `da[` or `da]`: Delete all characters between `[]` and `[]`;
 - `da{` or `da}`: Delete all characters between `{}` and `{}`;
 
-#### Macros
+#### Record
+You can record your multiple operators to a register `{0-9a-zA-Z}`.
+1. `q{0-9a-zA-Z}` to start recording operators and commands to register `{0-9a-zA-Z}a;` 
+2. `q` to stop recording;
+3. `@{0-9a-zA-Z}` to replay the operators and commands saved in register `{0-9a-zA-Z}`.
+4. `@@` to repeat previous record.
 
 #### Replace
+Use the pattern `:[range]s/origin_str/replace_str/[flag]` to replace `origin_str` with `replace_str` in `[range]`.
+For example, you can use `:%s/one/two/g` to replace all `one` in the file with `two`.
+The `[range]` can be:
+- `%`, means in all lines;
+- `1, 15`, means in `1-15` lines;
+- `., +5`, means from `current` line to `current + 5` line;
+- `5, $`, means from line `5` to the end of file.
+
+And the `[flag]` can be:
+- ` `(empty), means only replacing once;
+- `g`, means replacing all;
+- `c`, means you need to comfirm each replacement;
+- `gc`, means replacing and you need to comfirm each replacement.
 
 ## Advanced Features
 
 ### Edit Multiple Files
+No matter how many files you have, you can edit them without leaving Vim.
+#### Edit Another File
+So far you had to start Vim for every file you wanted to edit. To edit another file, use `:edit path/to/foo.txt` to open the file `foo.txt`.
+
+#### Jump Between Files
+After editing another file, the file you edited just now is not closed. Instead, it's stored in a `buff`, you can use:
+- `:buffers` or `:ls` to show all the buffers;
+- `:next` to jump to next buff;
+- `:previous` to jump to previous buff;
+- `:last` to jump to the last buff;
+- `:first` to jump to the first buff;
+- `:buff[num]` to jump to buff [num];
+
+#### Rename
+After modifying the file, if you need to save the file under a new name, `:saveas new_name.txt` will be useful.
+When you want to change the name of the file you are editing, but don't want to resave the file, you can use `file new_name.txt` to rename current file.
 
 ### Split Windows
+Display two different files above files above each other, or view two locations in the file at the same time. See the difference between two files by putting them side by side. All this is possible with split windows.
 
-### Communicate With Terminal
+#### Split Window On One File
+The easiest way to open a new window is to use the command `:split`. This command splits the screen into two windows and leaves the cursor in the top one:
+```
+        +----------------------------------+
+        |/* file one.c */                  |
+        |~                                 |
+        |~                                 |
+        one.c=============================
+        |/* file one.c */                  |
+        |~                                 |
+        one.c=============================
+        |                                  |
+        +----------------------------------+
+```
 
-### Code Jump
+You can use the command `:close` to close a window.
+If you split multiple windows, you can use `:only` to close all other windows.
 
-### Code Complete
+#### Split Window On Different Files
+You can use the command `:split two.c` to open a second window and start editing the given file.
+```
+        +----------------------------------+
+        |/* file two.c */                  |
+        |~                                 |
+        |~                                 |
+        two.c=============================
+        |/* file one.c */                  |
+        |~                                 |
+        one.c=============================
+        |                                  |
+        +----------------------------------+
+```
+
+You can use `:vsplit two.c` or `:vertical split` to split the window vertically.
+
+#### Move Between Windows
+- `CTRL-w h` to move to the window on the left;
+- `CTRL-w l` to move to the window on the right;
+- `CTRL-w j` to move to the window below;
+- `CTRL-w k` to move to the window above;
+- `CTRL-w t` to move to the **top** window;
+- `CTRL-w b` to move to the **bottom** window;
+
+#### Resize Window
+- `CTRL-w =` to make all windows equally high and wide;
+- `CTRL-w [num]+` to increase the window's height [num] lines;
+- `CTRL-w [num]-` to decrease the window's height [num] lines;
+- `CTRL-w [num]<` to decrease the window's width [num] lines;
+- `CTRL-w [num]>` to increase the window's width [num] lines;
+
+#### Moving Window
+Now you have split a few windows, but they may be in the wrong place. Then you need a command to move the window somewhere else.
+- `CTRL-w K` to move window to the top;
+- `CTRL-w J` to move window to the bottom;
+- `CTRL-w H` to move window to the far left;
+- `CTRL-w L` to move window to the far right;
+
+#### Tab Pages
+You will have noticed that windows never overlap. That means you quickly run out of screen space. The solution for this is called `Tab pages`.
+Assume you are editing `thisfile`, to create a new tab page use the command:
+```
+:tabedit thatfile
+```
+This will edit the file "thatfile" in a new tab.
+```
+        +----------------------------------+
+        | thisfile | /thatfile/ __________X|    (thatfile is bold)
+        |/* thatfile */                    |
+        |that                              |
+        |that                              |
+        |~                                 |
+        |~                                 |
+        |~                                 |
+        |                                  |
+        +----------------------------------+
+```
+Other commands:
+- `:tabclose` to close a tab page;
+- `:tabonly` to close all other tab pages;
+- `gt` to jump to next tab;
+- `gT` to jump to previous tab;
+- `[num]gt` to jump to [num]th tab.
 
 ### Fold
+Structured text can be separated in sections. Folding allows you to display a section as one line, providing an overview.
+```
+        +------------------------+
+        | line 1                 |
+        | line 2                 |
+        | line 3                 |
+        |_______________________ |
+        \                        \
+         \________________________\
+         / folded lines           /
+        /________________________/
+        | line 12                |
+        | line 13                |
+        | line 14                |
+        +------------------------+
+```
+The advantage of folding is that you can get a better overview of the structure of text, by folding lines of a section and replacing it with a line that indicates that there is a section.
+
+Try:
+- `zc` to **close** a fold;
+- `zo` to **open** a fold;
+- `zr` to **release** a fold and its sub-fold;
+- `zm` to **make** a fold and its sub-fold;
+- `zR` to release all folds and sub-folds;
+- `zm` to make all folds and sub-folds;
+
+### Code Complete
+Vim can auto complete words according to text.
+- `CTRL-n` to complete anything;
+- `CTRL-x CTRL-n` to complete in this file;
+- `CTRL-x CTRL-f` to complete filenames;
+- `CTRL-x CTRL-]` to complete in tags;
+- Once the matching items appear, you can use `CTRL-n` to jump to next one and `CTRL-p` to previous one.
+
+### Tag Jump
+This feature is based on the software `ctags` and makes you jump to the defination of the function.
+```
+sudo apt install exuberant-ctags
+```
+
+You can use `ctags -R .` to generate tags of a repo.
+
+Try:
+- `CTRL-]` to jump to tag under the cursor;
+- `CTRL-o` or `CTRL-t` to jump back;
+- `:ts` to show all matching items.
+
+### Communicate With Terminal
 
 ## Compile(C++)
 
