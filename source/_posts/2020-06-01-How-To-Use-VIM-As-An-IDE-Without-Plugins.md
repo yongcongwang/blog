@@ -15,6 +15,7 @@ cd Vim
 make
 sudo make install
 ```
+
 ### Config
 ```bash
 bash <(curl -s https://raw.githubusercontent.com/yongcongwang/dotfiles/master/deploy.sh) Vim
@@ -44,6 +45,7 @@ The Vim editor is a modal editor, which means that the editor behaves differentl
 The two basic modes are:
 - Normal mode, the characters you type are treated as commands;
 - Insert mode, the characters you type are treated as text.
+
 To get in insert mode you should type `i`(for Insert), and to get in normal mode you should type `<ESC>`.
 
 #### Moving Around
@@ -64,7 +66,7 @@ In `Normal` mode, you can delete characters with following commands:
 
 #### Undo And Redo
 If you delete too much, you can type `u` to undo the last edit.
-And if you **undo** too much, you can press `CTRL-R` to **redo** them.
+And if you **undo** too much, you can press `CTRL-r` to **redo** them.
 
 #### Other Editing Commands
 - `a`: since `i` **inserts** a character before the cursor, you can use `a` to **append** a character after the cursor.
@@ -84,6 +86,7 @@ Everything you always wanted to know can be found in the Vim help files. To get 
 - `:help {something}`
 
 ### Move Faster
+
 #### Charactor Based Movement
 One of the most useful movement commands is the single-character search command `fx`(Find x) which search forward in the line for the character `x`. 
 For example, you are at the beginning of the following line. Suppose you want to go to the h of human, just execute the command `fh` and the cursor will be positioned over the h:
@@ -264,20 +267,23 @@ For commands, you can use a count befor them:
 ```
 
 #### Repeating A Command
-The `.` may be the most simple yet powerful commands in Vim. It repeats the last change. For instance, suppose you are editing an HTML file and want to delete all the <B> tags:
+The `.` may be the most simple yet powerful commands in Vim. It repeats the last change. For instance, suppose you are editing an HTML file and want to delete all the `()` :
 ```
-                              To <B>generate</B> a table of <B>contents 
-        f<   find first <     --->
-        df>  delete to >         -->
-        f<   find next <           --------->
-        .    repeat df>                     --->
-        f<   find next <                       ------------->
-        .    repeat df>                                     -->
+                              To "generate" a table of <B>contents 
+       auto test = temp.function1(val1).function2(val2, val3).function3(val4);
+        f(   find first (     --->
+        df)  delete to )         ----->
+        f(   find next (              ----------->
+        .    repeat df)                          ----------->
+        f(   find next (                                    ----------->
+        .    repeat df)                                                ----->
 ```
 
 #### Visual Mode
 
-##### Select characters
+`Visual` mode is a flexible and esay way to select a piece of text for an operator. It is the only way to select a block of text.
+
+##### Select Characters
 To delete simple items the operator-range works quite well. But often it's not so easy to decide which command will move over the text you want to change. Then you can use press `v` to enter the `Visual` mode.
 You move the cursor over the text you want to work on. While you do this, the text is highlighted. Finally, you type the operator command.
 ```
@@ -287,6 +293,7 @@ You move the cursor over the text you want to work on. While you do this, the te
 
                 This is an example of visual mode
 ```
+
 ##### Select Lines
 If you want to work on whole lines, use `V` to start `Visual` mode.
 ```
@@ -356,9 +363,9 @@ And the `[flag]` can be:
 - `gc`, means replacing and you need to comfirm each replacement.
 
 ## Advanced Features
-
 ### Edit Multiple Files
 No matter how many files you have, you can edit them without leaving Vim.
+
 #### Edit Another File
 So far you had to start Vim for every file you wanted to edit. To edit another file, use `:edit path/to/foo.txt` to open the file `foo.txt`.
 
@@ -372,14 +379,26 @@ After editing another file, the file you edited just now is not closed. Instead,
 - `:buff[num]` to jump to buff [num];
 
 #### Rename
-After modifying the file, if you need to save the file under a new name, `:saveas new_name.txt` will be useful.
-When you want to change the name of the file you are editing, but don't want to resave the file, you can use `file new_name.txt` to rename current file.
+After modifying the file, if you need to save the file under a new name, 
+```
+:saveas newname.txt
+```
+will resave current file.
+When you want to change the name of the file you are editing, but don't want to resave the file, you can use 
+```
+file newname.txt
+```
+to rename current file.
 
 ### Split Windows
 Display two different files above files above each other, or view two locations in the file at the same time. See the difference between two files by putting them side by side. All this is possible with split windows.
 
 #### Split Window On One File
-The easiest way to open a new window is to use the command `:split`. This command splits the screen into two windows and leaves the cursor in the top one:
+The easiest way to open a new window is to use the command 
+```
+:split
+```
+This command splits the screen into two windows and leaves the cursor in the top one:
 ```
         +----------------------------------+
         |/* file one.c */                  |
@@ -393,11 +412,19 @@ The easiest way to open a new window is to use the command `:split`. This comman
         +----------------------------------+
 ```
 
-You can use the command `:close` to close a window.
+You can use the command
+```
+:close
+```
+to close a window.
 If you split multiple windows, you can use `:only` to close all other windows.
 
 #### Split Window On Different Files
-You can use the command `:split two.c` to open a second window and start editing the given file.
+You can use the command
+```
+:split two.c
+```
+to open a second window and start editing the given file.
 ```
         +----------------------------------+
         |/* file two.c */                  |
@@ -411,7 +438,15 @@ You can use the command `:split two.c` to open a second window and start editing
         +----------------------------------+
 ```
 
-You can use `:vsplit two.c` or `:vertical split` to split the window vertically.
+You can use 
+```
+:vsplit two.c
+```
+or 
+```
+:vertical split
+```
+to split the window vertically.
 
 #### Move Between Windows
 - `CTRL-w h` to move to the window on the left;
@@ -510,7 +545,6 @@ Try:
 - `:ts` to show all matching items.
 
 ### Communicate With Terminal
-
 #### Execute Bash Commands
 You can excute a bash command with the pattern `:! [command]`:
 - `:! bash build.sh` to build the project;
@@ -637,17 +671,69 @@ Some gdb commands:
 - `q`: quit gdb.
 
 ### Core Dump
+A `core dump` is the printing or the copying to a more permanent medium(such as hard disk) the contents of `RAM` at one moment in a time.You can think it as a full length "snapshot" of `RAM`.
+
+If your program got a `core dump` bu no file generated, you should set the `core dump` file size limit:
+```
+ulimit -c unlimited
+```
+
+You can use the command:
+```
+gdb excutable core
+```
+to check where the core dump is generated.
+
+Or you can use the command:
+```
+core-file core
+```
+in `gdb` window to load the `core dump` file.
+
+### Crash
+You can use the command `bt` to **backtrace** the stack status when crash appears in `gdb` window.
 
 ### Debug Cyberrt Module
+You can use `gdb` to either launch a module or attach to a running module.
 
 #### Use Termdebug To Load Module
+In `gdb` window, use
+```
+file /home/caros/opt/bin/mainboard
+```
+to load `mainboard`, and use
+```
+set args -d prediction.dag -p prediction -s CYBER_DEFAULT
+```
+to set flags, then use
+```
+run
+```
+to start the module.
+
 #### Attach To A Running Module
+1. Get PID of prediction module:
+```
+ps aux | grep prediction
+```
+2. Load `mainboard` symbols:
+```
+file /home/caros/opt/bin/mainboard
+```
+3. Attach to prediction process:
+```
+attach PID
+```
 
 ## Use Vim Mode In Other apps
 
 ### bash
+- `set -o vi` will use the `vi` commands;
+- `set -o emacs` will use the `emacs` commands.
 
 ### Chrome
+[Vimium](https://chrome.google.com/webstore/detail/vimium/dbepggeogbaibhgnhhndojpepiihcmeb)
 
 ### Visual Studio Code
+[VSCodeVim](https://github.com/VSCodeVim/Vim)
 
