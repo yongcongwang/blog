@@ -206,7 +206,7 @@ Once you searched something, you can use `n` to jump to **next** item, and `N` t
 #### Marks
 Vim enables you to place your own marks in the text:
 - `mx`, to mark a the place under the cursor as `x`, x can be `a to z`;
-- `\`x`, to go to the marked place;
+- ``x`, to go to the marked place;
 - `marks`, to place all the marks you can go to.
 
 ### Change Smarter
