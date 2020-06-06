@@ -76,10 +76,10 @@ And if you **undo** too much, you can press `CTRL-r` to **redo** them.
 
 #### Getting Out
 After modifying the file, you can use:
-- `w`: to **write** the file;
-- `q`: to **quite** the Vim;
-- `wq`: to **write** the file and then **quit**  the Vim;
-- `q!`: to ignore the changes and **force** **quit** Vim.
+- `:w`: to **write** the file;
+- `:q`: to **quite** the Vim;
+- `:wq`: to **write** the file and then **quit**  the Vim;
+- `:q!`: to ignore the changes and **force** **quit** Vim.
 
 #### Find Help
 Everything you always wanted to know can be found in the Vim help files. To get help on **something**, use the command:
@@ -104,12 +104,14 @@ And you can specify a count:
 Other similar commands:
 - `F`, to find backward:
 
+
 ```
         To err is human.  To really foul up you need a computer. 
                   <---------------------
                             Fh
 ```
 - `t` and `T`, works like the `f`, but it stops one character before the searched character:
+
 
 ```
         To err is human.  To really foul up you need a computer. 
@@ -164,6 +166,7 @@ If the cursor is on a `(` it will movet to the matching `)`. If it's on a `)` it
 - `CTRL-F`, to scroll **forward** a screen of text;
 - `CTRL-B`, to scroll **backward** a screen of text;
 - `zz`, to move the cursor line to the center of the screen.
+
 ```
                                        +----------------+
                                        | some text      |
@@ -221,6 +224,7 @@ You can use the pattern `[operator][count][range]` to change more characters. Fo
 ```
 And similar usages are:
 - `d2e`, means delete 2 words' end;
+
 ```
         To err is human. you need a computer. 
                         -------->
@@ -230,6 +234,7 @@ And similar usages are:
 ```
 
 - `d$`, means delete to the end of the line;
+
 ```
         To err is human. a computer. 
                        ------------>
@@ -242,6 +247,7 @@ And similar usages are:
 #### Change Text
 Another operator is `c`, change. It acts just like the `d` operator, but it leaves you in `Insert` mode:
 - `cw`, changes a word;
+
 ```
         To err is human 
            ------->
@@ -250,6 +256,7 @@ Another operator is `c`, change. It acts just like the `d` operator, but it leav
         To be human
 ```
 - `cc`, changes a line and leaves you in `Insert` mode;
+
 
 The `r` is not an operator, it waits for you to type a character, and will replace the character under the cursor with it.
 ```
@@ -372,10 +379,10 @@ So far you had to start Vim for every file you wanted to edit. To edit another f
 #### Jump Between Files
 After editing another file, the file you edited just now is not closed. Instead, it's stored in a `buff`, you can use:
 - `:buffers` or `:ls` to show all the buffers;
-- `:next` to jump to next buff;
-- `:previous` to jump to previous buff;
-- `:last` to jump to the last buff;
-- `:first` to jump to the first buff;
+- `:bnext` to jump to next buff;
+- `:bprevious` to jump to previous buff;
+- `:blast` to jump to the last buff;
+- `:bfirst` to jump to the first buff;
 - `:buff[num]` to jump to buff [num];
 
 #### Rename
@@ -386,7 +393,7 @@ After modifying the file, if you need to save the file under a new name,
 will resave current file.
 When you want to change the name of the file you are editing, but don't want to resave the file, you can use 
 ```
-file newname.txt
+:file newname.txt
 ```
 to rename current file.
 
