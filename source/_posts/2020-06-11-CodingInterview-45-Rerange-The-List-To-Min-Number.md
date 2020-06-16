@@ -11,7 +11,7 @@ categories: coding
 <!-- more -->
 
 ## Solution
-```
+```C++
 void PrintMinArray(std::vector<int>& arr) {
   if (arr.empty()) {
     return;
