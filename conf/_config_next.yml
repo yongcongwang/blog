@@ -125,16 +125,16 @@ darkmode: true
 menu:
   home: / || home
   #about: /about/ || user
-  #tags: /tags/ || tags
-  #categories: /categories/ || th
+  tags: /tags/ || tags
+  categories: /categories/ || th
   archives: /archives/ || archive
   #schedule: /schedule/ || calendar
   #sitemap: /sitemap.xml || sitemap
   #commonweal: /404/ || heartbeat
-  math: /categories/math/ || calculator
-  algorithm: /categories/algorithm/ || book
-  coding: /categories/coding/ || code
-  software: /categories/software/ || linux
+  #math: /categories/math/ || calculator
+  #algorithm: /categories/algorithm/ || book
+  #coding: /categories/coding/ || code
+  #software: /categories/software/ || linux
 
 # Enable / Disable menu icons / item badges.
 menu_settings:
@@ -845,7 +845,7 @@ mermaid:
 # Use velocity to animate everything.
 # For more information: http://velocityjs.org
 motion:
-  enable: true
+  enable: false
   async: false
   transition:
     # Transition variants:
