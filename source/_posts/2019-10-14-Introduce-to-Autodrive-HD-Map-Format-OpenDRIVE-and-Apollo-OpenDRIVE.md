@@ -4,6 +4,10 @@ mathjax: true
 comments: true
 date: 2019-10-14 23:50:55
 categories: algorithm
+tags:
+ - autodrive
+ - apollo
+ - hdmap
 ---
 
 After collecting map data, we need to describe the map in detail and store it, which needs `HD Map` format.

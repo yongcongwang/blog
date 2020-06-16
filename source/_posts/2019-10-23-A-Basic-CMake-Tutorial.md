@@ -4,6 +4,9 @@ mathjax: true
 comments: true
 date: 2019-10-23 23:08:16
 categories: software
+tags:
+ - cmake
+ - tools
 ---
 Below is a step-by-step tutorial covering common build system use cases that CMake helps to address. Many of these topics have been introduced in Mastering CMake as separate issues but seeing how they all work together in an example project can be very helpful. This tutorial can be found in the Tests/Tutorial directory of the CMake source code tree. Each step has its own subdirectory containing a complete copy of the tutorial for that step.
 See also the introductory sections of the cmake-buildsystem(7) and cmake-language(7) manual pages for an overview of CMake concepts and source tree organization.

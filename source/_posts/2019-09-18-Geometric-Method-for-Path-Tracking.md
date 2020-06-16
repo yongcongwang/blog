@@ -4,6 +4,8 @@ mathjax: true
 comments: true
 date: 2019-09-18 23:04:20
 categories: algorithm
+tags:
+ - algorithm
 ---
 
 One of the most popular classes of path tracking methods is geometric tracking. Geometric tracking methods exploit geometric relationships between the vehicle and the path resulting in control law solutions to the path tracking problem. Two of the most commonly used geometric methods are `Pure-Pursuit` and `Stanley Method`.

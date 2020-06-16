@@ -2,6 +2,8 @@
 title: Setup Workspace in Ubuntu
 date: 2018-06-09 17:53:25
 categories: software
+tags:
+ - workspace
 ---
 > environment: ubuntu 18.04
 <!-- more -->

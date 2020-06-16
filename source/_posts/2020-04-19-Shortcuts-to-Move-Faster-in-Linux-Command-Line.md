@@ -4,6 +4,10 @@ mathjax: true
 comments: true
 date: 2020-04-19 22:25:03
 categories: software
+tags:
+ - tools
+ - linux
+ - terminal
 ---
 
 Nowdays we spend a lot of time in bash shell, typing long and complex commands. You can use the arrow keys `up/down/left/right` to move the cursor and select commands, but that's not so efficient.

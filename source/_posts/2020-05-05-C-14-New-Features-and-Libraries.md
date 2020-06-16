@@ -4,6 +4,9 @@ mathjax: true
 comments: true
 date: 2020-05-05 14:39:20
 categories: coding
+tags:
+ - coding
+ - C++
 ---
 
 # C++14 New Features

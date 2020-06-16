@@ -4,6 +4,9 @@ mathjax: true
 comments: true
 date: 2020-04-11 00:52:24
 categories: software
+tags:
+ - tools
+ - vim
 ---
 
 Vim plugins can buy us a lot of functionality, but they also add a lot of burden in the form of dependency complexity. Origin vim has the ability to implement many features that plugins do, for example:

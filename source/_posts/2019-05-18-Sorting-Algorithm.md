@@ -3,6 +3,9 @@ title: Sorting Algorithm
 date: 2019-05-18 16:20:11
 categories: algorithm
 mathjax: true
+tags:
+ - algorithm
+ - data structure
 ---
 
 ## Assumption

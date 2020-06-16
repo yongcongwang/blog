@@ -2,6 +2,8 @@
 title: Setup Workspace in Windows
 date: 2018-04-20 18:10:03
 categories: software
+tags:
+ - workspace
 ---
 
 ## Windows 10 Pro License

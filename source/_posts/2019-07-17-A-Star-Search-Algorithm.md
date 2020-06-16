@@ -3,6 +3,8 @@ title: Introduce to A* Search Algorithm
 date: 2019-07-17 00:37:46
 categories: algorithm
 mathjax: true
+tags:
+ - algorithm
 ---
 In computer science, `A*`(pronounced *A-Star*) is a computer algorithm that is widely used in pathfinding and graph traversal, which is the process of finding a path between multiple points, called "nodes". It enjoys widespread use due to its performance and accuracy. Peter Hart, Nils Nilsson and Bertram Raphael of Stanford Research Institude(now SRI International) first published the algorithm in 1968. It can be seen as an extension of Edsger Dijkstra's 1959 algorithm. `A*` achieves better performance by using heuristics to guide its search.
 <!-- more -->

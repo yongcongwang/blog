@@ -4,6 +4,9 @@ mathjax: true
 comments: true
 date: 2019-09-24 00:02:48
 categories: math
+tags:
+ - math
+ - function
 ---
 
 A `function` is a rule for transforming an object into another object. The object you start with is called the `input`, and comes from some set called the `domain`. Waht you get back is called the `output`; it comes from some set called the `domain`, and the output's value is within a `range`. A function must assign a unique output for each valid input.

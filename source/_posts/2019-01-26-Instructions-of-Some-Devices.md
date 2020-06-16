@@ -2,6 +2,9 @@
 title: Instructions of Some Devices
 date: 2019-01-26 16:08:48
 categories: software
+tags:
+ - tools
+
 ---
 
 

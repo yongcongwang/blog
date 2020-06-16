@@ -4,6 +4,7 @@ categories: algorithm
 tags:
   - apollo
   - autodrive
+  - prediction
 mathjax: true
 comments: true
 date: 2020-06-16 21:09:06

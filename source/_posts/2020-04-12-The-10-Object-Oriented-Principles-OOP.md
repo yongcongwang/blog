@@ -4,6 +4,9 @@ mathjax: true
 comments: true
 date: 2020-04-12 00:54:43
 categories: coding
+tags:
+ - coding
+ - OOP
 ---
 
 The Object-Oriented Design Principles are the core of OOP programming, and we programmer should pay more attention to them.

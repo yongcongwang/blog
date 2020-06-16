@@ -2,6 +2,8 @@
 title: Build Blog Using Github Pages and Hexo
 date: 2018-11-10 15:20:16
 categories: software
+tags:
+ - tools
 ---
 
 > Environment: ubuntu 18.04

@@ -4,6 +4,9 @@ mathjax: true
 comments: true
 date: 2020-06-01 14:24:14
 categories: software
+tags:
+ - tools
+ - vim
 ---
 
 ## Environment
