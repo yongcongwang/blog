@@ -1,7 +1,9 @@
 ---
 title: {{ title }}
 date: {{ date }}
-categories:
+categories: todo
+tags: 
+ - todo
 mathjax: true
 comments: true
 ---
