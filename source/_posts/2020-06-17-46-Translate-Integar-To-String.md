@@ -16,8 +16,11 @@ date: 2020-06-17 01:11:06
 ```C++
 std::size_t TransNumberToString(const std::size_t num) {
   const std::string num_str = std::to_string(num);
+  const std::size_t length(num_str.size());
+  if (length < 2) {
+    return 1;
+  }
 
-  const std::size_t length = num_str.size();
   std::vector<int> sum(length + 1, 0);
   sum[length - 1] = 1;
   sum[length] = 1;
