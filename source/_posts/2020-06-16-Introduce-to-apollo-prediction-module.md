@@ -307,18 +307,74 @@ Otherwise the priority of the obstacle is `IGNORE`.
 
 ### Evaluator
 
-The Evaluator predicts path and speed separately for any given obstacle.
-An evaluator evaluates a path by outputting a probability for it (lane
-sequence) using the given model stored in _prediction/data/_.
+The `Evaluator` predicts path and speed separately for any given obstacle. An evaluator evaluates a path by outputting a probability for it (lanesequence) using the given model stored in `prediction/data/`.
 
-There exists 5 types of evaluators, two of which were added in Apollo 3.5. As Cruise and Junction scenarios have been included, their corresponding evaluators (Cruise MLP and Junction MLP) were added as well. The list of available evaluators include:
+Now in `prediction`, the `Evaluator` for `Cyclist` are:
+- `CyclistKeepLaneEvaluator`: ;
 
-- **Cost evaluator**: probability is calculated by a set of cost functions
-- **MLP evaluator**: probability is calculated using an MLP model
-- **RNN evaluator**: probability is calculated using an RNN model
-- **Cruise MLP + CNN-1d evaluator**: probability is calculated using a mix of MLP and CNN-1d models for the cruise scenario
-- **Junction MLP evaluator**: probability is calculated using an MLP model for junction scenario
+and the `Evaluator` for `Vehicle` are:
+- `CostEvaluator`: probability is calculated by a set of cost functions;
+- `MLPEvaluator`: probability is calculated using an MLP model;
+- `RNNEvaluator`: probability is calculated using an RNN model;
+- `CruiseMLPEvaluator`: probability is calculated using a mix of MLP and CNN-1d models for the cruise scenario;
+- `JunctionMLPEvaluator`: probability is calculated using an MLP model for junction scenario.
 
+The architecture of `Evaluator` is as below:
+![evaluator](/images/2020-06-16-Introduce-to-apollo-prediction-module/evaluator.png)
+
+#### EvaluatorManager
+The `EvaluatorManager` creates and stores all types of evaluators, so it **has** many `Evaluator` pointers. The `Evaluator` class is a base class that defines a pure virtual function `Evaluate`. `EvaluatorManager` calls `Evaluator`'s subclass's function `Evaluate` to calculate probability for a lanesequence. If the `obstacle` type is:
+- `VEHICLE` and it's 
+ - `ON_LANE`, the `Evaluator` will be `CruiseMLPEvaluator`;
+ - `IN_JUNCTION`, the `Evaluator` will be `JunctionMLPEvaluator`;
+- `BICYCLE` and it's
+ - `ON_LANE`, the `Evaluator` will be `CyclistKeepLaneEvaluator`;
+- `UNKNOWN` and it's
+ - `ON_LANE`, the `Evaluator` will be `MLPEvaluator`;
+
+otherwise, the `Evaluator` would not work.
+
+#### CyclistEvaluator
+The `CyclistEvaluator` is simple and has only two probability values:
+- 1.0, if current lane id is equal to the lane id in lane sequence;
+- 0.0, if current lane id is not equal to the lane id in lane sequence.
+
+The lanes sequence is a list of lane id that covers the length:
+$$
+D_{lane} = v_{0} * t_{max} + 0.5 * a_{max} * t_{max}^2
+$$
+In equation,
+- $D_{lane}$ is the distance the lane sequance covers;
+- $v_{0}$ is current speed the obstacle has;
+- $t_{max}$ is the predicted trajectory duration, it's 8.0 in program;
+- $a_{max}$ is the maximum linear acceleration of vehicle, it's 4.0 in program;
+
+#### CostEvaluator
+`CostEvaluator` calculates the probability based on the distance between obstacle and lane boundary.
+$$
+E_{l} = W_{lane} - W_{l}
+$$
+$$
+P_{cost} = \frac{1}{1 + e^{-E_{l}}}
+$$
+
+In the equation:
+- $E_{l}$ is the distance from lane boundary to obstacle's location;
+- $W_{lane}$ is the width of lane;
+- $W_{l}$ is the lateral distance from lane reference line to obstacle's location;
+- $P_{cost}$ is the probability, calculated by a [Sigmoid function](https://en.wikipedia.org/wiki/Sigmoid_function).
+
+#### MLPEvaluator
+TODO
+
+#### RNNEvaluator
+TODO
+
+#### CruiseMLPEvaluator
+TODO
+
+#### JunctionMLPEvaluator
+TODO
 
 ### Predictor
 
