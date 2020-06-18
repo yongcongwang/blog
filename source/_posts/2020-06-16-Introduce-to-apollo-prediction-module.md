@@ -380,10 +380,121 @@ TODO
 
 Predictor generates predicted trajectories for obstacles. Currently, the supported predictors include:
 
-- **Empty**: obstacles have no predicted trajectories
-- **Single lane**: Obstacles move along a single lane in highway navigation mode. Obstacles not on lane will be ignored.
-- **Lane sequence**: obstacle moves along the lanes
-- **Move sequence**: obstacle moves along the lanes by following its kinetic pattern
-- **Free movement**: obstacle moves freely
-- **Regional movement**: obstacle moves in a possible region
-- **Junction**: Obstacles move toward junction exits with high probabilities
+- **Empty**: obstacles have no predicted trajectories;
+- **Single lane**: Obstacles move along a single lane in highway navigation mode. Obstacles not on lane will be ignored;
+- **Lane sequence**: obstacle moves along the lanes;
+- **Move sequence**: obstacle moves along the lanes by following its kinetic pattern;
+- **Free movement**: obstacle moves freely;
+- **Regional movement**: obstacle moves in a possible region;
+- **Junction**: Obstacles move toward junction exits with high probabilities.
+
+The relationship between `predictor`s is as below:
+![predictor](/images/2020-06-16-Introduce-to-apollo-prediction-module/predictor.png)
+
+#### PredictorManager
+`PredictorManager` creates and stores all kinds of `predictor`s. It **has** pointers of base class `Predictor` to points to its subclasses, the specail predictors.
+`PredictorManager` runs the special predictor's method `Predict` to generate trajectories according to obstacles's type. If the obstacle's type is:
+- `Vehicle`, and it's
+ - `InJunction`, the predictor will be `LaneSequencePredictor`;
+ - `OnLane`, the predictor will be `MoveSequencePredictor`;
+ - `OffLane`, the predictor will be `FreeMovePredictor`;
+- `Pedestrian`, the predictor will be `FreeMovePredictor`;
+- `Bicycle`, and it's
+ - `OnLane`, the predictor will be `MoveSequencePredictor`;
+ - `OffLane`, the predictor will be `FreeMovePredictor`;
+- `Unknown`, and it's
+ - `OnLane`, the predictor will be `MoveSequencePredictor`;
+ - `OffLane`, the predictor will be `FreeMovePredictor`;
+- other case, the predictor will be `EmptyPredictor`.
+
+#### Predictor
+`Predictor` is a base class with the pure virtual function `Predict`. It also realizes some methods about trajectories:
+
+##### TrimTrajectory
+If the obstacle is in junction, we don't trim obstacle's trajectory; otherwise, trim the trajectory to the front of junction.
+
+##### SupposedToStop
+Determine if an obstacle is supposed to stop within a distance.
+
+#### EmptyPredictor
+`EmptyPredictor` does nothing but clear the trajectory of obstacle.
+
+#### FreeMovePredictor
+`FreeMovePredictor` assumes that the obstacle always moves with initial velocity and acceleration, the state is:
+$$
+\begin{bmatrix}
+x \\\\
+y \\\\
+x^\prime \\\\
+y^\prime \\\\
+x^{\prime\prime} \\\\
+y^{\prime\prime}
+\end{bmatrix}
+$$
+
+and the transition matrix is:
+$$
+\begin{bmatrix}
+1 & 0 & t & 0 & 0.5 * t^2 & 0 \\\\
+0 & 1 & 0 & t & 0 & 0.5 * t^2 \\\\
+0 & 0 & 1 & 0 & t & 0 \\\\
+0 & 0 & 0 & 1 & 0 & t \\\\
+0 & 0 & 0 & 0 & 1 & 0 \\\\
+0 & 0 & 0 & 0 & 0 & 1
+\end{bmatrix}
+$$
+
+#### JunctionPredictor
+`JunctionPredictor` uses a cubic polynomial to fit start-point(obstacle's position) and end-point(junction exit position) within given time.
+
+#### RegionalPredictor
+Not used in program.
+
+#### SequencePredictor
+`SequencePredictor` defines some common methods relatived to sequence.
+
+##### FilterLaneSequence
+This method filters out those obstacles that are close to the ego vehicle so that we will ignore them and drive normally unless they really kick into our lane.
+
+#### LaneSequencePredictor
+`LaneSequencePredictor` is derived from `SequencePredictor`. After filtering lane sequence, it use the method from `Predictor` to check if an obstacle is to stop:
+- `true`, generate constant acceleration trajectory;
+- `false`, generate lane sequence trajectory.
+
+##### Constant acceleration trajectory
+In this case, `predictor` refresh trajectory point with the equation:
+$$
+s = v * t + 0.5 * a * t^2
+$$
+$$
+v = v_0 + a * t
+$$
+$$
+l = l_0 * K_{approach}
+$$
+In equation:
+- $s$ is the obstacle distance on the lane;
+- $v$ is current velocity;
+- $t$ is the duration;
+- $a$ is current acceleration;
+- $v_0$ is the velocity from last step;
+- $l$ is the lateral distance between obstacle and lane reference line;
+- $l_0$ is the lateral distance last step.
+- $K_{approach}$ is the coefficient that obstacle moves towards lane reference line;
+
+##### Lane sequence trajectory
+In this case, we assume that the obstacle moves with constant velocity:
+$$
+s = s_0 + v * t
+$$
+$$
+l = l_0 * K_{approach}
+$$
+
+#### MoveSequencePredictor
+`MoveSequencePredictor` is derived from `SequencePredictor`. After filtering lane sequence, it use the method from `Predictor` to check if an obstacle is to stop:
+- `true`, generate constant acceleration trajectory;
+- `false`, generate lane sequence trajectory using best trajectory selection.
+
+#### SingleLanePredictor
+This `predictor` uses the same method as `LaneSequencePredictor` lane sequence case.
