@@ -496,5 +496,80 @@ $$
 - `true`, generate constant acceleration trajectory;
 - `false`, generate lane sequence trajectory using best trajectory selection.
 
+##### Const acceleration trajectory
+This trajectory is the same as LaneSequencePredictor
+
+##### Lane sequence trajectory using best trajectory selection
+This trajectory traverses all the time to reach the end point and selects the best trajectory that has the minimum cost.
+1. Generate a list of time to reach the end.
+In program, we use the method `GenerateCandidateTimes` with the time gap of $0.5$ and end time $8.0$ to generate a sample time list: `{0, 0.5, 1, 1.5, ..., 7.5, 8.0}`.
+2. Calculate the 5th degree polynomial of lateral ditance with each end time.
+Since we have known the start state:
+$$
+\begin{cases}
+l_{0} = l_{obstacle} \\\\
+l_{0}^\prime = v_{lateral} \\\\
+l_{0}^{\prime\prime} = 0
+\end{cases}
+$$
+and end state:
+$$
+\begin{cases}
+l_{1} = 0 \\\\
+l_{1}^{\prime} = 0 \\\\
+l_{1}^{\prime\prime}= 0
+\end{cases}
+$$
+
+with the 5th degree polynomial equation:
+\begin{cases}
+l = a_0 + a_1 \cdot t + a_2 \cdot t^2 + a_3 \cdot t^3 + a_4 \cdot t^4 + a_5 \cdot t^5 \\\\
+l^{\prime} = a_1 + 2 \cdot a_2 \cdot t + 3 \cdot a_3 \cdot t^2 + 4 \cdot a_4 \cdot t^3 + 5 \cdot a_5 \cdot t^4 \\\\
+l^{\prime\prime} = 2 \cdot a_2 \cdot t + 6 \cdot a_3 \cdot t + 12 \cdot a_4 \cdot t^2 + 20 \cdot a_5 \cdot t^3
+\end{cases}
+
+we can get the coefficients $a_0$ to $a_5$.
+
+2. Calculate the 4th degree polynomial of longitude distance with each end time.
+Since we have known the start state:
+$$
+\begin{cases}
+s_{0} = l_{obstacle} \\\\
+s_{0}^\prime = v_{lateral} \\\\
+s_{0}^{\prime\prime} = 0
+\end{cases}
+$$
+and end state:
+$$
+\begin{cases}
+s_{1} = s_{end} \\\\
+s_{1}^{\prime} = v_{end} \\\\
+s_{1}^{\prime\prime}= 0
+\end{cases}
+$$
+
+with the 4th degree polynomial equation:
+\begin{cases}
+l = a_0 + a_1 \cdot t + a_2 \cdot t^2 + a_3 \cdot t^3 + a_4 \cdot t^4 \\\\
+l^{\prime} = a_1 + 2 \cdot a_2 \cdot t + 3 \cdot a_3 \cdot t^2 + 4 \cdot a_4 \cdot t^3 \\\\
+l^{\prime\prime} = 2 \cdot a_2 \cdot t + 6 \cdot a_3 \cdot t + 12 \cdot a_4 \cdot t^2
+\end{cases}
+
+we can get the coefficients $a_0$ to $a_4$.
+
+3. Find the coefficients of lateral and longitude with the lowest cost.
+The cost of each group of coefficients can be calculated with:
+$$
+C = a_{max lateral} + \alpha * t_{end}
+$$
+In equation,
+- $C$ is the cost;
+- $\alpha$ is ratio of time, it's $0.25$ in program;
+- $t_{end}$ is the time to reach end point.
+
+4. Generate each point of the trajectory with the lowest cost.
+Now that we know the equation of longitude and lateral and the time to reach end point, we can generate each point of the trajectory with  time gap($0.1$ in program)
+
+
 #### SingleLanePredictor
 This `predictor` uses the same method as `LaneSequencePredictor` lane sequence case.
