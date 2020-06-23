@@ -66,4 +66,21 @@ $$
 
 where:
 - $j = 0, 1$ represents the feature index number.
+- $\alpha$ is called "learning rate" to ensure that the gradient descent algorithm converges in a reasonable time.
 
+## Gradient Descent For Cost Function
+We can substitute our cost function and our actual hypothesis function and modify the equation to:
+$$
+\theta_{0} := \theta_{0} - \alpha\frac{1}{m}\sum_{i = 1}^{m}(h_{\theta}(x_{i}) - y_{i})
+$$
+$$
+\theta_{1} := \theta_{1} - \alpha\frac{1}{m}\sum_{i = 1}^{m}((h_{\theta}(x_{i}) - y_{i})x_{i})
+$$
+where:
+- $m$ is the size of the training set;
+- $\theta_{0}$ is a constant that will be changing simultaneously with $\theta_{1}$
+- $x_{i}, y_{i}$ are values of the given training set.
+
+With the equation, we can repeat calculating $\theta_{0}$ and $\theta_{1}$ until vonvergence.
+
+This method looks at every example in the entire training set on every step, and is called `batch gradient descent`.
