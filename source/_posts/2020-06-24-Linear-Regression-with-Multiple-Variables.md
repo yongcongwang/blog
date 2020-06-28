@@ -75,3 +75,40 @@ The learning rate effects the convergence of the $J(\theta)$:
 - $\alpha$ is too small: slow convegence;
 - $\alpha$ is too large: may not decrease on every iteration and shus may not converge.
 
+## Improve features and hypothesis
+We can improve our features and the form of our hypothesis function in a couple different ways.
+
+### Feature
+We can combine multiple features into one. For example, we can combine $x_1$ and $x_2$ into a new feature $x_3$ by taking $x_3 = x_1 * x_2$.
+
+### Hypothesis Function
+Our hypothesis function need not to be linear (a straight line) if that does not fit the data well.
+We can change the behavior or curve of our hypothesis function by making it a:
+- quadratic;
+- cubic;
+- square root
+function.
+
+One important thing to keep in mind is, if you choose your features this way, the feature scaling becomes very important.
+
+# Normal Equation for Multiple Variables
+Gradient descent gives one way to solve the minimizing $J$, the `normal equation` method is another way of doing so. In this way, we will minimizing $J$ by explicitly taking its derivatives with respect to the $\theta_j$ and set them to $0$. This allows us to find the optimum theta without iteration. The normal equation is given below:
+$$
+\theta = (X^TX)^{-1}X^Ty
+$$
+
+Following is a comparison of gradient descent and the normal equation:
+
+| Gradient Descent | Normal Equation |
+| ---------------- | --------------- |
+| Need to choose $\alpha$ | No need to choose $\alpha$ |
+| Need many iterations | No need to iterate |
+| Time complexity $O(kn^2)$ | Time complexity $O(n^3)$, need to calculate inverse of $X^TX$ |
+| Works well when $n$ is large | Slow if $n$ is very large |
+
+With the normal equation, computing the inversion has comlexity $O(n^3)$. So if we have a very large number of features, the normal equation will be slow. In practice, when $n$ exceeds $10000$ it might be a good time to go from normal solution to an iterative process.
+
+## Noninvertibility
+The normal equation used $X^TX$ to calculate variables, but $X^TX$ might be "noninvertible", the common causes may be:
+- Redundant features, where two features are very closely related;
+- Too many features(e.g. $m <= n$), in this case, delete some featues or use "regularization".
