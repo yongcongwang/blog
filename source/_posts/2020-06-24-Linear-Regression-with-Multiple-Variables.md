@@ -1,5 +1,5 @@
 ---
-title: Linear Regression with Multiple Variables
+title: MechineLearning | Linear Regression with Multiple Variables
 categories: algorithm
 tags:
   - mechine_learning

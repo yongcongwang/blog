@@ -1,5 +1,5 @@
 ---
-title: Linear Regression with One Variable
+title: MechineLearning | Linear Regression with One Variable
 categories: algorithm
 tags:
   - mechine_learning
