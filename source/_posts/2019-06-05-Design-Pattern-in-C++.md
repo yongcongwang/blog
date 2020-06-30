@@ -11,31 +11,7 @@ tags:
 - Define a family of algorithms, encapsulate each one, and make them interchangeable. Strategy lets the algorithm vary independently from the clients that use it.
 - Capture the abstraction in an interface, bury implementation details in derived classes.
 <!-- more -->
-```puml
-@startuml
-class Context {
-- strategy_ : Strategy *
-+ contextInterface() : void
-}
-
-class Strategy {
-+ strategyInterface() : void
-}
-
-class ConcreteStrategyA {
-+ strategyInterface() : void
-}
-
-class ConcreteStrategyB {
-+ strategyInterface() : void
-}
-
-Context *-- Strategy
-Strategy <|-- ConcreteStrategyA
-Strategy <|-- ConcreteStrategyB
-@enduml
-```
-
+![strategy](https://raw.githubusercontent.com/yongcongwang/drawio/ee7b8c3d83fde18d284c00b8a72748caaf499d5b/blog/strategy.svg)
 ```C++
 // By yongcong.wang @ 09/06/2019
 #include <iostream>
@@ -127,44 +103,7 @@ StrategyB: exec()
 # Observer Pattern
 Observer pattern is used when there is one-to-many relationship between objects such as if one object is modified, its dependent objects are to be notified automatically.
 
-```puml
-
-@startuml
-class Subject {
-+ registerObserver(Observer *) : void
-+ removeObserver(Observer *) : void
-+ notifyObserver() : void
-}
-
-class ConcreteSubjectA {
-- observer_list : vector<Observer *> 
-+ registryObserver(Observer *) : void
-+ removeObserver(Observer *) : void
-+ nofityObserver() : void
-}
-
-class Observer {
-+ updata() : void  
-}
-
-class ConcreteObserverA {
-+ update() : void
-}
-
-class ConcreteObserverB {
-+ update() : void
-}
-  
-Subject <|-- ConcreteSubjectA
-Subject --> Observer
-Observer <|-- ConcreteObserverA
-ConcreteSubject <-- ConcreteObserverA
-Observer <|-- ConcreteObserverB
-ConcreteSubject <-- ConcreteObserverB
-@enduml
-
-```
-
+![observer](https://github.com/yongcongwang/drawio/blob/master/blog/test.png?raw=true)
 ```C++
 // By yongcong.wang @ 09/06/2019
 #include <iostream>
@@ -286,42 +225,7 @@ observer B heard
 Decorator pattern allows a user to add new functionality to an existing object without altering its structure. This type of design pattern comes under structural pattern as this pattern acts as a wrapper to existing class.
 This pattern creates a decorator class which wraps the original class and provides additional functionality keeping class methods signature inact;
 
-```puml
-
-class Component {
-+ methodA() = 0 : virtual void
-+ methodB() = 0: virtual void
-}
-
-class ConcreteComponent {
-+ methodA() : void
-+ methodB() : void
-}
-
-class Decorator {
-+ methodA() : void
-+ methodB() : void
-- Component wrappedObj;
-}
-
-class ConcreteDecoratorA {
-+ methodA() : void
-+ methodB() : void
-}
-
-class ConcreteDecoratorB {
-+ methodA() : void
-+ methodB() : void
-}
-
-Component <|-- ConcreteComponent
-Component <|-- Decorator
-Component <-- Decorator
-ConcreteDecoratorA --|> Decorator
-ConcreteDecoratorB --|> Decorator
-
-```
-
+![decorator](https://github.com/yongcongwang/drawio/blob/master/blog/decorator.png?raw=true)
 ```C++
 // By yongcong.wang @ 28/07/2019
 #include <iostream>
@@ -450,31 +354,7 @@ According to the type of problems, there are three kinds of `Factory Pattern`:
 ## Simple Factory
 Simple Factory defines a method to create an object. It voilates the `Open/close Principle(OCP)`
 
-```puml
-
-class Factory {
-+ createProduct() : Product
-}
-
-class Product {
-+ operation() = 0 : virtual void 
-}
-
-class ConcreteProductA {
-+ operation() : void 
-}
-
-class ConcreteProductB {
-+ operation() : void 
-}
-
-Product <|-- ConcreteProductA
-Product <|-- ConcreteProductB
-
-Factory ..> ConcreteProductA
-Factory ..> ConcreteProductB
-```
-
+![simple factory](https://github.com/yongcongwang/drawio/blob/master/blog/simple_factory.png?raw=true)
 ```C++
 // By yongcong.wang @ 30/07/2019
 #include <iostream>
@@ -555,40 +435,8 @@ ConcreteProductB called!
 ## Normal Factory
 Normal Factory not only encapsulates the creation of object but also put the creation of object into derived class. It only provides the method of creating objects, and the realization is in `ConcreteFactory`.
 Disadvantage: the addition of factory object will cause the increasing of classes.
-```puml
-class Product {
-+ operation() = 0: virtual void
-}
+![normal facory](https://github.com/yongcongwang/drawio/blob/master/blog/normal_factory.png?raw=true)
 
-class ConcreteProductA {
-+ operation() : void
-}
-
-class ConcreteProductB {
-+ operation() : void
-}
-
-class Factory {
-+ createProduct() = 0 : virtual Product 
-}
-
-class ConcreteFactoryA {
-+ createProduct() : Product
-}
-
-class ConcreteFactoryB {
-+ createProduct() : Product
-}
-
-Product <|-- ConcreteProductA
-Product <|-- ConcreteProductB
-
-Factory <|-- ConcreteFactoryA
-Factory <|-- ConcreteFactoryB
-
-ConcreteFactoryA ..> ConcreteProductA
-ConcreteFactoryB ..> ConcreteProductB
-```
 ```C++
 // By yongcong.wang @ 30/07/2019
 #include <iostream>
@@ -687,61 +535,6 @@ ConcreteProductB called!
 
 ## Abstract Factory
 `Abstract Factory` improves the ablility of production of factory child, it provides methods for client. You can create multiple production objects via those methods.
-
-```puml
-class Factory {
-+ createProductA() = 0 : virtual ProductA
-+ createProductB() = 0 : virtual ProductB
-}
-
-class ConcreteFactoryA {
-+ createProductA() : ProductA
-+ createProductB() : ProductB
-}
-
-class ConcreteFactoryB {
-+ createProductA() : ProductA
-+ createProductB() : ProductB
-}
-
-class ProductA {
-+ operation() = 0 : virtual void
-}
-
-class ConcreteProductAa {
-+ operation() : void
-}
-
-class ConcreteProductAb {
-+ operation() : void
-}
-
-class ProductB {
-+ operation() = 0 : virtual void
-}
-
-class ConcreteProductBa {
-+ operation() : void
-}
-
-class ConcreteProductBb {
-+ operation() : void
-}
-
-Factory <|-- ConcreteFactoryA
-Factory <|-- ConcreteFactoryB
-
-ProductA <|-- ConcreteProductAa
-ProductA <|-- ConcreteProductAb
-ProductB <|-- ConcreteProductBa
-ProductB <|-- ConcreteProductBb
-
-ConcreteFactoryA ..> ConcreteProductAa
-ConcreteFactoryA ..> ConcreteProductBa
-
-ConcreteFactoryB ..> ConcreteProductAb
-ConcreteFactoryB ..> ConcreteProductBb
-
-```
+![abstract factory](https://github.com/yongcongwang/drawio/blob/master/blog/abstract_factory.png?raw=true)
 
 # Singleton Pattern
