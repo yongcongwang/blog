@@ -219,3 +219,78 @@ h_{\Theta}(x) =
 0
 \end{bmatrix}
 $$
+
+# Cost Function
+Let's define a few variables that we will need to use:
+- $L$: total number of layers int the network;
+- $s_{l}$: number of units(not counting bias unit) in layer $l$;
+- $K$: number of output units/classes.
+
+In neural networks, we may have many output nodes, we donate $h_{\Theta}(x)\_{k}$ as being a hypothesis that results in the $k^{th}$ output.
+Our cost function for neural networks is going to be a generalization of the one we used for logistic function. Recall that the cost function for regularized logistic regression was:
+$$
+J(\Theta) = -\frac{1}{m}\sum_{i=1}^{m}[y^{(i)}log(h_{\theta}(x^{(i)})) + (1 - y^{(i)})log(1 - h_{\theta}(x^{(i)}))] + \frac{\lambda}{2m} \sum_{j=1}^{n}\theta_{j}^{2}
+$$
+
+For neural networks, it is going to be silightly more complicated:
+$$
+J(\Theta) = -\frac{1}{m}\sum_{i=1}^{m}\sum_{k=1}^{K}[y_{k}^{(i)}log(h_{\Theta}(x^{(i)})\_k) + (1-y_{k}^{(i)})log(1 - (h_{\Theta}(x^{(i)})\_k)] + \frac{\lambda}{2m}\sum_{l=1}^{L-1}\sum_{i=1}^{s_{l}}\sum_{j=1}^{s_{l+1}}(\Theta_{j,i}^{(l)})^{2}
+$$
+We have added a few nested summations to account for our multiple output nodes. In the first part of the equation, before the square brackets, we have an additional nested summation that loops through the number of output nodes.
+In the regularization part, after the square brackets, we must account for multiple theta matrices. The number of colums in our current theta matrix is equal to the number of nodes in our current layer(including the bias unit). The number of rows in our current theta matrix is equal to the nubmer of node in the next layer(excluding the bias unit). As before with logistic regression, we suqare every term.
+
+## Backpropagation Algorithm
+"BackPropagation" is neural-network terminology for minimizing our cost function, just like what we were doing with gradient descent in logistic and linear regression. Our goal is to compute:
+$$
+\min_{\Theta}J(\Theta)
+$$
+
+That is, we want to minimize our cost function $J$ using an optimal set of parameters in $\Theta$. In this section we'll look at the equations we used to compute the partial derivative of $J(\Theta)$:
+$$
+\frac{\partial}{\partial\Theta_{i,j}^{(l)}}J(\Theta)
+$$
+
+To do so:
+1. Given training set ${(x^{(1), y^{(1)}}) \cdots (x^{(m)}, y^{(m)})}$,
+ - Set $\Delta_{i, j}^{(l)} := 0$ for all $(l, i, j)$(hence you end up having a matrix full of zeros)
+2. For training example $t = 1 \to m$:
+ 1. Set $a^{(1)} := x^{(t)}$
+ 2. Perform `forward propagation` to compute $a^{(l)}$ for $l=2,3,\cdots,L$
+ ![forward propagation](https://github.com/yongcongwang/drawio/blob/master/blog/2020/forward_propagation.png?raw=true)
+ $$
+ \begin{array}{lcl}
+ a^{(1)} & = & x \\\\
+ z^{(2)} & = & \Theta^{(1)}a^{(1)} \\\\
+ a^{(2)} & = & g(z^{(2)}) \quad (add \quad a_{0}^{(2)}) \\\\
+ z^{(3)} & = & \Theta^{(2)}a^{(2)} \\\\
+ a^{(3)} & = & g(z^{(3)}) \quad (add \quad a_{0}^{(3)}) \\\\
+ z^{(4)} & = & \Theta^{(3)}a^{(3)} \\\\
+ a^{(4)} & = & h_{\Theta}(x) = g(z^{(4)}) \\\\
+ \end{array}
+ $$
+ 3. Using $y^{(t)}$ to compute $\delta^{(L)} = a^{(L)} - y^{(t)}$.
+ - Where $L$ is our total number of layers and $a^{(L)}$ is the vector of outputs of the activation units for the last layer. So our "error values" for the last layer are simply the differences of our actual results in the last layer and the correct outputs in $y$. To get the $\delta$ values of the layers before the last layer, we can use an equation that steps us back from right to left.
+ 4. Computing $\delta^{(L-1)},\delta^{(L-2)},\cdots,\delta^{(2)}$ using
+ $$
+ \delta^{(l)}=((\Theta^{(l)})^{T}\delta^{(l+1)}).\*a^{(l)}.\*(1-a^{(l)})
+ $$
+ We then element-wise multiple that with a function called $g'$ which is the derivative of the activation function $g$ evaluated with the input values given by $z^{(l)}$:
+ $$
+ g'(z^{(l)}) = a^{(l)}.\*(1-a^{(l)})
+ $$
+ 5. $\Delta_{i,j}^{(l)} := \Delta_{i,j}^{(l)} + a_{j}^{(l)}\delta_{i}^{(l+1)}$ or with vectorization:
+ $$
+ \Delta^{(1)} := \Delta^{(l)} + \delta^{(l)} + \delta^{(l+1)}(a^{(l)})^T
+ $$
+ Hence we update our new $\Delta$ matrix:
+ $$
+ D_{i,j}^{(l)} =
+ \begin{cases}
+ \frac{1}{m}(\Delta_{i,j}^{(l)} + \lambda\Theta_{i,j}^{(l)}), & if \quad j \ne 0 \\\\
+ \frac{1}{m}\Delta_{i,j}^{(l)} & if \quad j \ne 0
+ \end{cases}
+ $$
+ The $\Delta$ matrix $D$ is used as an "accumulator" to add up our values as we go along and eventually compute our partial derivative. Thus we get:
+ $$
+ \frac{\partial}{\partial\Theta_{i,j}^{(l)}}J(\Theta) = D_{i,j}^{(l)}
+ $$
