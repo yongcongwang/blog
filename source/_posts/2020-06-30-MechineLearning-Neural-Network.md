@@ -186,7 +186,7 @@ $$
 h_{\Theta}(x) = a^{(3)}
 $$
 The neural networks is like this:
-![xnor](https://github.com/yongcongwang/drawio/blob/master/blog/2020/3layer_network.png?raw=true)
+![xnor](https://github.com/yongcongwang/images/blob/master/blog/2020/3layer_network.png?raw=true)
 
 ## Multiclass Classification
 To classify data into multiple classes, we let our hypothesis function return a vector of values. We still use the `One-vs-all` method.
@@ -256,7 +256,7 @@ To do so:
 2. For training example $t = 1 \to m$:
  1. Set $a^{(1)} := x^{(t)}$
  2. Perform `forward propagation` to compute $a^{(l)}$ for $l=2,3,\cdots,L$
- ![forward propagation](https://github.com/yongcongwang/drawio/blob/master/blog/2020/forward_propagation.png?raw=true)
+ ![forward propagation](https://github.com/yongcongwang/images/blob/master/blog/2020/forward_propagation.png?raw=true)
  $$
  \begin{array}{lcl}
  a^{(1)} & = & x \\\\
