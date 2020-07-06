@@ -11,7 +11,7 @@ tags:
 - Define a family of algorithms, encapsulate each one, and make them interchangeable. Strategy lets the algorithm vary independently from the clients that use it.
 - Capture the abstraction in an interface, bury implementation details in derived classes.
 <!-- more -->
-![strategy](https://raw.githubusercontent.com/yongcongwang/drawio/d61aba476dd49b0750f290467cfa5fc2e5da917b/blog/2019/strategy.svg)
+![strategy](https://raw.githubusercontent.com/yongcongwang/images/d61aba476dd49b0750f290467cfa5fc2e5da917b/blog/2019/strategy.svg)
 
 ```C++
 // By yongcong.wang @ 09/06/2019
@@ -104,7 +104,7 @@ StrategyB: exec()
 # Observer Pattern
 Observer pattern is used when there is one-to-many relationship between objects such as if one object is modified, its dependent objects are to be notified automatically.
 
-![observer](https://github.com/yongcongwang/drawio/blob/master/blog/2019/test.png?raw=true)
+![observer](https://github.com/yongcongwang/images/blob/master/blog/2019/test.png?raw=true)
 ```C++
 // By yongcong.wang @ 09/06/2019
 #include <iostream>
@@ -226,7 +226,7 @@ observer B heard
 Decorator pattern allows a user to add new functionality to an existing object without altering its structure. This type of design pattern comes under structural pattern as this pattern acts as a wrapper to existing class.
 This pattern creates a decorator class which wraps the original class and provides additional functionality keeping class methods signature inact;
 
-![decorator](https://github.com/yongcongwang/drawio/blob/master/blog/2019/decorator.png?raw=true)
+![decorator](https://github.com/yongcongwang/images/blob/master/blog/2019/decorator.png?raw=true)
 ```C++
 // By yongcong.wang @ 28/07/2019
 #include <iostream>
@@ -355,7 +355,7 @@ According to the type of problems, there are three kinds of `Factory Pattern`:
 ## Simple Factory
 Simple Factory defines a method to create an object. It voilates the `Open/close Principle(OCP)`
 
-![simple factory](https://github.com/yongcongwang/drawio/blob/master/blog/2019/simple_factory.png?raw=true)
+![simple factory](https://github.com/yongcongwang/images/blob/master/blog/2019/simple_factory.png?raw=true)
 ```C++
 // By yongcong.wang @ 30/07/2019
 #include <iostream>
@@ -436,7 +436,7 @@ ConcreteProductB called!
 ## Normal Factory
 Normal Factory not only encapsulates the creation of object but also put the creation of object into derived class. It only provides the method of creating objects, and the realization is in `ConcreteFactory`.
 Disadvantage: the addition of factory object will cause the increasing of classes.
-![normal facory](https://github.com/yongcongwang/drawio/blob/master/blog/2019/normal_factory.png?raw=true)
+![normal facory](https://github.com/yongcongwang/images/blob/master/blog/2019/normal_factory.png?raw=true)
 
 ```C++
 // By yongcong.wang @ 30/07/2019
@@ -536,6 +536,6 @@ ConcreteProductB called!
 
 ## Abstract Factory
 `Abstract Factory` improves the ablility of production of factory child, it provides methods for client. You can create multiple production objects via those methods.
-![abstract factory](https://github.com/yongcongwang/drawio/blob/master/blog/2019/abstract_factory.png?raw=true)
+![abstract factory](https://github.com/yongcongwang/images/blob/master/blog/2019/abstract_factory.png?raw=true)
 
 # Singleton Pattern
