@@ -13,7 +13,7 @@ date: 2020-07-07 00:19:44
 <!-- more -->
 
 ## solution
-```
+```C++
 std::pair<int, int> SumNumbers(const std::vector<int>& arr, const int num) {
   if (arr.empty()) {
     return {0, 0};
