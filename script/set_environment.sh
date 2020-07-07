@@ -13,8 +13,9 @@ curl -sL https://deb.nodesource.com/setup_11.x | sudo -E bash -
 sudo apt-get install -y nodejs
 
 # hexo
+sudo apt install npm
 sudo npm install -g hexo-cli
-sudo npm install hexo --save
+sudo npm install
 
 # theme
 THEME_NEXT_DIR=${REPO_DIR}/themes/next
