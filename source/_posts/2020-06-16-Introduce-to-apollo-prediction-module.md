@@ -58,8 +58,7 @@ Container stores structured data from subscribed channels. Current supported inp
 The architecture of the **container** is as below. The class `Container` defines the interface of all containers and it can't be realized because it has a pure virtual function `Insert`. `PoseContainer`, `ADCTrajectoryContainer` and  `ObstacleContainer` are derived from `Container` and realize the `Insert` function.
 The `ContainerManager` class **has** many containers. It generates all three types of contianer and stores them in an unordered map to speed up the search process.
 I just list some important methods of the class here, for more functions and their description, you can read the documents generated from `doxygen`.
-
-![container](/images/2020-06-16-Introduce-to-apollo-prediction-module/container.png)
+![container](https://github.com/yongcongwang/images/blob/master/blog/2020/prediction/container.png?raw=true)
 
 Current container contains:
 - PoseContainer
@@ -286,8 +285,7 @@ The architecture of `Scenario` is as below:
 The `ScenarioManager` class **depends on** `FeatureExtractor` to generate environment features and **depends on** `ScenarioAnalyzer` to analyze current scenario. If necessary, `ScenarioManager` will set obstacls' priorities as:
 - IGNORE, if the obstacle is no need to consider;
 - NORMAL, if the obstacle needs to be considered.
-
-![priority](/images/2020-06-16-Introduce-to-apollo-prediction-module/priority.png)
+![priority](https://github.com/yongcongwang/images/blob/master/blog/2020/prediction/priority.png?raw=true)
 
 The obstacle is set to `NORMAL` if the obstacle is:
 - `in scan area`, the scan arear is a rectanglar in front of ego vehicle with the length($80$ in program) and width($12$ in program), for example, the obstacle with id of 5 is in scan area but 6 not;
