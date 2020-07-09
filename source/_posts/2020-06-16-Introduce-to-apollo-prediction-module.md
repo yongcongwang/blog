@@ -267,7 +267,34 @@ And the other 40 features are lane features, we choose 10 points from the refere
 The output $\widehat{y}$ is the probability that an obstacle stays on a lane.
 
 #### CruiseMLPEvaluator
-TODO
+The model has $23 + 5 * 9 + 8 + 20 * 4 = 146$ inputs, $23$ of which are obstacle features:
+- $\theta_{filter}$, the average of the latest 5 heading values in an obstacle's history;
+- $\theta_{mean}$, the average of all the heading values in an obstacle's history;
+- $\theta_{filter} - \theta_{mean}$;
+- $\theta_{diff} = \theta_{curr} - \theta_{prev}$, where $\theta_{curr}$ is the average of the latest $0 \to 4$ heading values in an obstacle's history, $\theta_{prev}$ is the average of the latest $5 \to 9$ heading values;
+- $\theta_{diff}'$, $\theta_{diff}' = \frac{\theta_{diff}}{\Delta_t} $;
+- $l_{filter}$, the average of the latest 5 lateral distance values in an obstacle's history;
+- $l_{mean}$, the average of all the lateral distance values in an obstacle's history;
+- $l_{filter} - l_{mean}$;
+- $l_{diff} = l_{curr} - l_{prev}$, where $l_{curr}$ is the average of the latest $0 \to 4$ lateral distance values in an obstacle's history, $l_{prev}$ is the average of the latest $5 \to 9$ lateral distance values;
+- $v$, the velocity of the obstacle;
+- $a$, the acceleration of the obstacle;
+- $j$, the jerk of the obstacle;
+- $D_{lb}$, the distance from obstacle to left lane boundary;
+- $D_{lb}' = \frac{D_{first} - D_{last}}{dt}$, where $D_{first}$ is the first $D_{lb}$ of the history, $D_{last}$ is the last $D_{lb}$ of the history, $dt$ is the duration of the history;
+- $D_{lb diff}' = D_{lb curr} - D_{lb prev}$, where $D_{lb curr}$ is the average of the latest $0 \to 4$ $D_{lb}$ values in an obstacle's history, $D_{lb prev}$ is the average of the latest $5 \to 9$ $D_{lb}$ values;
+- $D_{rb}$, the distance from obstacle to right lane boundary;
+- $D_{rb}' = \frac{D_{first} - D_{last}}{dt}$, where $D_{first}$ is the first $D_{rb}$ of the history, $D_{last}$ is the last $D_{rb}$ of the history, $dt$ is the duration of the history;
+- $D_{rb diff}' = D_{rb curr} - D_{rb prev}$, where $D_{rb curr}$ is the average of the latest $0 \to 4$ $D_{rb}$ values in an obstacle's history, $D_{rb prev}$ is the average of the latest $5 \to 9$ $D_{rb}$ values;
+- `is_curr_lane_no_turn`, this value is $1$ if current lane is `NoTurn`, or it's $0$;
+- `is_curr_lane_left_turn`, this value is $1$ if current lane is `LeftTurn`, or it's $0$;
+- `is_curr_lane_right_turn`, this value is $1$ if current lane is `RightTurn`, or it's $0$;
+- `is_curr_lane_uturn`, this value is $1$ if current lane is `UTurn`, or it's $0$.
+
+And $5 * 9$ features are history features, we search $5$ frames of history, each frame has $9$ fearures:
+- `is_curr_frame_has_hisotry`, the value is $1$ if current frame and previous frame all have position/velocity/acceleration/velocity_heading information, otherwise it's $0$;
+- 
+
 
 #### JunctionMLPEvaluator
 TODO
