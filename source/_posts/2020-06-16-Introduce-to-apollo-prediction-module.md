@@ -267,6 +267,8 @@ And the other 40 features are lane features, we choose 10 points from the refere
 The output $\widehat{y}$ is the probability that an obstacle stays on a lane.
 
 #### CruiseMLPEvaluator
+![cruise mlp](https://github.com/yongcongwang/images/blob/master/blog/2020/prediction/cruise_mlp.png?raw=true)
+
 The model has $23 + 5 * 9 + 8 + 20 * 4 = 146$ inputs, $23$ of which are obstacle features:
 - $\theta_{filter}$, the average of the latest 5 heading values in an obstacle's history;
 - $\theta_{mean}$, the average of all the heading values in an obstacle's history;
