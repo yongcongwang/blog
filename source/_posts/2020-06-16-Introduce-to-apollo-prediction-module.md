@@ -192,7 +192,7 @@ Otherwise the priority of the obstacle is `IGNORE`.
 The `Evaluator` predicts path and speed separately for any given obstacle. An evaluator evaluates a path by outputting a probability for it (lanesequence) using the given model stored in `prediction/data/`.
 
 Now in `prediction`, the `Evaluator` for `Cyclist` are:
-- `CyclistKeepLaneEvaluator`: ;
+- `CyclistKeepLaneEvaluator`;
 
 and the `Evaluator` for `Vehicle` are:
 - `CostEvaluator`: probability is calculated by a set of cost functions;
