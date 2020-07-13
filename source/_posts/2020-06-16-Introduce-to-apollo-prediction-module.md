@@ -1,5 +1,5 @@
 ---
-title: Introduce to apollo prediction module
+title: Introduce to Apollo Prediction Module
 categories: algorithm
 tags:
   - apollo
@@ -267,6 +267,8 @@ And the other 40 features are lane features, we choose 10 points from the refere
 The output $\widehat{y}$ is the probability that an obstacle stays on a lane.
 
 #### CruiseMLPEvaluator
+![cruise mlp](https://github.com/yongcongwang/images/blob/master/blog/2020/prediction/cruise_mlp.png?raw=true)
+
 The model has $23 + 5 * 9 + 8 + 20 * 4 = 146$ inputs, $23$ of which are obstacle features:
 - $\theta_{filter}$, the average of the latest 5 heading values in an obstacle's history;
 - $\theta_{mean}$, the average of all the heading values in an obstacle's history;
@@ -291,13 +293,55 @@ The model has $23 + 5 * 9 + 8 + 20 * 4 = 146$ inputs, $23$ of which are obstacle
 - `is_curr_lane_right_turn`, this value is $1$ if current lane is `RightTurn`, or it's $0$;
 - `is_curr_lane_uturn`, this value is $1$ if current lane is `UTurn`, or it's $0$.
 
-And $5 * 9$ features are history features, we search $5$ frames of history, each frame has $9$ fearures:
+And $5 * 9$ features are obstacle history features, we search $5$ frames of history, each frame has $9$ fearures:
 - `is_curr_frame_has_hisotry`, the value is $1$ if current frame and previous frame all have position/velocity/acceleration/velocity_heading information, otherwise it's $0$;
-- 
+- $x$, in local coordinate system;
+- $y$, in local coordiante system;
+- $x^{\prime}$;
+- $y^{\prime}$;
+- $x^{\prime\prime}$;
+- $y^{\prime\prime}$;
+- $\theta_{v}$, the heading of velocity;
+- $\theta_{v}^{\prime}$.
 
+$8$ features are for forward and backward obstacles:
+- $s_{forward}$, the forward obstacle's distance;
+- $l_{forward}$, the forward obstacle's lateral distance;
+- $L_{forward}$, the forward obstacle's length;
+- $v_{forward}$, the forward obstacle's velocity;
+- $s_{backward}$, the backward obstacle's distance;
+- $l_{backward}$, the backward obstacle's lateral distance;
+- $L_{backward}$, the backward obstacle's length;
+- $v_{backward}$, the backward obstacle's velocity;
+
+And the other $20 * 4$ features are lane features, we choose $20$ points from the reference line, each of them has 4 features:
+- $s_{point}$, the lane point's distance;
+- $l_{point}$, the lane point's lateral distance;
+- $\psi_{point}$: the heading of the lane point;
+- $\kappa_{point}$: the curvature of the lane point.
+
+The result of `CruiseMLPEvaluator` is:
+- the probability of an obstacle on a lane;
+- the time of an obstacle to travel to reference line.
 
 #### JunctionMLPEvaluator
-TODO
+![junction_mlp](https://github.com/yongcongwang/images/blob/master/blog/2020/prediction/junction_mlp.png?raw=true)
+
+This model has 3 obstacle features:
+- $v$, the velocity of an obstacle;
+- $a$, the acceleration of an obstacle;
+- $S_{junction}$, the area of the junction.
+
+The other $12 * 5$ features are junction features. We divide area aroud the vehicle to 12 regions and calculate the probability of each exit.
+![junction](https://github.com/yongcongwang/images/blob/master/blog/2020/prediction/junction.png?raw=true)
+Each exit has 5 features:
+- `is_exit_exist`, it's 1 if the exit of junction exists;
+- $x_{diff} / S_{junction}$, $x_{diff}$ is the deviation between obstacle and exit in x direction;
+- $y_{diff} / S_{junction}$, $y_{diff}$ is the deviation between obstacle and exit in y direction;
+- $L_{diff} / S_{junction}$, $L_{diff}$ is the distance between obstacle and exit;
+- $\theta_{diff}$, the heading difference between obstacle and exit.
+
+And the output of the model is the probability of an obstacle to exit in 12 directions.
 
 #### CostEvaluator
 `CostEvaluator` calculates the probability based on the distance between obstacle and lane boundary.
