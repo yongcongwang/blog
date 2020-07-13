@@ -487,7 +487,7 @@ This trajectory is the same as LaneSequencePredictor
 ##### Lane sequence trajectory using best trajectory selection
 This trajectory traverses all the time to reach the end point and selects the best trajectory that has the minimum cost.
 1. Generate a list of time to reach the end.
-In program, we use the method `GenerateCandidateTimes` with the time gap of $0.5$ and end time $8.0$ to generate a sample time list: `{0, 0.5, 1, 1.5, ..., 7.5, 8.0}`.
+In program, we use the method `GenerateCandidateTimes` with the time gap of $0.5$ and end time $8.0$ to generate a sample time list: `{0.5, 1, 1.5, ..., 7.5, 8.0}`.
 2. Calculate the 5th degree polynomial of lateral ditance with each end time.
 Since we have known the start state:
 $$
