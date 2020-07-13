@@ -127,7 +127,7 @@ $$
 In the equation:
 - $K_{v}$ is the sensibility of speed;
 - $n$ is the history size of an obstacle;
-- $k_{std}$ is the position standard deviation of an obstacle, it's $1.0$(obstacle) or $0.5$(other) in program;
+- $k_{std}$ is the position standard deviation of an obstacle, it's $1.0$(vehicle) or $0.5$(other) in program;
 - $d_{t}$ is the duration of the history.
 
 Nextly, we calculate the distance:
@@ -235,7 +235,7 @@ In equation,
 This `Evaluator` uses a MLP(Multilayer Perceptron):
 ![mlp](https://github.com/yongcongwang/images/blob/master/blog/2020/prediction/mlp.png?raw=true)
 
-The model has $62$ inputs, $22$ of which are obstacle features:
+The model has $62$ inputs, $22$ of which are `obstacle features`:
 - $\theta_{filter}$, the average of the latest 5 heading values in an obstacle's history;
 - $\theta_{mean}$, the average of all the heading values in an obstacle's history;
 - $\theta_{filter} - \theta_{mean}$;
@@ -258,7 +258,7 @@ The model has $62$ inputs, $22$ of which are obstacle features:
 - `is_curr_lane_right_turn`, this value is $1$ if current lane is `RightTurn`, or it's $0$;
 - `is_curr_lane_uturn`, this value is $1$ if current lane is `UTurn`, or it's $0$.
 
-And the other 40 features are lane features, we choose 10 points from the reference line, each of them has 4 features:
+And the other 40 features are `lane features`, we choose 10 points from the reference line, each of them has 4 features:
 - $\psi_{diff}$: the heading deviation between obstacle and reference line;
 - $l_{point}$: the lateral distance of the lane point;
 - $\psi_{point}$: the heading of the lane point;
@@ -269,7 +269,7 @@ The output $\widehat{y}$ is the probability that an obstacle stays on a lane.
 #### CruiseMLPEvaluator
 ![cruise mlp](https://github.com/yongcongwang/images/blob/master/blog/2020/prediction/cruise_mlp.png?raw=true)
 
-The model has $23 + 5 * 9 + 8 + 20 * 4 = 146$ inputs, $23$ of which are obstacle features:
+The model has $23 + 5 * 9 + 8 + 20 * 4 = 146$ inputs, $23$ of which are `obstacle features`:
 - $\theta_{filter}$, the average of the latest 5 heading values in an obstacle's history;
 - $\theta_{mean}$, the average of all the heading values in an obstacle's history;
 - $\theta_{filter} - \theta_{mean}$;
@@ -293,7 +293,7 @@ The model has $23 + 5 * 9 + 8 + 20 * 4 = 146$ inputs, $23$ of which are obstacle
 - `is_curr_lane_right_turn`, this value is $1$ if current lane is `RightTurn`, or it's $0$;
 - `is_curr_lane_uturn`, this value is $1$ if current lane is `UTurn`, or it's $0$.
 
-And $5 * 9$ features are obstacle history features, we search $5$ frames of history, each frame has $9$ fearures:
+And $5 * 9$ features are `obstacle history features`, we search $5$ frames of history, each frame has $9$ fearures:
 - `is_curr_frame_has_hisotry`, the value is $1$ if current frame and previous frame all have position/velocity/acceleration/velocity_heading information, otherwise it's $0$;
 - $x$, in local coordinate system;
 - $y$, in local coordiante system;
@@ -304,7 +304,7 @@ And $5 * 9$ features are obstacle history features, we search $5$ frames of hist
 - $\theta_{v}$, the heading of velocity;
 - $\theta_{v}^{\prime}$.
 
-$8$ features are for forward and backward obstacles:
+$8$ features are for `forward and backward obstacles`:
 - $s_{forward}$, the forward obstacle's distance;
 - $l_{forward}$, the forward obstacle's lateral distance;
 - $L_{forward}$, the forward obstacle's length;
@@ -314,7 +314,7 @@ $8$ features are for forward and backward obstacles:
 - $L_{backward}$, the backward obstacle's length;
 - $v_{backward}$, the backward obstacle's velocity;
 
-And the other $20 * 4$ features are lane features, we choose $20$ points from the reference line, each of them has 4 features:
+And the other $20 * 4$ features are `lane features`, we choose $20$ points from the reference line, each of them has 4 features:
 - $s_{point}$, the lane point's distance;
 - $l_{point}$, the lane point's lateral distance;
 - $\psi_{point}$: the heading of the lane point;
@@ -327,12 +327,12 @@ The result of `CruiseMLPEvaluator` is:
 #### JunctionMLPEvaluator
 ![junction_mlp](https://github.com/yongcongwang/images/blob/master/blog/2020/prediction/junction_mlp.png?raw=true)
 
-This model has 3 obstacle features:
+This model has 3 `obstacle features`:
 - $v$, the velocity of an obstacle;
 - $a$, the acceleration of an obstacle;
 - $S_{junction}$, the area of the junction.
 
-The other $12 * 5$ features are junction features. We divide area aroud the vehicle to 12 regions and calculate the probability of each exit.
+The other $12 * 5$ features are `junction features`. We divide area aroud the vehicle to 12 regions and calculate the probability of each exit.
 ![junction](https://github.com/yongcongwang/images/blob/master/blog/2020/prediction/junction.png?raw=true)
 Each exit has 5 features:
 - `is_exit_exist`, it's 1 if the exit of junction exists;
