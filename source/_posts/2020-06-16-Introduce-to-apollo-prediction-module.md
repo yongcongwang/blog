@@ -142,7 +142,7 @@ In the equation:
 - $D_{std}$ is the standard distance of obstacle.
 
 Now we can determine the obstacle is:
-- still, if $v < v_{threshold}$($v$ is current speed, $v_{threshold}$ is the threshold of speed, it's $0.8$(obstacle) or $0.5$(other) in program);
+- still, if $v < v_{threshold}$($v$ is current speed, $v_{threshold}$ is the threshold of speed, it's $0.8$(vehicle) or $0.5$(other) in program);
 - not still, if $v > v_{threshold}$ and $K_{v} < v_{threshold}$;
 - not still, if $v > v_{threshold}$ and $K_{v} > v_{threshold}$ and $D > 2.0 * D_{std}$;
 - still, if $v > v_{threshold}$ and $K_{v} > v_{threshold}$ and $D < 2.0 * D_{std}$;
