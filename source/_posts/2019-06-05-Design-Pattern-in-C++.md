@@ -1,5 +1,5 @@
 ---
-title: Design Patterns in C++
+title: Some Design Patterns in C++
 date: 2019-06-05 20:44:42
 categories: coding
 tags:
