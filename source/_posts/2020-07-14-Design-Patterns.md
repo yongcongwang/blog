@@ -46,15 +46,41 @@ Receive Order -> Arrange Time -> Transportation
 
 After a while, your app becomes pretty popular. Now you can also receive requests from sea transportation, you have to add the `Ship` class to your app. 
 
-But at present most of your code is coupled to the `Truck`
+But at present most of your code is coupled to the `Truck` class. Adding `Ship` into the app would require making changes to the entire codebase. Moreover, if later you decide to add another type of transportation to the app, you will probably need to make all of these changes again.
 
 #### Structure
+![factory](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/factory.png?raw=true)
 
 #### Advantage
+- You avoid tight coupling between the creator and the concrete products.
+- `Single Responsiblity Principle`. You can move the product creation code into one place in the program, making the code easier to support.
+- `Open/Close Principle`. You can introduce new types of products into the program without breaking existing client code.
 
 #### Disadvantage
+- The code may become more complicated since you need to introduce a lot of new subclasses to implement the pattern. The best case scenario is when you're introducing the pattern into an existing hierarchy of creator classes.
 
 ### Abstract Factory
+Abstract Factory is a creational design pattern that lets you produce families of related objects without specifying their concrete classes.
+
+#### Problem
+Imagine you're creating a furniture shop. Your code consists of classes that represents:
+1. A family of related products: `Chair` + `Sofa` + `CoffeeTable`.
+2. Several variants of this family. For example, products `Chair` + `Sofa` + `CoffeeTable` are available in these variant: `Modern` + `Victorian` + `ArtDeco`.
+
+You need a way to create individual furniture objects so that they match other objects of the same family.
+Also, you don't want to change existing code when adding new products or families of products to the program. Furniture vendors update their catalogs often, and you wouldn't want to change the core code each time it happens.
+
+#### Architecture
+![abstract_factory](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/abstract_factory.png?raw=true)
+
+#### Advantage
+- You can be sure that the products you're getting from a factory are compatible with each other.
+- You avoid tight coupling between the creator and the concrete products.
+- `Single Responsiblity Principle`. You can move the product creation code into one place in the program, making the code easier to support.
+- `Open/Close Principle`. You can introduce new types of products into the program without breaking existing client code.
+
+#### Disadvantage
+- The code may become more complicated since you need to introduce a lot of new subclasses to implement the pattern. The best case scenario is when you're introducing the pattern into an existing hierarchy of creator classes.
 
 ### Builder
 
