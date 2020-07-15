@@ -97,10 +97,56 @@ Another approach that doesn't involve breeding subclasses. You can create a gian
 #### Structure
 ![builder](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/builder.png?raw=true)
 
+#### Advantage
+- You can construct objects step-by-step, defer construction steps or run steps recursively.
+- You can reuse the same construction code when building various representations of products.
+- `Single Responsibility Principle`. You can isolate complex construction code from the business logic of the product.
+
+#### Disadvantage
+- The overall complexity of the code increases since the pattern requires creating multiple new classes.
 
 ### Prototype
+Prototype is a creational design pattern that lets you copy existing objects without making your code dependent on their classes.
+
+#### Problem
+Say you have an object, and you want to create an exact copy of it. How would you do it? First, you have to create a new object of the same class. Then you have to go through all the fields of the original object and copy their values over to the new object.
+But problem occurs:
+- Not all objects can be copied that way because some of the object's fields may be private and not visible from outside of the objects itself.
+- You have to know the object's class to create a duplicate, your code becomes dependent on that class.
+
+#### Structure
+![prototype](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/prototype.png?raw=true)
+
+#### Advantage
+- You can clone objects without coupling to their concrete classes.
+- You can get rid of repeated initialization code in favor of cloning pre-built prototypes.
+- You can produce complex objects more conveniently.
+- You get an alternative to inheritance when dealing with configuration presets for complex objects.
+
+#### Disadvantage
+- Cloning complex objects that have circular references might be very tricky.
 
 ### Singleton
+Signleton is a creational design pattern that lets you ensure a class has only one instance, while providing a global access point to this instance.
+
+#### Problem
+The Singleton pattern solves two problems at the same time, violating the `Single Responsibility Principle`:
+- Ensure that a class has just a single instance.
+- Provide a global access point to that instance.
+
+#### Structure
+![singleton](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/singleton.png?raw=true)
+
+#### Advantage
+- You can be sure that a class has only a single instance.
+- You gain a global access point to that instance.
+- The singleton object is initialized only when it's requested for the first time.
+
+#### Disadvantage
+- Violates the `Single Responsibility Principle`. The pattern solves two problems at the time.
+- The Singleton pattern can mask bad design, for instance, when components of the program know too much about each other.
+- The pattern requires special treatment in a multithreaded environment so that multiple threads won't create a singleton object several times.
+- It may be difficult to unit test the client code of the Singleton because many test frameworks rely on inheritance when producing mock objects. Since the constructor of the singleton class is private and override static methods is impossible in most languages, you will need to think of a creative way to mock the singleton. Or just don't write the tests. Or don't use the Singleton pattern.
 
 ## Structural Pattern
 
@@ -139,3 +185,6 @@ Another approach that doesn't involve breeding subclasses. You can create a gian
 ### Template Method
 
 ### Visitor
+
+## Reference
+- [Design Patterns](https://refactoring.guru/design-patterns)
