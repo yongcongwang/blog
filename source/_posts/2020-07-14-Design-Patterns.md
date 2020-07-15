@@ -83,6 +83,20 @@ Also, you don't want to change existing code when adding new products or familie
 - The code may become more complicated since you need to introduce a lot of new subclasses to implement the pattern. The best case scenario is when you're introducing the pattern into an existing hierarchy of creator classes.
 
 ### Builder
+Builder is a creational design pattern that lets you construct complex objects step by step. The pattern allows you to produce different types and representations of an object using the same construction.
+
+#### Problem
+Imagine a complex object that requires laborous, step-by-step initialization of many fields and nested objects. Such initialization code is usually buried inside a monstrous constructor with lots of parameters. Or even worse: scattered all over the client code.
+
+For example, you have a class `House`. To build a simple house you need to construct four walls and a floor, install a door, fit a pair of windows and build a proof. But what if you want a bigger, brighter house with a backyard and other goodies?
+
+The simplest way is to extend the base class `House` and create a set of subclasses to cover all combinations of the parameters. But enventually you'll end up with a considerable number of subclasses.
+
+Another approach that doesn't involve breeding subclasses. You can create a giant constructor right in the base `House` with all possible parameters that control the house object. The problem of this approach is that in most cases most of the parameters will be unused, making the constructor calls pretty ugly.
+
+#### Structure
+![builder](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/builder.png?raw=true)
+
 
 ### Prototype
 
