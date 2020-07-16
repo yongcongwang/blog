@@ -193,8 +193,46 @@ Adding new shape types and colors to the hierarchy will grow it exponentially.
 - You might make the code more complicated by applying the pattern to a highly cohesive class.
 
 ## Composite
+Composite lets you compose objects into tree structures and then work with these structures as if they were individual objects.
 
-## Decrator
+### Problem
+Using the Composite pattern makes sense only when the core model of your app can be represented as a tree.
+For example, imagine that you have two types of objects: `Products` and `Boxes`. A `Box` can contain several `Products` as well as a number of smaller `Boxes`. The little `Boxes` can also hold some `Products` or even smaller `Boxes`, and so on.
+
+Say you want to travel all over the `Products`, you could try direct approach: unwrap all the boxes and then calculate the total, but it's not a simple problem.
+![boxes](https://refactoring.guru/images/patterns/diagrams/composite/problem-en.png)
+
+### Structure
+![composite](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/composite.png?raw=true)
+
+### Advantage
+- You can work with complex tree structures more conveniently: use polymorphism and recursion to your advantage.
+- `Open/Close Principle`.
+
+### Disadvantage
+- It might be difficult to provide a common interface for classes whose functionality differs too much. In certain scenarios, you'd need to overgeneralize the component interface, making it harder to comprehend.
+
+## Decrator(Wrapper)
+Decorator lets you attach new behaviors to objects by placing these objects inside special wrapper objects that contain the behavior.
+
+### Problem
+Imagine you have a class `Notifier` and it can send message via emails. But latter another client class which uses this class is supposed to send messages in other ways, for example, sms message or slack message.
+You can extend the `Notifier` and add `sms` and `slack` methods, but what if we just want `email` and `slack`? What if we want some more methods?
+You have to find some other way to structure notifications classes so that their number won't accidentally break some Guinness record.
+
+### Structure
+![decorator](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/decorator.png?raw=true)
+
+### Advantage
+- You can extand an object's behavior without making a new subclass.
+- You can add or remove resonsibilities from an object at runtime.
+- You can combine several behaviors by wrapping an object into multiple decorates.
+- `Single Responsibility Principle`.
+
+### Disadvantage
+- It's hard to remove a specific wrapper from the wrapper stack.
+- It's hard to implement a decorator in such a way that its behavior doesn't depend on the order in the decorators stack.
+- The initial configuration code of layers might look pretty ugly.
 
 ## Facade
 
