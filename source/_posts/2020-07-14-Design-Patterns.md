@@ -32,13 +32,13 @@ In addition, all patterns can be categorized by their `intent`, we cover three m
 - `Structural patterns`, explain how to assemble objects and classes into large structures, while keeping the structures flexible and efficient.
 - `Behavioral patterns`, take care of effective communication and the assignment of responsibilities between objects.
 
-## Creatinal Pattern
+# Creatinal Pattern
 Creational patterns provide various object creation mechanisms, which increase flexibility and reuse of existing code.
 
-### Factory Method
+## Factory Method
 `Factory Method` is a creational design pattern that provides an interface for creating objects in a superclass, but allows subclass to alter the type of objects that will be created.
 
-#### Problem
+### Problem
 Imagine you're creating a logistic management application. The first version of your app can only handle transportation by trucks, so the bulk of your code lives inside the `Truck` class. And you may have the process:
 ```
 Receive Order -> Arrange Time -> Transportation
@@ -48,21 +48,21 @@ After a while, your app becomes pretty popular. Now you can also receive request
 
 But at present most of your code is coupled to the `Truck` class. Adding `Ship` into the app would require making changes to the entire codebase. Moreover, if later you decide to add another type of transportation to the app, you will probably need to make all of these changes again.
 
-#### Structure
+### Structure
 ![factory](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/factory.png?raw=true)
 
-#### Advantage
+### Advantage
 - You avoid tight coupling between the creator and the concrete products.
 - `Single Responsiblity Principle`. You can move the product creation code into one place in the program, making the code easier to support.
 - `Open/Close Principle`. You can introduce new types of products into the program without breaking existing client code.
 
-#### Disadvantage
+### Disadvantage
 - The code may become more complicated since you need to introduce a lot of new subclasses to implement the pattern. The best case scenario is when you're introducing the pattern into an existing hierarchy of creator classes.
 
-### Abstract Factory
+## Abstract Factory
 Abstract Factory is a creational design pattern that lets you produce families of related objects without specifying their concrete classes.
 
-#### Problem
+### Problem
 Imagine you're creating a furniture shop. Your code consists of classes that represents:
 1. A family of related products: `Chair` + `Sofa` + `CoffeeTable`.
 2. Several variants of this family. For example, products `Chair` + `Sofa` + `CoffeeTable` are available in these variant: `Modern` + `Victorian` + `ArtDeco`.
@@ -70,22 +70,22 @@ Imagine you're creating a furniture shop. Your code consists of classes that rep
 You need a way to create individual furniture objects so that they match other objects of the same family.
 Also, you don't want to change existing code when adding new products or families of products to the program. Furniture vendors update their catalogs often, and you wouldn't want to change the core code each time it happens.
 
-#### Architecture
+### Architecture
 ![abstract_factory](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/abstract_factory.png?raw=true)
 
-#### Advantage
+### Advantage
 - You can be sure that the products you're getting from a factory are compatible with each other.
 - You avoid tight coupling between the creator and the concrete products.
 - `Single Responsiblity Principle`. You can move the product creation code into one place in the program, making the code easier to support.
 - `Open/Close Principle`. You can introduce new types of products into the program without breaking existing client code.
 
-#### Disadvantage
+### Disadvantage
 - The code may become more complicated since you need to introduce a lot of new subclasses to implement the pattern. The best case scenario is when you're introducing the pattern into an existing hierarchy of creator classes.
 
-### Builder
+## Builder
 Builder is a creational design pattern that lets you construct complex objects step by step. The pattern allows you to produce different types and representations of an object using the same construction.
 
-#### Problem
+### Problem
 Imagine a complex object that requires laborous, step-by-step initialization of many fields and nested objects. Such initialization code is usually buried inside a monstrous constructor with lots of parameters. Or even worse: scattered all over the client code.
 
 For example, you have a class `House`. To build a simple house you need to construct four walls and a floor, install a door, fit a pair of windows and build a proof. But what if you want a bigger, brighter house with a backyard and other goodies?
@@ -94,97 +94,135 @@ The simplest way is to extend the base class `House` and create a set of subclas
 
 Another approach that doesn't involve breeding subclasses. You can create a giant constructor right in the base `House` with all possible parameters that control the house object. The problem of this approach is that in most cases most of the parameters will be unused, making the constructor calls pretty ugly.
 
-#### Structure
+### Structure
 ![builder](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/builder.png?raw=true)
 
-#### Advantage
+### Advantage
 - You can construct objects step-by-step, defer construction steps or run steps recursively.
 - You can reuse the same construction code when building various representations of products.
 - `Single Responsibility Principle`. You can isolate complex construction code from the business logic of the product.
 
-#### Disadvantage
+### Disadvantage
 - The overall complexity of the code increases since the pattern requires creating multiple new classes.
 
-### Prototype
+## Prototype
 Prototype is a creational design pattern that lets you copy existing objects without making your code dependent on their classes.
 
-#### Problem
+### Problem
 Say you have an object, and you want to create an exact copy of it. How would you do it? First, you have to create a new object of the same class. Then you have to go through all the fields of the original object and copy their values over to the new object.
 But problem occurs:
 - Not all objects can be copied that way because some of the object's fields may be private and not visible from outside of the objects itself.
 - You have to know the object's class to create a duplicate, your code becomes dependent on that class.
 
-#### Structure
+### Structure
 ![prototype](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/prototype.png?raw=true)
 
-#### Advantage
+### Advantage
 - You can clone objects without coupling to their concrete classes.
 - You can get rid of repeated initialization code in favor of cloning pre-built prototypes.
 - You can produce complex objects more conveniently.
 - You get an alternative to inheritance when dealing with configuration presets for complex objects.
 
-#### Disadvantage
+### Disadvantage
 - Cloning complex objects that have circular references might be very tricky.
 
-### Singleton
+## Singleton
 Signleton is a creational design pattern that lets you ensure a class has only one instance, while providing a global access point to this instance.
 
-#### Problem
+### Problem
 The Singleton pattern solves two problems at the same time, violating the `Single Responsibility Principle`:
 - Ensure that a class has just a single instance.
 - Provide a global access point to that instance.
 
-#### Structure
+### Structure
 ![singleton](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/singleton.png?raw=true)
 
-#### Advantage
+### Advantage
 - You can be sure that a class has only a single instance.
 - You gain a global access point to that instance.
 - The singleton object is initialized only when it's requested for the first time.
 
-#### Disadvantage
+### Disadvantage
 - Violates the `Single Responsibility Principle`. The pattern solves two problems at the time.
 - The Singleton pattern can mask bad design, for instance, when components of the program know too much about each other.
 - The pattern requires special treatment in a multithreaded environment so that multiple threads won't create a singleton object several times.
 - It may be difficult to unit test the client code of the Singleton because many test frameworks rely on inheritance when producing mock objects. Since the constructor of the singleton class is private and override static methods is impossible in most languages, you will need to think of a creative way to mock the singleton. Or just don't write the tests. Or don't use the Singleton pattern.
 
-## Structural Pattern
+# Structural Pattern
+Structural patterns explain how to assemble objects and classes into larger structures while keeping these structures flexible and efficient.
 
-### Adapter
+## Adapter
+Adapter allows objects with incompatible interfaces to collaborate.
 
-### Bridge
+### Problem
+Imagine you're creating a stock market monitoring app. The app downloads the stock data from multiple sources in `xml` format and then displays nice-looking charts and diagrams for the user.
+At some point, you decide to improve the app by integrating a smart 3rd-party analytics library. But there's a catch: the analytics library only works with data in `json` format.
+You could change the library to work with `xml`. However, this might break some existing code that relies on the library. And worse, you might not have access to the library's source code in the first place, making this approach impossible.
 
-### Composite
+### Strucure
+![adapter](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/adapter.png?raw=true)
 
-### Decrator
+### Advantage
+- `Single Responsibility Principle`.
+- `Open/Close Principle`.
 
-### Facade
+### Disadvantage
+- The overall complexity of the code increases becuase you need to introduce a set of new interfaces and classes. Sometimes it's simpler just to change the service class so that it matches the rest of your code.
 
-### Flyweight
+## Bridge
+Bridge lets you split a large class or a set of closely related classes into two separate hierarchies: abstraction and implementation, which can be developed independently of each other.
 
-### Proxy
+### Problem
+Say you have a geometric `Shape` class with a pair of subclasses: 
+- `Circle`;
+- `Square`.
+You want to extend this class hierarchy to incorporate colors, so you plan to create `Red` and `Blue` shape subclasses. However, since you already have two subclasses, you'll need to create four classes combinations such as `BlueCircle` and `RedSquare`.
+![shape](https://refactoring.guru/images/patterns/diagrams/bridge/problem-en.png)
+Adding new shape types and colors to the hierarchy will grow it exponentially.
 
-## Behavioral Pattern
+### Structure
+![bridge](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/bridge.png?raw=true)
 
-### Chain of Responsibility
+### Advantage
+- You can create platform-independent classes and apps.
+- The client code works with high-level abstractions. It isn't exposed to the platform details.
+- `Open/Close Principle`.
+- `Single Responsibility Principle`.
 
-### Command
+### Disadvantage
+- You might make the code more complicated by applying the pattern to a highly cohesive class.
 
-### Iterator
+## Composite
 
-### Mediator
+## Decrator
 
-### Memento
+## Facade
 
-### Observer
+## Flyweight
 
-### State
+## Proxy
 
-### Strategy
+# Behavioral Pattern
 
-### Template Method
+## Chain of Responsibility
 
-### Visitor
+## Command
 
-## Reference
+## Iterator
+
+## Mediator
+
+## Memento
+
+## Observer
+
+## State
+
+## Strategy
+
+## Template Method
+
+## Visitor
+
+# Reference
 - [Design Patterns](https://refactoring.guru/design-patterns)
