@@ -1,5 +1,5 @@
 ---
-title: Design Patterns software
+title: Design Patterns
 mathjax: true
 comments: true
 categories:

@@ -1,5 +1,5 @@
 ---
-title: Deep Learning | Neural Network Basics algorithm
+title: Deep Learning | Neural Network Basics
 mathjax: true
 comments: true
 categories:

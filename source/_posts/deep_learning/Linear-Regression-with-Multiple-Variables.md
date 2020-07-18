@@ -1,5 +1,5 @@
 ---
-title: MechineLearning | Linear Regression with Multiple Variables algorithm
+title: MechineLearning | Linear Regression with Multiple Variables
 mathjax: true
 comments: true
 categories:

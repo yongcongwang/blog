@@ -1,5 +1,5 @@
 ---
-title: MechineLearning | Classification and Representation algorithm
+title: MechineLearning | Classification and Representation
 mathjax: true
 comments: true
 categories:

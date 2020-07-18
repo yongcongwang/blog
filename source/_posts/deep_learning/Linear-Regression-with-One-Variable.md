@@ -1,5 +1,5 @@
 ---
-title: MechineLearning | Linear Regression with One Variable algorithm
+title: MechineLearning | Linear Regression with One Variable
 mathjax: true
 comments: true
 categories:

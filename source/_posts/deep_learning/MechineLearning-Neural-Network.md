@@ -1,5 +1,5 @@
 ---
-title: MechineLearning | Neural Networks algorithm
+title: MechineLearning | Neural Networks
 mathjax: true
 comments: true
 categories:
