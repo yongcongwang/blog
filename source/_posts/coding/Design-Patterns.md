@@ -233,10 +233,61 @@ You have to find some other way to structure notifications classes so that their
 - The initial configuration code of layers might look pretty ugly.
 
 ## Facade
+Facade provides a simplified interface to a library, a framework, or any other complex set of classes.
+
+### Problem
+Image that you must make your code with a broad set of objects that belong to a sophisticated library of framework. Ordinarily, you'd need to initialize all of those objects, keep track of dependencies, execute methods in the correct order, and so on.
+
+As a result, the business logic of your classes would become tightly coupled to the implementation details of 3rd-party classes, making it hard to comprehend and maintain.
+
+### Structure
+![facade](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/facade.png?raw=true)
+
+### Advantage
+- You can isolate your code from the complexity of a subsystem.
+
+### Disadvantage
+- A facade can become a god object coupled to all classes of an app.
 
 ## Flyweight
+Flyweight lets you fit more objects into the available amount of RAM by sharing common parts of state between multiple objects instead of keeping all of the data in each objects.
+
+### Problem
+Say you decide to create a simple video game: players would be moving around a map and shooting each other. You choose to implement a realistic particle system, and make it a distinctive feature of the game.
+After its completion, you discovered the game uses too much RAM. The problem was related to your particle system. Each particle, such as a bullet, a missile or a piece of sharapnel was represented by a separate object containing plenty of data. At some point, when the carnage on a player's screen reached its climax, newly created particles no longer fit into the remaining RAM, so the program crashed.
+
+### Structure
+![flyweight](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/flyweight.png?raw=true)
+
+### Advantage
+- You can save lots of RAM, assuming your program has tons of similar objects.
+
+### Disadvantage
+- You might be trading RAM over CPU cycles when some of the context data needs to be recalculated each time somebody calls a flyweight method.
+- The code becomes more complicated. New team members will always be wondering why the state of an entity was separated in such a way.
 
 ## Proxy
+Proxy lets you provide a substitute or placeholder for another object. A proxy controls access to the original object, allowing you to perform something either before or after the request gets through to the original object.
+
+### Problem
+Why would you want to control access to an object? Here is an example: you have a massive object that consumes a vast amount of system resources. You need it from time to time, but not always.
+
+You would implement lazy initialization: create this object only when it's actually needed. All of the object's clients would need to execute some deferred initialization code. Unfortunately, this would probably cause a lot of code duplication.
+
+In an ideal world, we'd want to put this code directly into our object's class, but that isn't always possible. For instance, the class may be part of a closed 3rd-party library.
+
+### Structure
+![proxy](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/proxy.png?raw=true)
+
+### Advantage
+- You can control the service object without clients knowing about it.
+- You can manage the lifecycle of the service object when clients don't care about it.
+- The proxy works even if the service object isn't ready or is not available.
+- `Open/Close Principle`.
+
+### Disadvantage
+- The code may become more complicated since you need to introduce a lot of new classes.
+- The response from the service might get delayed.
 
 # Behavioral Pattern
 
