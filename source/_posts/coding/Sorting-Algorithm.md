@@ -13,72 +13,6 @@ To simplify matters, we will assume that the algorithms we describe will all be 
 3. the `>` and `<` operators exists, which can be used to place a consistant ordering on the input.
 Sorting under these conditions is known as comparision-based sorting.
 <!-- more -->
-## Visualization
-To show the sorting process more in detail, we can draw each step of the algorithm with a bar graph and then combine them to a `gif`. Firstly, I plot the figure while two elements comparing, the code is below(take bubblesort as an example):
-```python
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-# By yongcong.wang @ 30/09/2019
-import matplotlib.pyplot as plt
-import os
-
-
-class fig_plot:
-    def __init__(self):
-        self.fig_cnt = 0
-        self.figs = []
-
-    def plot(self, arr, red_list):
-        x = range(len(arr))
-        bar_list = plt.bar(x, arr, color='k', width=0.95)
-        plt.axis("off")
-        plt.title(str(self.fig_cnt))
-        for i, v in enumerate(arr):
-            plt.text(x[i] - 0.45, v + 0.5, str(v))
-        for index in red_list:
-            bar_list[index].set_color("r")
-        self.figs.append(plt.figure())
-        plt.clf()
-        self.fig_cnt += 1
-
-    def show(self, index):
-        self.figs[index].show()
-
-    def save_pngs_to_folder(self, folder):
-        path = "./" + folder
-        if not os.path.exists(path):
-            os.makedirs(path)
-        cnt = 0
-        for fig in self.figs:
-            fig.savefig(path + "/" + str(cnt) + ".png")
-            cnt += 1
-
-
-def bubblesort(arr):
-    for i in range(len(arr) - 1):
-        for j in range(len(arr) - i - 1):
-            if arr[j] > arr[j + 1]:
-                tmp = arr[j + 1]
-                arr[j + 1] = arr[j]
-                arr[j] = tmp
-            plot.plot(arr, [j, j+1])
-    plot.save_pngs_to_folder("bubble")
-
-
-plot = fig_plot()
-
-
-def main():
-    arr = [11, 9.2, 8.8, 23.6, 3.9, 14.1, 21.5, 33.3, 6.3, 13.6, 1.5]
-    bubblesort(arr)
-
-
-if __name__ == "__main__":
-    main()
-```
-
-And then, I upload all the images and convert them to a gif at [Animated GIF Maker](https://ezgif.com/maker).
-
 ## Bubblesort
 Bubblesort is the simplest sorting algorithm that works by repeatedly swapping the adjacent elements if they are in wrong order. The algorithm is a comparison sort, is named for the way smaller or larger elements "bubble" to the top of the list. Although the algorithm is simple, it is too slow and impractical for most problems even when compared to Insertionsort. Bubblesort can be practical if the input is in mostly sorted order with some out-of-order elements nearly in position.
 
@@ -101,7 +35,6 @@ void bubbleSort(std::vector<T> arr) {
   } 
 }
 ```
-![bubble sort](/images/2019-05-18-Sorting-Algorithm/bubble.gif)
 
 ## Insertionsort
 One of the simplest sorting algorithms is the insertion sort.
@@ -119,7 +52,6 @@ void insertSort(std::vector<T> &arr) {
 }
 ```
 Becuase of the nested loops, each of which can take N iterations, insertion sort is $O(N^2)$. Furthermore, this bound is tight, because input in reverse order can achieve this bound.
-![insertion sort](/images/2019-05-18-Sorting-Algorithm/insertion.gif)
 
 ## Shellsort
 Shellsort, named after its inventor, Donald Shell, was one of the first algorithms to break the quadratic time barrier, althoungh it was not until several years after its initial discovery that a subquadratic time bound was proven.

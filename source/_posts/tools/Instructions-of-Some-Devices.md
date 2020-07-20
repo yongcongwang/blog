@@ -8,5 +8,5 @@ categories:
 
 ## Plum Niz 66 keyboard
 <!-- more -->
-![img](/images/2019-01-26-Instructions-of-Some-Devices/66EC_1.png)
-![img](/images/2019-01-26-Instructions-of-Some-Devices/66EC_2.png)
+![66ec1](https://github.com/yongcongwang/images/blob/master/blog/2019/66ec1.png?raw=true)
+![66ec2](https://github.com/yongcongwang/images/blob/master/blog/2019/66ec2.png?raw=true)

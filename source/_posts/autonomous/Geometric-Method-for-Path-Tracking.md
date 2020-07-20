@@ -21,8 +21,7 @@ The simplest vehicle model for path tracking is the bicycle model, which followi
 These simplifications result in a simple geometric relationship between the front wheel steering angle and the curvature that the rear axle will follow.
 
 Following is the geometri bicycle model:
-
-![Bicycle Model](/images/2019-09-18-Geometric-Method-for-Path-Tracking/bicycle_model.png)
+![BicycleModel](https://github.com/yongcongwang/images/blob/master/blog/2019/path_tracking/bicycle_model.png?raw=true)
 
 This simple relationship between front wheel angle and curvature is:
 
@@ -36,7 +35,7 @@ The bicycle model approximates the motion of a car reasonably well at:
 - moderate steering angle.
 
 ### Control Law
-![Pure Pursuit](/images/2019-09-18-Geometric-Method-for-Path-Tracking/pure_pursuit.png)
+![Pure Pursuit](https://github.com/yongcongwang/images/blob/master/blog/2019/path_tracking/pure_pursuit.png?raw=true)
 
 The pure pursuit method consists of geometrically calculating the curvature of a circular arc that connects the rear axle location to a goal point on the path ahead of the vehicle. The goal point is determined from a look-ahead distance $l_d$ from the current rear axle position to the desired path. The goal point $(g_x, g_y)$ is illustrated in the figure. The vehicle's steering angle $\delta$ can be determined using only the goal point location and the angle $\alpha$ between the vehicle's heading vector and the look-ahead vector.
 
@@ -86,7 +85,7 @@ The Stanley steering controller was deveoped by the Stanford Racing Team and imp
 
 ### Kinematic Model
 Following is the kinematic model which assumes the vehicle has negligible inertia. This assumption is effective for low speed driving.
-![Kinematic Model](/images/2019-09-18-Geometric-Method-for-Path-Tracking/kinematic_model.png)
+![Kinematic Model](https://github.com/yongcongwang/images/blob/master/blog/2019/path_tracking/kinematic_model.png?raw=true)
 
 $v$ is the automobile's speed; $e$ is the cross-track error between desire path and the guiding wheels; $\psi$ is the heading with respect to the closet trajectory segment; $\delta$ is the front wheel steering angle.
 For forward driving, the guiding wheels are front wheels, and the derivative of the cross-track error is:
