@@ -410,7 +410,7 @@ The customer could visit the store every day and check product availability. But
 On the other hand, the store could send tons of emails to all customers each time a new product becomes available. This would save some customers from endless trips to the store. At the same time, it'd upset other customers who aren't interested in new products.
 
 ### Structure
-![observer](https://github.com/yongcongwang/images/blob/master/blog/2020/design_patter/observer.png?raw=true)
+![observer](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/observer.png?raw=true)
 
 ### Advantage
 - `Open/Close Principle`.
