@@ -68,7 +68,7 @@ Imagine you're creating a furniture shop. Your code consists of classes that rep
 You need a way to create individual furniture objects so that they match other objects of the same family.
 Also, you don't want to change existing code when adding new products or families of products to the program. Furniture vendors update their catalogs often, and you wouldn't want to change the core code each time it happens.
 
-### Architecture
+### Structure
 ![abstract_factory](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/abstract_factory.png?raw=true)
 
 ### Advantage
@@ -354,10 +354,70 @@ It may be easy to traverse on a list. But when you have to traverse elements of 
 - Using an iterator may be less efficient than going through elements of some specialized collections directly.
 
 ## Mediator
+Mediator lets you reduce chaotic dependencies between objects. The pattern restricts direct communications between the objects and forces them to collaborate only via a mediator object.
+
+### Problem
+Say you have a dialog for creating and editing customer profiles. It consists of various form controls such as text fields, checkboxes, buttons, etc.
+
+Some of the form elements may interact with others. For instance, selecting "I have a dog" checkbox may reveal a hidden text field for entering the dog's name. Another example is the submit button that has to validate values of all fields before saving the data.
+
+By having this logic implemented directly inside the code of the form elements you make these elements' classes much harder to reuse in other forms of the app. For example, you won't be able to use that checkbox class inside another form, because it's coupled to the dog's text field. You can use either all the classes involved in rendering the profile form, or none at all.
+
+### Structure
+![mediator](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/mediator.png?raw=true)
+
+### Advantage
+- `Single Responsibility Principle`.
+- `Open/Close Principle`.
+- You can reduce coupling between various components of a program.
+- You can reuse individual components more easily.
+
+### Disadvantage
+- Over time a mediator can evolve into a `God Object`.
 
 ## Memento
+Memento lets you save and restore the previous state of an object without revealing the detail of its implementation.
+
+### Problem
+Imagine you're creating a text editor app. In addition to simple text editing, your editor can format text, insert inline images, etc.
+
+At some point you decide to let users undo any operations carried out on the text. This feature has become so common over the years that nowadays people expect app to have it. For the implementation, you chose to take the direct approach, before performing any operation, the app records the state of all objects and save it in some storage.
+But the tricky case appears:
+- You need to go over all the fields in an objetct and copy their values into storage. However, this would only work if the object had quite relaxed access restrictions to its contents. You can not access the private params.
+- If you want to refactor some of the editor classes, the copying class should also change.
+- You store the params in a list of a class, then you should make its fields public. Other classes would become dependent on every little change to the snapshot class.
+
+### Structure
+![memento](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/memento.png?raw=true)
+
+### Advantage
+- You can reduce snapshots of the object's state without violating its encapsulation.
+- You can simplify the originator's code by letting the caretaker maintain the history of the originator's state.
+
+### Disadvantage
+- The app might consume lots of RAM if clients create mementos too often.
+- Catetaker's should track the originator's lifecycle to be able to destroy obsolete mementos.
+- Most dynamic programming languages, such as PHP, Python, and JavaScript, can't guarantee that the state within the memento stays untouched.
 
 ## Observer
+Observer lets you define a subscription mechanism to notify multiple objects about any events that happen to the object they're observing. 
+
+### Problems
+Imagine you have two types of objects: a `Customer` and a `Store`. The customer is very interested in a particular brand of product which should become available in the store very soon.
+
+The customer could visit the store every day and check product availability. But while the product is still en route, most of these trips would be pointless.
+
+On the other hand, the store could send tons of emails to all customers each time a new product becomes available. This would save some customers from endless trips to the store. At the same time, it'd upset other customers who aren't interested in new products.
+
+### Structure
+![observer](https://github.com/yongcongwang/images/blob/master/blog/2020/design_patter/observer.png?raw=true)
+
+### Advantage
+- `Open/Close Principle`.
+- You can establish relations between objects at run time.
+
+### Disadvantage
+- Subscribers are notified in random order.
 
 ## State
 
