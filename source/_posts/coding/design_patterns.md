@@ -292,10 +292,66 @@ In an ideal world, we'd want to put this code directly into our object's class, 
 # Behavioral Pattern
 
 ## Chain of Responsibility
+Chain of Responsibility is a behavioral design pattern that lets you pass requests along a chain of handlers. Upon receiving a request, each handler decides either to process the request or to pass it to the next handler in the chain.
+
+### Structure
+![chain](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/chain.png?raw=true)
+
+### Advantage
+- You can control the order of request handling.
+- `Single Responsibility Principle`.
+- `Open/Close Principle`.
+
+### Disadvantage
+- Some requets may end up unhandled.
 
 ## Command
+Command turns a request into a stand-alone object that contains all information about the request. This transformation lets you parameterize methods with different requests. This transformation lets you parameterize methods with different requests, delay or queue a request's execution, and support undoable operation.
+
+### Problem
+Imagine you're working on a new text-editor app. Your current task is to create a toolbar with a bunch of buttons for various operations of the editor. You created a very neat `Button` class that can be used for buttons on the toolbar, as well as for generic buttons in varous dialogs.
+
+While all of these buttons look similar, they're all supposed to do different things. Where would you put the code for the various click handlers of these buttons? The simplest solution is to create tons of subclasses for each place where the button is used. These subclasses would contain the code that would have to be executed on a button click.
+
+Before long, you realize that this approach is deeply flawed:
+- You have an enormous number of subclasses, and that would be okey if you weren't risking breaking the code in these subclasses each time you modify the base `Button` class.
+- And here's the ugliest part. Some operations, such as copying/pasting test, would need to be invoked from multiple places.
+- Initially, when your app only had toolbar, it was okay to place the implementation of various operations into the button subclasses. But when you implementation context menus, shortcuts, and other stuff, you have to either duplicate the operation's code in many classes or make menus dependent on buttons, which is an even worse option.
+
+### Structure
+![command](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/command.png?raw=true)
+
+### Advantage
+- `Single Responsibility Principle`.
+- `Open/Close Principle`.
+- You can implement undo/redo.
+- You can implement deferred execution of operation.
+- You can assemble a set of simple commands into a complex one.
+
+### Disadvantage
+- The code may become more complicated since you're introducing a whole new layer between senders and receivers.
 
 ## Iterator
+Iterator lets you traverse elements of a collection without exposing its underlying representation(list, stack, tree, etc.).
+
+### Problem
+Collections are one of most used data types in programming. Nonetheless, a collection is just a container for a group of objects.
+Most collections store their elements in simple lists. However, some of them are based on stacks, trees, graphs and other complex data structures.
+But no matter how a collection is structued, it must provide some way of accessing its elements so that other code can use these elements. There should be a way to go through each elements.
+It may be easy to traverse on a list. But when you have to traverse elements of a complex data structure(like a tree), things get tricky.
+
+### Structure
+![iterator](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/iterator.png?raw=true)
+
+### Advantage
+- `Single Responsibility Principle`.
+- `Open/Close Principle`.
+- You can iterate over the same collection in parallel because each iterator object contains its own iteration state.
+- For the same reason, you can delay an iteration and continue it when needed.
+
+### Disadvantage
+- Applying the pattern can be overkill if your app only works with simple collections.
+- Using an iterator may be less efficient than going through elements of some specialized collections directly.
 
 ## Mediator
 
