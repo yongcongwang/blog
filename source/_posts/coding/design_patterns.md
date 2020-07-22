@@ -420,12 +420,92 @@ On the other hand, the store could send tons of emails to all customers each tim
 - Subscribers are notified in random order.
 
 ## State
+State lets an object alter its behavior when its internal state changes. It appears as if the object changed its class.
+
+### Problem
+The State pattern is closely related to the concept of a `Finite-State Mechine`.
+The main idea is that, at any given moment, there's a finite number of states which a program can be in. Within any unique state, the program behaves differently, and the program can be switched from one state to another instantaneously. However, depending on a current state, the program may or may not switch to certain other states. These switching rules, called **transitions**, are also finite and predetermined.
+
+### Structure
+![state](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/state.png?raw=true)
+
+### Advantage
+- `Single Responsibility Principle`.
+- `Open/Close Principle`.
+- Simplify the code of the context by eliminating the code of the context by eliminating bulky state machine conditionals.
+
+### Disadvantage
+- Applying the pattern can be overkill if a state mechine has only a few states or rarely changes.
 
 ## Strategy
+Strategy lets you define a family of algorithms, put each of them into a separate class, and make their objects interchangeable.
+
+### Problem
+One day you decided to create a navigation app for casual travelers. The app was centered aroud a beautiful map which helped users quickly orient themselves in any city.
+
+One of the most requested features for the app was automatic route planning. A user should be able to enter an address and see the fastest route to that destination displayed on the map.
+
+The first version of the app could only build the routes over road. But later you planned to add route building for cyclists. And even later, another option for building routes through all of a city's tourist attractions.
+
+### Structure
+![strategy](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/strategy.png?raw=true)
+
+### Advantage
+- You can swap algorithms used inside an object at runtime.
+- You can isolate the implementation details of an algorithm from the code that uses it.
+- You can replace inheritance with composition.
+- `Open/Close Principle`.
+
+### Disadvantage
+- If you only have a couple of algorithms and they rarely change, there's no real reason to overcomplicate the program with new classes and interfaces that come along with the pattern.
+- Clients must be aware of the differences between strategies to be able to select a proper one.
+- A lot of modern programming languages have functional type support that lets you implement different versions of an algorithm inside a set of anonymous functions. Then you could use these functions exactly as you'd have used the strategy objects, but without bloating your code with extra classes and interfaces.
 
 ## Template Method
+Template Method defines the skeleton of an algorithm in the superclass but lets subclasses override specific steps of the algorithm without changing its structure.
+
+### Problem
+Imagine you're creating a data mining application that analyzes corporate documents. Users feed the app documents in various formats(PDF, DOC, CSV), and it tries to extract meaningful data from docs in a uniform format.
+
+The frist version of the app could work only with DOC files, but later, it was able to support CSV file. And more later, it had the ability to extract data from PDF files.
+
+At some point, you noticed that all three classes have a lot of similar code. While the code for dealing with various data formats was entirely different in all classes, the code for data processing and analysis is almost identical. Wouldn't it be great to get rid of the code duplication, leaving the algorithm structure inact?
+
+### Structure
+![template](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/template.png?raw=true)
+
+### Advantage
+- You can let clients override only certain parts of a large algorithm, making them less affected by changes that happen to other parts of the algorithm.
+- You can pull the duplicate code into a superclass.
+
+### Disadvantage
+- Some clients may be limited by the provided skeleton of an algorithm.
+- You might violate the `Liskov Substitution Principle` by supperessing a default step implementation via a super calss.
+- Template methods tend to be harder to maintain the more steps they have.
 
 ## Visitor
+Visitor lets you separate algorithms from the objects on which they operate.
+
+### Problem
+Imagine that your team develops an app works with geographic information structured as one colossal graph. Each node of the graph represent a complex entity such as a city, but also more granular thing like industries, sightseeing areas, etc. The nodes are connected with others if there's a road between the road between the real objects that they represent. Under the hood, each node type is represented by its own class, while each specific node is an object.
+
+At some point, you got a task to implement exporting the graph into XML format. You planned to add an export methods to each node class and then leverage recursion to go over each node of the graph, executing the export mehod.
+
+- Unfortunately, the code was already in production and you didn't want to risk breaking it because of a potential bug in your changes. 
+- Besides, the primary job of these classes was to work with geodata, the XML export behavior would look alien here. 
+- Another reason for the refusal was that after this feature was implemented, some one from the marketing department would ask you to provide the ability to export into a different format, or request some other weired stuff. This would force you to change those precious and fragile classes again.
+
+### Structure
+![visitor](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/visitor.png?raw=true)
+
+### Advantage
+- `Single Responsibility Principle`.
+- `Open/Close Principle`.
+- A visitor object can accumulate some useful information while working with various objects. This might be hady when you want to traverse some complex object structure, such as an object tree, and apply the visitor to each object of this structure.
+
+### Disadvantage
+- You need to update all visitors each time a class gets added or removed from the element hierarchy.
+- Visitors might lack the necessary access to the private fields and methods of the elements that they're supposed to work with.
 
 # Reference
 - [Design Patterns](https://refactoring.guru/design-patterns)
