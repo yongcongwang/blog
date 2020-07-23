@@ -2789,3 +2789,44 @@ void SumSequence(const int num) {
   }
 }
 ```
+
+# Maximum of the List
+> Given a vector and a sliding window, please find all the maximum number in the sliding window. For example, input vector {2, 3, 4, 2, 6, 2, 5, 1} and sliding window 3, then there are 6 sliding windows, all the maximum numbers are {4, 4, 6, 6, 6, 5}.
+
+## Solution
+```C++
+std::vector<int> MaxNum(const std::vector<int>& arr, const int window) {
+  if (arr.empty() || window < 1) {
+    return {};
+  }
+
+  std::deque<int> indices;
+  indices.push_back(0);
+  std::vector<int> max;
+  for (std::size_t i = 1; i < arr.size(); ++i) {
+    if (i - indices.front() >= window) {
+      indices.pop_front();
+    }
+    if (arr[i] > arr[indices.front()]) {
+      indices.clear();
+      indices.push_back(i);
+    } else {
+      if (indices.size() == 1) {
+        indices.push_back(i);
+      } else {
+        if (arr[indices.back()] < arr[i]) {
+          indices.pop_back();
+          indices.push_back(i);
+        }
+      }
+    }
+
+    if (i >= window - 1) {
+      max.push_back(arr[indices.front()]);
+    }
+  }
+
+  return max;
+}
+```
+
