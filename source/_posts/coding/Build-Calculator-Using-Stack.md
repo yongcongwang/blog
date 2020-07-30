@@ -1,5 +1,5 @@
 ---
-title: Build Calculator Using Stack coding
+title: Build Calculator Using Stack
 mathjax: true
 categories:
   - coding
