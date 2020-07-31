@@ -2877,3 +2877,29 @@ void PrintProbability(const int n) {
   return;
 }
 ```
+
+# Continous Cards in Playing Cards
+> Choose 5 cards in a playing-cards randomly, check if the cards is continous cards. 2 - 10 is the number, A is 1, J is 11, Q is 12, K is 13, and the jokers can be any numbers.
+
+## Solution
+```C++
+bool IsContinousCards(std::array<int, 5> arr) {
+  std::sort(arr.begin(), arr.end());
+
+  int king_cnt = arr.front() == 0 ? 1 : 0;
+  int break_cnt = 0;
+  for (int i = 1; i < 5; ++i) {
+    if (arr[i] == 0) {
+      ++king_cnt;
+      continue;
+    }
+    if (arr[i] == arr[i - 1]) {
+      return false;
+    }
+
+    break_cnt = arr[i] - arr[i - 1] - 1;
+  }
+
+  return king_cnt >= break_cnt;
+}
+```
