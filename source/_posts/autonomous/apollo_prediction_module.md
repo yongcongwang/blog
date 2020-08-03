@@ -524,6 +524,7 @@ s_{0}^\prime = v_{lateral} \\\\
 s_{0}^{\prime\prime} = 0
 \end{cases}
 $$
+
 and end state:
 $$
 \begin{cases}
