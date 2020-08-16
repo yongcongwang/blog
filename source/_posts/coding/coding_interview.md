@@ -2903,3 +2903,191 @@ bool IsContinousCards(std::array<int, 5> arr) {
   return king_cnt >= break_cnt;
 }
 ```
+
+# Last Number in Cricle
+> The `n` numbers `0, 1, ..., n-1` construct a cricle, start from `0`, every time we delete the `m`th number. Please output the last number of the circle.
+
+## Solution
+```
+int LastNumInCircle(const int m, const int n) {
+  if (m < 1 || n < 1) {
+    return -1;
+  }
+
+  int last = 0;
+  for (int i = 2; i < n; ++i) {
+    last = (last + m) % n;
+  }
+
+  return last;
+}
+```
+
+# Maximum Profit of Stock
+> Put all a stock's prices in a list in time order, please calculate the maximum profit of this stock. For example, a stock's price is {9, 11, 8, 5, 7, 12, 16, 14}, the maximum profit is 11 when we buy at 5 and sale at 16.
+
+## Solution
+```
+int MaxProfit(const std::vector<int>& arr) {
+  if (arr.size() < 2) {
+    return -1;
+  }
+
+  int min = arr.front();
+  int max = arr[1] - arr[0];
+  for (auto num : arr) {
+    max = std::max(max, num - min);
+    min = std::min(num, min);
+  }
+
+  return max;
+}
+```
+
+# Add Numbers
+> Please calculate the sum of `1 + 2 + 3 + .. + n` without using `*`, `/`, `for`, `while`, `if else`, `switch case` and `A?B:C`.
+
+## Solution 1: Using Constructor
+```
+// solution 1: constructor
+class Sum1 {
+ public:
+  Sum1() {
+  }
+
+  Sum1(const Sum1& rhs) {
+    ++N;
+    sum += N;
+  }
+
+ public:
+  static int GetSum() {
+    return sum;
+  }
+
+ private:
+  static int N;
+  static int sum;
+};
+
+int Sum1::N = 0;
+int Sum1::sum = 0;
+
+int GetSum1(const int n) {
+  std::vector<Sum1> tmp(n, Sum1());
+
+  return Sum1::GetSum();
+}
+```
+
+## Solution 2: Using Virtual Function
+```
+// solution 2: virtual function
+class SumBase2 {
+ public:
+  virtual int GetSum(int n) = 0;
+};
+
+std::vector<SumBase2*> funs;
+
+class SumNormal2 : public SumBase2 {
+ public:
+  int GetSum(int n) {
+    return n + funs[static_cast<std::size_t>(n == 0)]->GetSum(n - 1);
+  }
+};
+
+class SumEnd2 : public SumBase2 {
+ public:
+  int GetSum(int n) {
+    return 0;
+  }
+};
+
+int GetSum2(const int n) {
+  funs.push_back(new SumNormal2());
+  funs.push_back(new SumEnd2());
+  return funs.front()->GetSum(100);
+}
+```
+
+## Solution 3: Using Function Pointer
+```
+// solution 3: function pointer
+typedef int (*GetSumBase3)(int);
+std::vector<GetSumBase3> funcs;
+int GetSumNormal3(int n) {
+  return n + funcs[static_cast<std::size_t>(n == 0)](n - 1);
+}
+int GetSumEnd3(int n) {
+  return 0;
+}
+
+int GetSum3(int n) {
+  funcs = {GetSumNormal3, GetSumEnd3};
+  return funcs.front()(n);
+}
+```
+
+## Solution 4: Using Template
+```
+// solution4: template
+template <int N>
+int GetSumBase4() {
+  return N + GetSumBase4<N - 1>();
+}
+
+template <>
+int GetSumBase4<1>() {
+  return 1;
+}
+
+int GetSum4(int n) {
+  return GetSumBase4<100>();
+}
+```
+
+# Add Numbers
+> Please calculate two numbers without using `+`, `-`, `*`, `/`.
+
+## Solution
+```
+int Add(int a, int b) {
+  int sum = 0;
+  int carray = 0;
+
+  do {
+    sum = a ^ b;
+    carray = (a & b) << 1;
+    a = sum;
+    b = carray;
+  } while (b != 0);
+
+  return a;
+}
+```
+
+# Construct Array
+> With an array A[0, 1, ..., n - 1], please construct an array B[0, 1, ..., n - 1] which B[i] = A[0] * A[1] * ... * A[i - 1] * A[i + 1] * ... * A[n - 1]. Please don't use `/`.
+
+## Solution
+```
+bool ConstructArray(const std::vector<int>& A, std::vector<int>* const B) {
+  if (A.size() != B->size() || B->size() < 2) {
+    return false;
+  }
+
+  (*B)[0] = 1;
+  for (std::size_t i = 1; i < B->size(); ++i) {
+    (*B)[i] = (*B)[i - 1] * A[i - 1];
+  }
+
+  int tmp = 1;
+  for (int i = B->size() - 2; i >= 0; --i) {
+    tmp *= A[i + 1];
+    (*B)[i] *= tmp;
+  }
+
+  return true;
+}
+```
