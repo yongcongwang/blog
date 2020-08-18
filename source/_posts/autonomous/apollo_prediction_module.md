@@ -1,12 +1,13 @@
 ---
 title: Introduce to Apollo Prediction Module
-categories: algorithm
 tags:
   - apollo
   - autodrive
   - prediction
 mathjax: true
 comments: true
+categories:
+  - autonomous
 date: 2020-06-16 21:09:06
 ---
 
