@@ -15,6 +15,8 @@ There are only two kinds of methods that data structure is stored:
 
 Many other data structures can be implemented by the two methods above. 
 
+<!-- more -->
+
 ## Queue and Stack
 `Queue` and `Stack` can be storaged either array or linked list:
 - Using array, you should consider about expending and shrinking the capacity of array;
