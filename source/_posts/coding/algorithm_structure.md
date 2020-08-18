@@ -1,6 +1,6 @@
 ---
 title: How to Solve Data Structure Problems
-date: 2019-05-18 16:20:11
+date: 2020-08-17 16:20:11
 mathjax: true
 categories:
   - coding
