@@ -11,3 +11,6 @@ This will install hexo and other necessary files.
 
 ## Usage
 The script `deploy.sh` will push both src files and static website to github.
+
+## Images
+The images are created and modified by [diagram.net](https://app.diagrams.net)
