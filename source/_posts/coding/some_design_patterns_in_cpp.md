@@ -103,7 +103,7 @@ StrategyB: exec()
 # Observer Pattern
 Observer pattern is used when there is one-to-many relationship between objects such as if one object is modified, its dependent objects are to be notified automatically.
 
-![observer](https://github.com/yongcongwang/images/blob/master/blog/2019/test.png?raw=true)
+![observer](/images/2019/test.png?raw=true)
 ```C++
 // By yongcong.wang @ 09/06/2019
 #include <iostream>
@@ -225,7 +225,7 @@ observer B heard
 Decorator pattern allows a user to add new functionality to an existing object without altering its structure. This type of design pattern comes under structural pattern as this pattern acts as a wrapper to existing class.
 This pattern creates a decorator class which wraps the original class and provides additional functionality keeping class methods signature inact;
 
-![decorator](https://github.com/yongcongwang/images/blob/master/blog/2019/decorator.png?raw=true)
+![decorator](/images/2019/decorator.png?raw=true)
 ```C++
 // By yongcong.wang @ 28/07/2019
 #include <iostream>
@@ -354,7 +354,7 @@ According to the type of problems, there are three kinds of `Factory Pattern`:
 ## Simple Factory
 Simple Factory defines a method to create an object. It voilates the `Open/close Principle(OCP)`
 
-![simple factory](https://github.com/yongcongwang/images/blob/master/blog/2019/simple_factory.png?raw=true)
+![simple factory](/images/2019/simple_factory.png?raw=true)
 ```C++
 // By yongcong.wang @ 30/07/2019
 #include <iostream>
@@ -435,7 +435,7 @@ ConcreteProductB called!
 ## Normal Factory
 Normal Factory not only encapsulates the creation of object but also put the creation of object into derived class. It only provides the method of creating objects, and the realization is in `ConcreteFactory`.
 Disadvantage: the addition of factory object will cause the increasing of classes.
-![normal facory](https://github.com/yongcongwang/images/blob/master/blog/2019/normal_factory.png?raw=true)
+![normal facory](/images/2019/normal_factory.png?raw=true)
 
 ```C++
 // By yongcong.wang @ 30/07/2019
@@ -535,6 +535,6 @@ ConcreteProductB called!
 
 ## Abstract Factory
 `Abstract Factory` improves the ablility of production of factory child, it provides methods for client. You can create multiple production objects via those methods.
-![abstract factory](https://github.com/yongcongwang/images/blob/master/blog/2019/abstract_factory.png?raw=true)
+![abstract factory](/images/2019/abstract_factory.png?raw=true)
 
 # Singleton Pattern

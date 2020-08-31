@@ -59,7 +59,7 @@ Container stores structured data from subscribed channels. Current supported inp
 The architecture of the **container** is as below. The class `Container` defines the interface of all containers and it can't be realized because it has a pure virtual function `Insert`. `PoseContainer`, `ADCTrajectoryContainer` and  `ObstacleContainer` are derived from `Container` and realize the `Insert` function.
 The `ContainerManager` class **has** many containers. It generates all three types of contianer and stores them in an unordered map to speed up the search process.
 I just list some important methods of the class here, for more functions and their description, you can read the documents generated from `doxygen`.
-![container](https://github.com/yongcongwang/images/blob/master/blog/2020/prediction/container.png?raw=true)
+![container](/images/2020/prediction/container.png?raw=true)
 
 Current container contains:
 - PoseContainer
@@ -82,7 +82,7 @@ and inserts ego vehicle as an obstacle into `ObstacleContainer` with id `-1` and
 - overlaps of the lane.
 
 #### ObstacleContainer
-![obstacle_container](https://github.com/yongcongwang/images/blob/master/blog/2020/prediction/obstacle_container.png?raw=true)
+![obstacle_container](/images/2020/prediction/obstacle_container.png?raw=true)
 
 `ObstacleContainer` structures and stores all obstacles from perception, it **has a** `LRU(Latest Recently Used)Cache` class to manage the latest recently used 10 items. The `value` of LRUCache is the obstacle and the `key`  is the id of the obstacle. The functionality of `ObstacleContainer` **depends on** the class `ObstacleCluster`, because method `SortObstacle` is used.
 
@@ -156,13 +156,13 @@ Currently, two scenarios are defined:
 - **Junction** : this scenario involves junctions. Junctions can either have traffic lights and/or STOP signs.
 
 The architecture of `Scenario` is as below:
-![scenario](https://github.com/yongcongwang/images/blob/master/blog/2020/prediction/scenario.png?raw=true)
+![scenario](/images/2020/prediction/scenario.png?raw=true)
 
 #### ScenarioManager
 The `ScenarioManager` class **depends on** `FeatureExtractor` to generate environment features and **depends on** `ScenarioAnalyzer` to analyze current scenario. If necessary, `ScenarioManager` will set obstacls' priorities as:
 - IGNORE, if the obstacle is no need to consider;
 - NORMAL, if the obstacle needs to be considered.
-![priority](https://github.com/yongcongwang/images/blob/master/blog/2020/prediction/priority.png?raw=true)
+![priority](/images/2020/prediction/priority.png?raw=true)
 
 The obstacle is set to `NORMAL` if the obstacle is:
 - `in scan area`, the scan arear is a rectanglar in front of ego vehicle with the length($80$ in program) and width($12$ in program), for example, the obstacle with id of 5 is in scan area but 6 not;
@@ -203,7 +203,7 @@ and the `Evaluator` for `Vehicle` are:
 - `JunctionMLPEvaluator`: probability is calculated using an MLP model for junction scenario.
 
 The architecture of `Evaluator` is as below:
-![evaluator](https://github.com/yongcongwang/images/blob/master/blog/2020/prediction/evaluator.png?raw=true)
+![evaluator](/images/2020/prediction/evaluator.png?raw=true)
 
 #### EvaluatorManager
 The `EvaluatorManager` creates and stores all types of evaluators, so it **has** many `Evaluator` pointers. The `Evaluator` class is a base class that defines a pure virtual function `Evaluate`. `EvaluatorManager` calls `Evaluator`'s subclass's function `Evaluate` to calculate probability for a lanesequence. If the `obstacle` type is:
@@ -234,7 +234,7 @@ In equation,
 
 #### MLPEvaluator
 This `Evaluator` uses a MLP(Multilayer Perceptron):
-![mlp](https://github.com/yongcongwang/images/blob/master/blog/2020/prediction/mlp.png?raw=true)
+![mlp](/images/2020/prediction/mlp.png?raw=true)
 
 The model has $62$ inputs, $22$ of which are obstacle features:
 - $\theta_{filter}$, the average of the latest 5 heading values in an obstacle's history;
@@ -268,7 +268,7 @@ And the other 40 features are lane features, we choose 10 points from the refere
 The output $\widehat{y}$ is the probability that an obstacle stays on a lane.
 
 #### CruiseMLPEvaluator
-![cruise mlp](https://github.com/yongcongwang/images/blob/master/blog/2020/prediction/cruise_mlp.png?raw=true)
+![cruise mlp](/images/2020/prediction/cruise_mlp.png?raw=true)
 
 The model has $23 + 5 * 9 + 8 + 20 * 4 = 146$ inputs, $23$ of which are obstacle features:
 - $\theta_{filter}$, the average of the latest 5 heading values in an obstacle's history;
@@ -326,7 +326,7 @@ The result of `CruiseMLPEvaluator` is:
 - the time of an obstacle to travel to reference line.
 
 #### JunctionMLPEvaluator
-![junction_mlp](https://github.com/yongcongwang/images/blob/master/blog/2020/prediction/junction_mlp.png?raw=true)
+![junction_mlp](/images/2020/prediction/junction_mlp.png?raw=true)
 
 This model has 3 obstacle features:
 - $v$, the velocity of an obstacle;
@@ -334,7 +334,7 @@ This model has 3 obstacle features:
 - $S_{junction}$, the area of the junction.
 
 The other $12 * 5$ features are junction features. We divide area aroud the vehicle to 12 regions and calculate the probability of each exit.
-![junction](https://github.com/yongcongwang/images/blob/master/blog/2020/prediction/junction.png?raw=true)
+![junction](/images/2020/prediction/junction.png?raw=true)
 Each exit has 5 features:
 - `is_exit_exist`, it's 1 if the exit of junction exists;
 - $x_{diff} / S_{junction}$, $x_{diff}$ is the deviation between obstacle and exit in x direction;
@@ -375,7 +375,7 @@ Predictor generates predicted trajectories for obstacles. Currently, the support
 - **Junction**: Obstacles move toward junction exits with high probabilities.
 
 The relationship between `predictor`s is as below:
-![predictor](https://github.com/yongcongwang/images/blob/master/blog/2020/prediction/predictor.png?raw=true)
+![predictor](/images/2020/prediction/predictor.png?raw=true)
 
 #### PredictorManager
 `PredictorManager` creates and stores all kinds of `predictor`s. It **has** pointers of base class `Predictor` to points to its subclasses, the specail predictors.

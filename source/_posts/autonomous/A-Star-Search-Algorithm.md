@@ -16,7 +16,7 @@ To find the path, we can sue a `graph search` algorithm, which works when the ma
 ### Input
 Graph search algorithms take a `graph` as input. A graph is a set of locations("node") and the connections("edge") between them, like this:
 
-![graph](https://github.com/yongcongwang/images/blob/master/blog/2019/a_star/graph.png?raw=true)
+![graph](/images/2019/a_star/graph.png?raw=true)
 
 Pathfinder doesn't see anything else, it only see the graph.
 
@@ -28,7 +28,7 @@ There are lots of algorithms that run on graphs and find the path, the simplest 
 
 ### Breadth First Search
 **Breadth First Search** explores equally in all directions. The key idea for this algorithm is that we keep track of an expanding ring called `frontier`. On a grid, this process is somtimes called "flood fill", but the same technique works for non-grids.
-![breadth](https://github.com/yongcongwang/images/blob/master/blog/2019/a_star/breadth_first.gif?raw=true)
+![breadth](/images/2019/a_star/breadth_first.gif?raw=true)
 
 The main process is:
 
@@ -51,7 +51,7 @@ The main process is below:
       - put the neighbour node into `frontier`
       - set the cost so far as the neighbour node's cost
 
-![breadth_first](https://github.com/yongcongwang/images/blob/master/blog/2019/a_star/dijkstra.gif?raw=true)
+![breadth_first](/images/2019/a_star/dijkstra.gif?raw=true)
 
 With Breadth First Search and Dijkstra's Algorithm, the frontier expands in all directions. This is a reasonable choice if you only need to find a location and don't care about the time. However, a common case is that we want to find the path not only correctly but also quickly. Here comes the `Greedy Best First Search`.
 
@@ -67,10 +67,10 @@ Its process can be described as:
     - if the neighbour node has not been visited yet: 
       - put the neighbour node into `frontier`
 
-![greedy_best_first](https://github.com/yongcongwang/images/blob/master/blog/2019/a_star/best_first.gif?raw=true)
+![greedy_best_first](/images/2019/a_star/best_first.gif?raw=true)
 
 The algorithm is really fast, but in complex map it may not find the shortest path, shown as below.
-![in_complex_case](https://github.com/yongcongwang/images/blob/master/blog/2019/a_star/best_first2.gif?raw=true)
+![in_complex_case](/images/2019/a_star/best_first2.gif?raw=true)
 
 ## A* Algorithm
 Dijkstra’s Algorithm works well to find the shortest path, but it wastes time exploring in directions that aren’t promising. Greedy Best First Search explores in promising directions but it may not find the shortest path. The A* algorithm uses both the actual distance from the start and the estimated distance to the goal.

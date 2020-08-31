@@ -47,7 +47,7 @@ After a while, your app becomes pretty popular. Now you can also receive request
 But at present most of your code is coupled to the `Truck` class. Adding `Ship` into the app would require making changes to the entire codebase. Moreover, if later you decide to add another type of transportation to the app, you will probably need to make all of these changes again.
 
 ### Structure
-![factory](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/factory.png?raw=true)
+![factory](/images/2020/design_pattern/factory.png?raw=true)
 
 ### Advantage
 - You avoid tight coupling between the creator and the concrete products.
@@ -69,7 +69,7 @@ You need a way to create individual furniture objects so that they match other o
 Also, you don't want to change existing code when adding new products or families of products to the program. Furniture vendors update their catalogs often, and you wouldn't want to change the core code each time it happens.
 
 ### Structure
-![abstract_factory](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/abstract_factory.png?raw=true)
+![abstract_factory](/images/2020/design_pattern/abstract_factory.png?raw=true)
 
 ### Advantage
 - You can be sure that the products you're getting from a factory are compatible with each other.
@@ -93,7 +93,7 @@ The simplest way is to extend the base class `House` and create a set of subclas
 Another approach that doesn't involve breeding subclasses. You can create a giant constructor right in the base `House` with all possible parameters that control the house object. The problem of this approach is that in most cases most of the parameters will be unused, making the constructor calls pretty ugly.
 
 ### Structure
-![builder](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/builder.png?raw=true)
+![builder](/images/2020/design_pattern/builder.png?raw=true)
 
 ### Advantage
 - You can construct objects step-by-step, defer construction steps or run steps recursively.
@@ -113,7 +113,7 @@ But problem occurs:
 - You have to know the object's class to create a duplicate, your code becomes dependent on that class.
 
 ### Structure
-![prototype](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/prototype.png?raw=true)
+![prototype](/images/2020/design_pattern/prototype.png?raw=true)
 
 ### Advantage
 - You can clone objects without coupling to their concrete classes.
@@ -133,7 +133,7 @@ The Singleton pattern solves two problems at the same time, violating the `Singl
 - Provide a global access point to that instance.
 
 ### Structure
-![singleton](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/singleton.png?raw=true)
+![singleton](/images/2020/design_pattern/singleton.png?raw=true)
 
 ### Advantage
 - You can be sure that a class has only a single instance.
@@ -158,7 +158,7 @@ At some point, you decide to improve the app by integrating a smart 3rd-party an
 You could change the library to work with `xml`. However, this might break some existing code that relies on the library. And worse, you might not have access to the library's source code in the first place, making this approach impossible.
 
 ### Strucure
-![adapter](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/adapter.png?raw=true)
+![adapter](/images/2020/design_pattern/adapter.png?raw=true)
 
 ### Advantage
 - `Single Responsibility Principle`.
@@ -179,7 +179,7 @@ You want to extend this class hierarchy to incorporate colors, so you plan to cr
 Adding new shape types and colors to the hierarchy will grow it exponentially.
 
 ### Structure
-![bridge](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/bridge.png?raw=true)
+![bridge](/images/2020/design_pattern/bridge.png?raw=true)
 
 ### Advantage
 - You can create platform-independent classes and apps.
@@ -201,7 +201,7 @@ Say you want to travel all over the `Products`, you could try direct approach: u
 ![boxes](https://refactoring.guru/images/patterns/diagrams/composite/problem-en.png)
 
 ### Structure
-![composite](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/composite.png?raw=true)
+![composite](/images/2020/design_pattern/composite.png?raw=true)
 
 ### Advantage
 - You can work with complex tree structures more conveniently: use polymorphism and recursion to your advantage.
@@ -219,7 +219,7 @@ You can extend the `Notifier` and add `sms` and `slack` methods, but what if we 
 You have to find some other way to structure notifications classes so that their number won't accidentally break some Guinness record.
 
 ### Structure
-![decorator](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/decorator.png?raw=true)
+![decorator](/images/2020/design_pattern/decorator.png?raw=true)
 
 ### Advantage
 - You can extand an object's behavior without making a new subclass.
@@ -241,7 +241,7 @@ Image that you must make your code with a broad set of objects that belong to a 
 As a result, the business logic of your classes would become tightly coupled to the implementation details of 3rd-party classes, making it hard to comprehend and maintain.
 
 ### Structure
-![facade](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/facade.png?raw=true)
+![facade](/images/2020/design_pattern/facade.png?raw=true)
 
 ### Advantage
 - You can isolate your code from the complexity of a subsystem.
@@ -257,7 +257,7 @@ Say you decide to create a simple video game: players would be moving around a m
 After its completion, you discovered the game uses too much RAM. The problem was related to your particle system. Each particle, such as a bullet, a missile or a piece of sharapnel was represented by a separate object containing plenty of data. At some point, when the carnage on a player's screen reached its climax, newly created particles no longer fit into the remaining RAM, so the program crashed.
 
 ### Structure
-![flyweight](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/flyweight.png?raw=true)
+![flyweight](/images/2020/design_pattern/flyweight.png?raw=true)
 
 ### Advantage
 - You can save lots of RAM, assuming your program has tons of similar objects.
@@ -277,7 +277,7 @@ You would implement lazy initialization: create this object only when it's actua
 In an ideal world, we'd want to put this code directly into our object's class, but that isn't always possible. For instance, the class may be part of a closed 3rd-party library.
 
 ### Structure
-![proxy](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/proxy.png?raw=true)
+![proxy](/images/2020/design_pattern/proxy.png?raw=true)
 
 ### Advantage
 - You can control the service object without clients knowing about it.
@@ -295,7 +295,7 @@ In an ideal world, we'd want to put this code directly into our object's class, 
 Chain of Responsibility is a behavioral design pattern that lets you pass requests along a chain of handlers. Upon receiving a request, each handler decides either to process the request or to pass it to the next handler in the chain.
 
 ### Structure
-![chain](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/chain.png?raw=true)
+![chain](/images/2020/design_pattern/chain.png?raw=true)
 
 ### Advantage
 - You can control the order of request handling.
@@ -319,7 +319,7 @@ Before long, you realize that this approach is deeply flawed:
 - Initially, when your app only had toolbar, it was okay to place the implementation of various operations into the button subclasses. But when you implementation context menus, shortcuts, and other stuff, you have to either duplicate the operation's code in many classes or make menus dependent on buttons, which is an even worse option.
 
 ### Structure
-![command](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/command.png?raw=true)
+![command](/images/2020/design_pattern/command.png?raw=true)
 
 ### Advantage
 - `Single Responsibility Principle`.
@@ -341,7 +341,7 @@ But no matter how a collection is structued, it must provide some way of accessi
 It may be easy to traverse on a list. But when you have to traverse elements of a complex data structure(like a tree), things get tricky.
 
 ### Structure
-![iterator](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/iterator.png?raw=true)
+![iterator](/images/2020/design_pattern/iterator.png?raw=true)
 
 ### Advantage
 - `Single Responsibility Principle`.
@@ -364,7 +364,7 @@ Some of the form elements may interact with others. For instance, selecting "I h
 By having this logic implemented directly inside the code of the form elements you make these elements' classes much harder to reuse in other forms of the app. For example, you won't be able to use that checkbox class inside another form, because it's coupled to the dog's text field. You can use either all the classes involved in rendering the profile form, or none at all.
 
 ### Structure
-![mediator](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/mediator.png?raw=true)
+![mediator](/images/2020/design_pattern/mediator.png?raw=true)
 
 ### Advantage
 - `Single Responsibility Principle`.
@@ -388,7 +388,7 @@ But the tricky case appears:
 - You store the params in a list of a class, then you should make its fields public. Other classes would become dependent on every little change to the snapshot class.
 
 ### Structure
-![memento](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/memento.png?raw=true)
+![memento](/images/2020/design_pattern/memento.png?raw=true)
 
 ### Advantage
 - You can reduce snapshots of the object's state without violating its encapsulation.
@@ -410,7 +410,7 @@ The customer could visit the store every day and check product availability. But
 On the other hand, the store could send tons of emails to all customers each time a new product becomes available. This would save some customers from endless trips to the store. At the same time, it'd upset other customers who aren't interested in new products.
 
 ### Structure
-![observer](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/observer.png?raw=true)
+![observer](/images/2020/design_pattern/observer.png?raw=true)
 
 ### Advantage
 - `Open/Close Principle`.
@@ -427,7 +427,7 @@ The State pattern is closely related to the concept of a `Finite-State Mechine`.
 The main idea is that, at any given moment, there's a finite number of states which a program can be in. Within any unique state, the program behaves differently, and the program can be switched from one state to another instantaneously. However, depending on a current state, the program may or may not switch to certain other states. These switching rules, called **transitions**, are also finite and predetermined.
 
 ### Structure
-![state](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/state.png?raw=true)
+![state](/images/2020/design_pattern/state.png?raw=true)
 
 ### Advantage
 - `Single Responsibility Principle`.
@@ -448,7 +448,7 @@ One of the most requested features for the app was automatic route planning. A u
 The first version of the app could only build the routes over road. But later you planned to add route building for cyclists. And even later, another option for building routes through all of a city's tourist attractions.
 
 ### Structure
-![strategy](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/strategy.png?raw=true)
+![strategy](/images/2020/design_pattern/strategy.png?raw=true)
 
 ### Advantage
 - You can swap algorithms used inside an object at runtime.
@@ -472,7 +472,7 @@ The frist version of the app could work only with DOC files, but later, it was a
 At some point, you noticed that all three classes have a lot of similar code. While the code for dealing with various data formats was entirely different in all classes, the code for data processing and analysis is almost identical. Wouldn't it be great to get rid of the code duplication, leaving the algorithm structure inact?
 
 ### Structure
-![template](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/template.png?raw=true)
+![template](/images/2020/design_pattern/template.png?raw=true)
 
 ### Advantage
 - You can let clients override only certain parts of a large algorithm, making them less affected by changes that happen to other parts of the algorithm.
@@ -496,7 +496,7 @@ At some point, you got a task to implement exporting the graph into XML format. 
 - Another reason for the refusal was that after this feature was implemented, some one from the marketing department would ask you to provide the ability to export into a different format, or request some other weired stuff. This would force you to change those precious and fragile classes again.
 
 ### Structure
-![visitor](https://github.com/yongcongwang/images/blob/master/blog/2020/design_pattern/visitor.png?raw=true)
+![visitor](/images/2020/design_pattern/visitor.png?raw=true)
 
 ### Advantage
 - `Single Responsibility Principle`.

@@ -27,8 +27,8 @@ OpenDRIVE uses two co-ordinate systems: track system for road and lane and inert
 
 #### Track System
 The Track co-ordinate system applies along the reference line of the road. It is a right-handed co-ordinate system. The following degrees of freedom are defined:
-![track system](https://github.com/yongcongwang/images/blob/master/blog/2019/apollo_hdmap/track_1.png?raw=true)
-![track system](https://github.com/yongcongwang/images/blob/master/blog/2019/apollo_hdmap/track_2.png?raw=true)
+![track system](/images/2019/apollo_hdmap/track_1.png?raw=true)
+![track system](/images/2019/apollo_hdmap/track_2.png?raw=true)
 - $s$: poistion along reference line, measured in [m] from the beginning of the track;
 - $t$: lateral position, positive to the left;
 - $h$: height position, positive to the up;
@@ -38,7 +38,7 @@ The Track co-ordinate system applies along the reference line of the road. It is
 
 #### Inertial System
 The inertial system is a right-handed co-ordinate system according to ISO 8855 projected on a drawing plane with the axes pointing to the following directions:
-![inertial system](https://github.com/yongcongwang/images/blob/master/blog/2019/apollo_hdmap/inertial_system.png?raw=true)
+![inertial system](/images/2019/apollo_hdmap/inertial_system.png?raw=true)
 
 - $x$: right(east);
 - $y$: up(north);
@@ -49,7 +49,7 @@ The inertial system is a right-handed co-ordinate system according to ISO 8855 p
 
 ### Road Layout
 A full overview of OpenDRIVE road layout can be shown below:
-![OpenDRIVE](https://github.com/yongcongwang/images/blob/master/blog/2019/apollo_hdmap/OpenDRIVE.png?raw=true)
+![OpenDRIVE](/images/2019/apollo_hdmap/OpenDRIVE.png?raw=true)
 All roads contain a reference line which defines the basic geometry(arcs, straight lines etc.). Along the reference line, various properties of the road can be defined like elevation profile, lanes, traffic signs, etc. Roads can be linked to each other directly(see road1 and road2) or via junctions(see road2 and road6).
 
 The convention applies that properties of the same type defined along a single reference line must be listed in ascending order. 
@@ -63,7 +63,7 @@ The geometry of the reference line is described as a sequence of primitives of v
 - parametric cubic curves.
 
 The following figure illustrates the composition of a reference line from some of the above mentioned elements.
-![reference line](https://github.com/yongcongwang/images/blob/master/blog/2019/apollo_hdmap/reference_line.png?raw=true)
+![reference line](/images/2019/apollo_hdmap/reference_line.png?raw=true)
 
 In OpenDRIVE format, reference line is described by `geometry` under `planView` element. For example, the reference line above can be described as:
 ```xml
@@ -112,7 +112,7 @@ Lane properties are defined to the start of the corresponding lane section. Offs
 #### Superelevation and Crossfall
 In many cases, a road's cross section will not be parallel to the underlying terrain. Instead, it will be elevanted to one side (e.g. in curves) or to the center(for drainage). Both properties are covered by the OpenDRIVE format with the former being called "superelevation" and the latter "crossfall".
 
-![superelevation and crossfall](https://github.com/yongcongwang/images/blob/master/blog/2019/apollo_hdmap/superelevation_and_crossfall.png?raw=true)
+![superelevation and crossfall](/images/2019/apollo_hdmap/superelevation_and_crossfall.png?raw=true)
 
 #### Road Linkage
 In order to navigate through a road network, the application must know the linkage between different roads. Two types of linkage are possible:
@@ -139,7 +139,7 @@ OpenDRIVE provides two approaches for describing surface properties:
 
 ## Apollo OpenDRIVE
 OpenDRIVE format is mainly designed for simulator, it lacks lots of information that autodirve need. Apollo OpenDRIVE is based on OpenDRIVE and expends some specifications. 
-![apollo map](https://github.com/yongcongwang/images/blob/master/blog/2019/apollo_hdmap/apollo_map.png?raw=true)
+![apollo map](/images/2019/apollo_hdmap/apollo_map.png?raw=true)
 
 Some concepts may cause ambiguity:
 - overlap: link two elements, describe two elements's spatial relations. If two elements have overlaps, we make them a Overlap. For example, Deceleration Zone on a Lane, or Stop Zone on a Lane
@@ -149,7 +149,7 @@ Some concepts may cause ambiguity:
 - co-ordinate system: utm, WGS84
 
 ### Main Difference
-![apollo opendrive](https://github.com/yongcongwang/images/blob/master/blog/2019/apollo_hdmap/apollo_OpenDRIVE.png?raw=true)
+![apollo opendrive](/images/2019/apollo_hdmap/apollo_OpenDRIVE.png?raw=true)
 Apollo OpenDRIVE change the discription of elements' shape and classify all the elements: all the roadMark are classified into Objects; all the signals classified into Signal; use Overlap to link them.
 
 | No. |                   Iterm                   | OpenDRIVE |                                           Apollo OpenDRIVE                                           | Note |
