@@ -11,6 +11,7 @@ To simplify matters, we will assume that the algorithms we describe will all be 
 1. All array positions contain data to be sorted;
 2. The `N` is the number of elements passed to our sorting routines;
 3. the `>` and `<` operators exists, which can be used to place a consistant ordering on the input.
+
 Sorting under these conditions is known as comparision-based sorting.
 <!-- more -->
 ## Bubblesort
