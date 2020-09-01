@@ -50,8 +50,41 @@ Deep learning is taking off for 3 reasons:
 3. Algorithm:
  - Creative algorithms have appeared that changed the way NN works: For example, using `ReLU` is so much better than using `Sigmoid` function in training a NN because it helps with the vanishing gradient problem.
 
+## Neural Network Basics
+This part we learn to set up a machine learning problem with a neural network mindset. Learn to use vectorization to speed up your models.
 
+### Logistic regression
+Algorithm is used for classification of 2 classes. We use the equation:
+$$
+y = wx + b
+$$
+to calculate the output. 
+If $x$ is a vector, the equation becomes:
+$$
+y = w^Tx + b
+$$
+If we need $y$ to be in $[0, 1]$(probability):
+$$
+y = sigmoid(w^Tx + b)
+$$
 
+### Logistic regression cost function
+The cost function can be the square root error:
+$$
+L(\hat{y}, y) = \frac{1}{2} \cdot (\hat{y} - y)^2
+$$
+but we won't use this notation because it leads to optimization problem which is non convex, means it contains local optimum points.
 
-## Neural Network
+Alternately, we use the function:
+$$
+L(\hat{y}, y) = - (y \cdot \log(\hat{y}) + (1 - y) \cdot \log(1 - \hat{y}))
+$$
+this leads to two case:
+- if $y = 1$, $C(\hat{y}, 1) = -log(\hat{y})$, we want $\hat{y}$ to be the largest, and the largest value of $\hat{y}$ is $1$;
+- if $y = 0$, $C(\hat{y}, 1) = -log(1 - \hat{y})$, we want $1 - \hat{y}$ to be the largest, and the smallest value of $\hat{y}$ is $0$;
 
+Then the cost function will be:
+$$
+J(w, b) = \frac{1}{m}\sum^{m}\_{i=1}{(L(\hat{y}^{[i]}, y^{[i]}))}
+$$
+The loss function calculates the error for a single training example, while the cost function is the average of the loss function of the entire training set.
