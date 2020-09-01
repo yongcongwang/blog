@@ -1,6 +1,8 @@
 ---
 title: Deep Learning Summary
 mathjax: true
+categories:
+  - deep_learning
 date: 2020-08-26 19:49:55
 ---
 
