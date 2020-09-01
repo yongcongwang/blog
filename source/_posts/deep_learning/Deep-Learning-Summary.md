@@ -12,6 +12,7 @@ This page contains my personal notes and summaries on [DeepLearning.ai](https://
 - Structuring Machine Learning Projects;
 - Convolutional Neural Networks;
 - Sequence Models.
+
 <!-- more -->
 # Neural Network and Deep Learning
 ## Introduce to deep learning
