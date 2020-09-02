@@ -164,3 +164,19 @@ Neural Network is a stack of logistic regression objects.
 
 ### Activation functions
 ![activation functions](/images/2020/deep_learning/activation.png)
+
+#### sigmoid
+So far we are using sigmoid, but it works not so well:
+- sigmoid can lead us to gradient decent problem where the updates are so slow;
+- the range of function is $[0, 1]$.
+
+#### tanh
+`tanh` is a shifted version of sigmoid with the range $[-1, 1]$. It usually works better than sigmoid activation for hidden units because the mean of its outputs is closer to $0$, and so it centers the data better for the next layer.
+
+#### ReLU
+`sigmoid` or `tanh` function disadvantage is that if the input is too small or too high, the slope will be near zero which will cause the gradient decent problem.
+
+One of the popular activation functions that solved the slow gradient decent is the ReLU function.
+
+#### Leaky ReLU
+The difference between Leaky ReLU and ReLU is that if the input is negtive the slope will be so small. It works as ReLU but most people use ReLU.
