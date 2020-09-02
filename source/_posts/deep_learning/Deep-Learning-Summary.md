@@ -17,7 +17,7 @@ This page contains my personal notes and summaries on [DeepLearning.ai](https://
 # Neural Network and Deep Learning
 ## Introduce to deep learning
 ### What is a Neural Network
-![nn](https://scx1.b-cdn.net/csz/news/800/2018/2-whyareneuron.jpg)
+![nn](/images/2020/deep_learning/neuron.jpg)
 
 At a very simple level, neurons are basically computational units that take inputs(dendrites) as electrical inputs(called "spikes") that are channeled to outputs(axons). A single neuron will calculate weighted sum of input($W.T \cdot X$) and we can set a threshold to predict output in a perceptron. If weighted sum of input across the threshold, perceptron fires and if not then perceptron doesn't predict.
 
@@ -81,11 +81,86 @@ $$
 L(\hat{y}, y) = - (y \cdot \log(\hat{y}) + (1 - y) \cdot \log(1 - \hat{y}))
 $$
 this leads to two case:
-- if $y = 1$, $C(\hat{y}, 1) = -log(\hat{y})$, we want $\hat{y}$ to be the largest, and the largest value of $\hat{y}$ is $1$;
-- if $y = 0$, $C(\hat{y}, 1) = -log(1 - \hat{y})$, we want $1 - \hat{y}$ to be the largest, and the smallest value of $\hat{y}$ is $0$;
+- if $y = 1$, $L(\hat{y}, 1) = -log(\hat{y})$, we want $\hat{y}$ to be the largest, and the largest value of $\hat{y}$ is $1$;
+- if $y = 0$, $L(\hat{y}, 1) = -log(1 - \hat{y})$, we want $1 - \hat{y}$ to be the largest, and the smallest value of $\hat{y}$ is $0$;
 
 Then the cost function will be:
 $$
 J(w, b) = \frac{1}{m}\sum^{m}\_{i=1}{(L(\hat{y}^{[i]}, y^{[i]}))}
 $$
-The loss function calculates the error for a single training example, while the cost function is the average of the loss function of the entire training set.
+The difference between loss function and cost function:
+- the loss function calculates the error for a single training example;
+- the cost function calculates the average of the loss function of the entire training set.
+
+### Gradient Descent
+Our target is to predict $w$ and $b$ that minimize the cost function while the cost function itself is convex.
+
+The gradient descent repeats:
+$$
+w = w - \alpha \cdot dw
+$$
+$$
+b = b - \alpha \cdot db
+$$
+to reach the minimum of cost function, while the $\alpha$ is the `learning rate` and $dw$ is the derivative of $w$, $db$ is the derivative of $b$.
+
+### Vectorization
+Deep learning shines when the dataset is big. However, `for loop` will make you wait a lot for a result. That's why we need vectorization to get rid of  some of our `for loop`s.
+
+### General steps
+The main steps for building a Neural Network are:
+- Define the model structure(such as number of input features and outputs);
+- Initialize the model's parameters;
+- Loop:
+ - Calculate current loss(forward propagation);
+ - Calculate current gradient(backward propagation)
+ - Update parameters(gradient descent)
+
+Tunning the learning rate(which is an example of a "hyperparameter") can make a big difference to the algorithm.
+
+## Shallow neural network
+This part we learn to build a neural network with one hidden layer, using forward propagation and backward propagation.
+
+### Neural network overview
+![shallow_nn](/images/2020/deep_learning/shallow_nn.png)
+
+In the left logistic regression we had:
+$$
+z = W^TX + B \Rightarrow a = sigmoid(z) \Rightarrow L(a, Y)
+$$
+where $W$, $X$ and $B$ are matirx.
+
+In neural networks with one layer we will have:
+$$
+Z_1 = W_1^TX + B \Rightarrow A1 = sigmoid(Z_1) \Rightarrow Z_2 = W_2^TA_1 + B_2 \Rightarrow A_2 = sigmoid(Z_2) \Rightarrow L(A2, Y)
+$$
+
+Neural Network is a stack of logistic regression objects.
+
+### Neural network notations
+
+#### General comments
+- Superscript $(i)$ will denote the $i^{th}$ training example while the superscript $[i]$ will denote the $l^{th}$ layer.
+
+#### Sizes
+- $m$: number of examples in the dataset;
+- $n_x$: input size;
+- $n_y$: output size(or number of classes);
+- $n_h^{[l]}$: number of hidden units of the $l^{th}$ layer;
+- $L$: number of layers in the network.
+
+#### Objects
+- $X$: the input matrix
+- $x^{(i)}$: the $i^{th}$ example represented as a column vector;
+- $Y$: the label matrix;
+- $y^{(i)}$: the output label for the $i^{th}$ example;
+- $W^{[l]}$: the $l^{th}$ lyaer weight matrix;
+- $b^{[l]}$: the bias vector of $l^{th}$ layer;
+- $\hat{y}$: the predicted output vector. It can also be denoted $a^{[L]}$ where $L$ is the number of layers in the network.
+
+#### Forward propagation
+- $a = g^{[l]}(W_xx^{(i)} + b_1) = g^{[l]}(z_1)$, where $g^{[l]}$ denotes the $l^{th}$ layer activation function;
+- $J(x, W, b, y)$ or $J(\hat{y}, y)$ denotes the cost function.
+
+### Activation functions
+![activation functions](/images/2020/deep_learning/activation.png)
