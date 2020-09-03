@@ -180,3 +180,97 @@ One of the popular activation functions that solved the slow gradient decent is 
 
 #### Leaky ReLU
 The difference between Leaky ReLU and ReLU is that if the input is negtive the slope will be so small. It works as ReLU but most people use ReLU.
+
+### Why we need non-linear activation functions
+Linear activation will output linear activations, that means whatever hidden layers you add, the activation will be always linear like logistic regression, so it's useless in a lot of complex problems.
+
+You might use linear activation function in one place, the output layer, if the output is real number(regression problem). But even in this case if the output value is non-negtive you could still use ReLU instead.
+
+### Derivative of activation functions
+
+- Derivation of sigmoid activation function:
+
+$$
+g(z) = \frac{1}{1 + e^{-z}}
+$$
+
+$$
+g'(z) = \frac{1}{1 + e^{-z}} \cdot (1 - \frac{1}{1 + e^{-z}}) = g(z) \cdot (1 - g(z))
+$$
+
+- Derivation of tanh activation function:
+
+$$
+g(z) = \frac{e^z - e^{-z}}{e^z + e^{-z}}
+$$
+
+$$
+g'(z) = 1 - tanh^2(z) = 1 - g^2(z)
+$$
+
+- Derivation of ReLU activation function:
+
+$$
+g(z) = max(0, z)
+$$
+
+$$
+g'(z) = 
+\begin{cases}
+0, \quad \mbox{if} \quad z < 0 \\\\
+1, \quad \mbox{if} \quad z >= 0
+\end{cases}
+$$
+
+- Derivation of leaky ReLU activation function:
+
+$$
+g(z) = max(0.01 \cdot z, z)
+$$
+
+$$
+g'(z) = 
+\begin{cases}
+0.01, \quad \mbox{if} \quad z < 0 \\\\
+1, \quad \mbox{if} \quad z >=0
+\end{cases}
+$$
+
+### Random initialization
+In logistic regression it wasn't important to initialize the weights randomly, while in neural network we have to initialize them randomly.
+
+While initializing bias with $0$ is OK, neural network won't work if we initialize all weights with zeros:
+
+- all hidden units will be completely identical(symmetric) and compute exactly the same function;
+- on each gradient descent iteration all the hidden units will always update the same.
+
+We need small values because in sigmoid(or tanh) activation function, for example, if the weights is too large you are more likely to end up with very large values of $Z$. Which causes your tanh or sigmoid activation function to be saturated, thus slowing down learning. If you don't have any sigmoid or tanh activation function throughout your neural network, this is less of an issue.
+
+## Deep neural network
+Shallow Neural Network is a Neural Network with $1$ or $2$ layers.
+Deep Neural Network is a Neural Network with $3$ or more layers.
+
+### Getting your matrix dimensions right
+With the equation:
+$$
+Z = W^TX + B
+$$
+where $X$ has the shape of $(x, n^{[l-1]})$.
+
+- Dimension of $W$ is $(n^{[l]}, n^{[l-1]})$;
+- Dimension of $B$ is $(n^{[l]}, 1)$;
+- $dw$ has the same shape as $W$;
+- $db$ has the same shape as $B$;
+- Dimension of $Z^{[l]}$, $A^{[l]}$, $dZ^{[l]}$, $dA^{[l]}$ is $(n^{[l]}, m)$.
+
+### Hyperparameters
+The main parameters of Neural Network is:
+- $w$;
+- $b$.
+
+Hyperparameters are the parameters that control the algorithm:
+- learning rate;
+- Number of iteration;
+- Number of hidden layers;
+- Number of hidden units;
+- Choice of activations.
