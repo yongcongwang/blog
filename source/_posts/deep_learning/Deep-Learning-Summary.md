@@ -274,3 +274,67 @@ Hyperparameters are the parameters that control the algorithm:
 - Number of hidden layers;
 - Number of hidden units;
 - Choice of activations.
+
+# Improving Deep Neural Networks: Hyperparameter Tuning, Regularition and Optimization
+
+## Practical aspects of deep learning
+
+### Train/dev/test Sets
+It's impossible to get all your hyperparameters right on a new application from the first time, so, the idea is to go through the loop:
+```C++
+   Idea --> Code --> Experiment
+    ^                     |
+    |                     |
+    -----------------------
+```
+You can go through the loop many times to figure out your hyperparameters.
+
+Generally, we divid the data into three parts:
+- Train set, which used to train the neural network and is usually the largest set;
+- Develop(dev) set, which is used to validate the traing result;
+- Testi set, which is used to test the trained neural network.
+
+You will try to build a model upon `train set` then try to optimize hyperparamters on `dev set` as much as possible. After your model is ready, you can evaluate the model with `test set`.
+
+The ratio of splitting the models is:
+- `6:2:2`, if the size of the dataset is $100$ to $1000000$;
+- `98:1:1 or 99.5:0.25:0.25`, if the size of the dataset is $> 1000000$.
+
+You should make sure the `dev set` and `test set` comes from the same distribution.
+
+### Bias/variance
+Bias and variance techiques are easy to learn but difficult to master.
+Generally, your model is:
+- `underfitting`, if it has a `high bias`;
+- `overfitting`, if it has a `high variance`.
+![bias and variance](/images/2020/deep_learning/bias_and_variance.png)
+
+You can plot the result as the figure above, but if this is not possible, another idea to get bias/ variance is to check the error:
+- High variance(overfitting):
+ - Training error: $1%$;
+ - Dev error: $11%$.
+- High bias(underfitting):
+ - Training error: $15%$;
+ - Dev error: $14%$.
+- High bias (underfitting) && High variance(overfitting):
+ - Training error: $15%$;
+ - Test error: $30%$.
+- Best:
+ - Training error: $0.5%$;
+ - Test error: $1%$.
+
+These conclusions come from the assumption that human has $0%$ error. If the problem isn't meeting this assumption, you will need to use human error as baseline.
+
+### Basic recipe for high bias and variance
+If your algorithm has a high bias, you can:
+- Try to make your neural network bigger(more hidden units or more layers);
+- Try a different model that fits your data well;
+- Try more batches;
+- Try difference(advanced) optimization algorithms.
+
+If your algorithm has a high variance, you can:
+- Use more data;
+- Try regularization;
+- Try a different model that is suitable for your data.
+
+No matter what the problem is, training a bigger neural network never hurts, although this may lead to longer runing time.
