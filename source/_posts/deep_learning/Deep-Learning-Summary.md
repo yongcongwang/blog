@@ -311,17 +311,17 @@ Generally, your model is:
 
 You can plot the result as the figure above, but if this is not possible, another idea to get bias/ variance is to check the error:
 - High variance(overfitting):
- - Training error: $1%$;
- - Dev error: $11%$.
+ - Training error: 1%;
+ - Dev error: 11%.
 - High bias(underfitting):
- - Training error: $15%$;
- - Dev error: $14%$.
+ - Training error: 15%;
+ - Dev error: 14%.
 - High bias (underfitting) && High variance(overfitting):
- - Training error: $15%$;
- - Test error: $30%$.
+ - Training error: 15%;
+ - Test error: 30%.
 - Best:
- - Training error: $0.5%$;
- - Test error: $1%$.
+ - Training error: 0.5%;
+ - Test error: 1%.
 
 These conclusions come from the assumption that human has $0%$ error. If the problem isn't meeting this assumption, you will need to use human error as baseline.
 
