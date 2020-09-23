@@ -338,3 +338,5 @@ If your algorithm has a high variance, you can:
 - Try a different model that is suitable for your data.
 
 No matter what the problem is, training a bigger neural network never hurts, although this may lead to longer runing time.
+
+## Regularizing your neural network
