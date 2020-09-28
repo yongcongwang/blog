@@ -340,3 +340,109 @@ If your algorithm has a high variance, you can:
 No matter what the problem is, training a bigger neural network never hurts, although this may lead to longer runing time.
 
 ## Regularizing your neural network
+For variance(overfitting) problems, we can try a bigger training data to fix it. But some times you can't just get more training data, or it would be quite expensive to get more data. In this case regularization will often help to prevent overfitting, or reduce the errors in your network.
+
+### Regularization
+
+#### Regularization for logistic regression
+- $L_1$ regularization
+$$
+J(w,b) = \frac{1}{m} \sum_{i = 1}^mL(\hat{y^{(i)}}, y^{(i)}) + \frac{\lambda}{2m} \lVert w \rVert_2^2
+$$
+$$
+\lVert w \rVert_2^2 = \sum_{j = i}^{n_x}|w_j|
+$$
+where $\lambda$ is called regularization parameter(hyperparameter), you can try different value and choose the one with best performance.
+
+- $L_1$ regularization(for arcane technical math, this is called `Frobenius norm`)
+$$
+J(w,b) = \frac{1}{m} \sum_{i = 1}^mL(\hat{y^{(i)}}, y^{(i)}) + \frac{\lambda}{2m} \lVert w \rVert_1
+$$
+$$
+\lVert w \rVert_1 = \sum_{j = i}^{n_x}w_j^2 = w^Tw
+$$
+
+#### Regularization for neural network
+The normal cost function that we want to minimize is:
+$$
+J(w^{[1]}, b^{[1]}, ..., w^{[L]}, b^{[L]}) = \frac{1}{m} \sum_{i = 1}^{m}L(\hat{y^{(i)}}, y^{(i)})
+$$
+
+Then the $L_2$ regularization is:
+$$
+J(w^{[1]}, b^{[1]}, ..., w^{[L]}, b^{[L]}) = \frac{1}{m} \sum_{i = 1}^{m}L(\hat{y^{(i)}}, y^{(i)}) + \frac{1}{2m} \sum_{l = 1}^{L} \lVert w^{[l]} \rVert^2
+$$
+
+The old way we do back propagation is:
+$$
+dw^{[l]} = (back propagation)
+$$
+$$
+w^{[l]} = w^{[l]} - \alpha \cdot dw^{[l]}
+$$
+Then we change to:
+$$
+dw^{[l]} = (back propagation) + \frac{\lambda}{m} \cdot w^{[l]}
+$$
+So:
+$$
+\begin{align}
+w^{[l]} 
+& = w^{[l]} - \alpha \cdot dw^{[l]} \\\\
+& = w^{[l]} - \alpha * ((back propagation) + \frac{\lambda}{m} \cdot w^{[l]}) \\\\
+& = w^{[l]} - \alpha * (back propagation) - \alpha * (\frac{\lambda}{m} \cdot w^{[l]}) \\\\
+& = (1 - \frac{\alpha\lambda}{m}) \cdot w^{[l]} - \alpha * (back propagation)
+\end{align}
+$$
+
+In practice this will penalize large weights and effectively limits the freedom in your model, because the them $(1 - \frac{\alpha\lambda}{m}) \cdot w^{[l]}$ causes the `weight to decay` in propartion to its size.
+
+#### Why regularization reduces overfitting
+Here are some intuitions:
+- If $\lambda$ is too large: a lot of $w$ part will be close to $0$, which makes the neural network more simple;
+- If $\lambda$ is good enough: it will reduce some weights that makes the neural network overfitting.
+
+And for $tanh$ activation function:
+- If $\lambda$ is too large, $w$ part will be small(close to $0$), which will use the linear part of the $tanh$ activation function, so we will go from non-linear activation to roughly linear which would make the neural network a roughly linear classifier.
+- If $\lambda$ is good enough, it will just make some of $tanh$ activations roughly linear which will prevent overfitting.
+
+### Dropout regularization
+In most case, we use $L_2$ regularization. The dropout regularization eliminates some neurons/weights on each iteration based on a probability. A most common techinque to implement dropout is called `Inverted dropout`:
+```Python
+keep_prob = 0.8   # 0 <= keep_prob <= 1
+l = 3  # this code is only for layer 3
+# the generated number that are less than 0.8 will be dropped. 80% stay, 20% dropped
+d3 = np.random.rand(a[l].shape[0], a[l].shape[1]) < keep_prob
+
+a3 = np.multiply(a3,d3)   # keep only the values in d3
+
+# increase a3 to not reduce the expected value of output
+# (ensures that the expected value of a3 remains the same) - to solve the scaling problem
+a3 = a3 / keep_prob
+```
+
+#### Understanding dropout
+
+- Dropout knocks out units in neural network randomly, so it works like on every iteration you're working with a smaller neural network which has a regulizing effect.
+- Neural network can not rely on any one feature because it may be knocked out, so it has to spread out weights.
+- Dropout can have different `keep_prob` per layer.
+- The input layer dropout has to be near $1$(or just $1$) because you don't want to eliminate a lot of featrues.
+- A lot of researchers are using dropout with Computer Vision(CV), bacause they have a very big input size and almost nerver have enough data, so overfitting is the usual problem. And dropout is a regularization technique to prevent overfitting.
+
+### Other regularization methods
+
+#### Data augmentation
+- In a computer vision data, you can:
+ - flip all your pictures horizontally which will give you more data instances;
+ - apply a random position and rotation to an image to get more data.
+- In OCR you can impose random ratation and distortions to digits/letters.
+- New data obtained using this technique isn't as good as the real independent data, but still can be used as a regularization techniques.
+
+#### Early stopping
+We plot the `training set cost` and the `dev set cost` together for each iteration. At some iteration the `dev set cost` will stop decreasing and will start `increasing`. We will pick the point at wich the training set error and dev set error are best(lowest training cost with lowest dev cost).
+![](/images/2020/deep_learning/early_stop.png)
+
+We prefer to use $L_2$ regularization instead of early stop because this technique simultaneously tries to mimimize the cost function and not to overfit which contradicts the orthogonalization approch. But its advantage is that you don't need to search a hyperparameter.
+
+#### Model ensembles
+You can train multiple independent models and average their results, this can get you extra 2% performance and reduces the generalization error.
