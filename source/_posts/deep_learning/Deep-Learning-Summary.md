@@ -446,3 +446,54 @@ We prefer to use $L_2$ regularization instead of early stop because this techniq
 
 #### Model ensembles
 You can train multiple independent models and average their results, this can get you extra 2% performance and reduces the generalization error.
+
+## Setting up your optimization problem
+
+### Normallizing inputs
+Normalizing inputs will spped up the training process a lot.
+![normalize](/images/2020/deep_learning/normalize_trainning_set.png)
+
+Normalization are going on these steps:
+
+1. Get the mean of the training set: $mean = \frac{1}{m} * \sum_{i=1}^mx^{(i)}$
+2. Subtract the mean from each input: $X = X - mean$, this will make your inputs centered around $0$.
+3. Get the variance of the training set: $variance = \frac{1}{m} * \sum_{i = 1}^m(x^{(i)})^2$
+4. Normalize the variance: $X = X / variance$
+
+So why we normalize our inputs?
+- If we don't normalize the inputs our cost function will be deep and its shape will be inconsistent(elongated), then optimizing it will take a long time.
+- If we normalized the inputs, the shape of the cost function will be consistent(look more symmetric like circle in 2D exmaple) and we can use a larger learning rate $\alpha$, the optimization will be faster.
+
+### Vanishing/exploding gradients
+The vanishing/exploding gradients occurs when your derivates becomes very small or very big. To understand the problem, suppose that we have a deep neural network with number of layer $L$, and all the activation functions are `linear` and each $b = 0$, then:
+$$
+\hat{y} = w^{[L]}w^{[L - 1]}w^{[L - 2]} \cdots w^{[2]} w^{[1]} x
+$$
+and if we have 2 hidden units per layer and $x_1 = x_2 = 1$, we will result in:
+$$
+\hat{y} = w^{[L]} \begin{bmatrix}x & 0 \\\\ 0 & x \end{bmatrix}^{L-1} = x^L \\\\
+$$
+as:
+$$
+w^{[L]} = \begin{bmatrix}x & 0 \\\\ 0 & x \end{bmatrix}^{L-1}
+$$
+
+If $x < 1$, $\hat{y}$ will be very small; if $x > 1$, $\hat{y}$ will be really big.
+This example explains that the activations (and similarly derivatives) will be decreased/increased exponentially as a function of number of layers.
+
+### Weight initialization for deep networks
+A partial solution to the vanishing/exploding gradients in neural network is better or more careful choice of the random initialization of weights.
+In a simgle neuron: $Z = w_1x_1 + w_2x_2 + \cdots + w_nx_n$, if the number of node $n_x$ is large, we want $w$ to be smaller to not explode the cost, which turns out that we need the variance(equal to $\frac{1}{n_x}$) to be the range of $W$.
+So we initialize $W$ like this(better to use with `tanh` activation):
+```Python
+np.random.rand(shape) * np.sqrt(1/n[l-1])
+```
+or variation of this:
+```Python
+np.random.rand(shape) * np.sqrt(2/(n[l-1] + n[l]))
+```
+Setting initialization part inside sqrt to `2/n[l-1]` for `ReLU` is better:
+```Python
+np.random.rand(shape) * np.sqrt(2/n[l-1])
+```
+This is one of the best way of partially solution to Vanishing / Exploding gradients (ReLU + Weight Initialization with variance) which will help gradients not to vanish/explode too quickly.
