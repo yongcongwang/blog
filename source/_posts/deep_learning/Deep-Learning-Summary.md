@@ -450,7 +450,7 @@ You can train multiple independent models and average their results, this can ge
 ## Setting up your optimization problem
 
 ### Normallizing inputs
-Normalizing inputs will spped up the training process a lot.
+Normalizing inputs will speed up the training process a lot.
 ![normalize](/images/2020/deep_learning/normalize_trainning_set.png)
 
 Normalization are going on these steps:
