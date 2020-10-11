@@ -14,9 +14,6 @@ The C++ language includes an implementation of common data structures in its lib
 # Vector
 
 ```C++
-#include <iostream>
-#include <algorithm>
-
 template <typename Object>
 class Vector {
  public:
@@ -75,16 +72,22 @@ class Vector {
     }
 
     capacity_ = new_capacity;
-    std::swap(objects, new_array);
+    std::swap(objects_, new_array);
     delete[] new_array;
   }
 
   Object& operator[](int index) {
-    return objects_[index];  // TODO: input check
+    if (index < 0 || size_ == 0 || index >= size_) {
+      throw std::out_of_range("invalid index!");
+    }
+    return objects_[index];
   }
 
   const Object& operator[](int index) const {
-    return objects_[index];  // TODO: input check
+    if (index < 0 || size_ == 0 || index >= size_) {
+      throw std::out_of_range("invalid index!");
+    }
+    return objects_[index];
   }
 
   bool empty() const {
@@ -122,11 +125,17 @@ class Vector {
   }
 
   const Object& back() const {
-    return objects_[size_ - 1];  // TODO: empty check
+    if (size_ == 0) {
+      throw std::out_of_range("invalid index!");
+    }
+    return objects_[size_ - 1];
   }
 
   const Object& front() const {
-    return objects_[0];  // TODO: empty check
+    if (size_ == 0) {
+      throw std::out_of_range("invalid index!");
+    }
+    return objects_[0];
   }
 
  public:
@@ -134,18 +143,18 @@ class Vector {
   typedef const Object* const_iterator;
 
   iterator begin() {
-    return &object[0];
+    return &objects_[0];
   }
 
   const_iterator begin() const {
-    return &object[0];
+    return &objects_[0];
   }
 
   iterator end() {
-    return &object[size_];
+    return &objects_[size_];
   }
   const_iterator end() const {
-    return &object[size_];
+    return &objects_[size_];
   }
 
  private:
