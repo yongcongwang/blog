@@ -497,3 +497,170 @@ Setting initialization part inside sqrt to `2/n[l-1]` for `ReLU` is better:
 np.random.rand(shape) * np.sqrt(2/n[l-1])
 ```
 This is one of the best way of partially solution to Vanishing / Exploding gradients (ReLU + Weight Initialization with variance) which will help gradients not to vanish/explode too quickly.
+
+# Optimization algorithms
+Training neural network with a large data is slow, so it's necessary to optimize the algorithm to run faster.
+
+## Mini-batch gradient descent
+Suppose we have a data set with the size of `50m`, training it will take a huge processing time for one step because 50 million won't fit in the memory at once. To deal with this we can use `mini-batch` to process some of our items even before finishing the 50 million items. The process is:
+
+- Split $X$(with the size `m`) into `mini-batch` of size `b`:
+ - $X^{ \\{ 1 \\} } = 0,  \cdots, b$
+ - $X^{ \\{ 2 \\} } = b + 1, \cdots, 2b$
+ - $ \cdots $
+ - $X^{ \\{ \frac{m}{b} \\} } = (\frac{m}{b} - 1) * b, \cdots, \frac{m}{b} * b\cdots 2b$
+- Split $Y$ into `mini-batch` of size `b`, so we get the definition of `mini-batch`: $t: X^{\\{ t \\}}, Y^{\\{ t \\}}$
+- Like old `batch gradient descent`, with `mini-batch gradient descent` we run the gradient descent on the mini datasets:
+```python
+for t = 1 : Sum_of_mini-batches  # this is called an epoch
+	AL, caches = forward_prop(X{t}, Y{t})
+	cost = compute_cost(AL, Y{t})
+	grads = backward_prop(AL, caches)
+	update_parameters(grads)
+```
+
+### Understanding mini-batch gradient descent
+Unlike batch gradient descent where cost function decreases each iteration, mini-batch's cost function won't go down with each step, it may contain ups and downs but generally it goes down.
+
+![mini-batch](/images/2020/deep_learning/mini_batch.png)
+
+The gradient descent type depends on mini-batch size:
+- $mini-batch-size = m$: batch gradient descent, which is too long per iteration(epoch);
+- $mini-batch-size = 1$: stochastic gradient descent(SGD), which:
+ - is too noisy regarding cost minimization(can be reduced by using smaller learning rate);
+ - won't ever converge(reach the minimum cost);
+ - loses speedup from vectorization.
+- $mini-batch-size = (1, m)$: mini-batch gradient descent, which:
+ - has faster learning speed:
+   - it can take the advantage of vectorization;
+   - it makes progress without waiting to process the entire training set.
+ - doesn't always exactly converge(oscelates in a very small region)
+
+How to choose the `mini-batch` size? Here are the suggestions:
+- $m < 2000$: Batch gradient descent;
+- It has to be the power of $2$(64, 128, ..., 1024, ...), because of the way computer memory is layed and accessed your code might run faster;
+- Make sure that the `mini-batch` fits in CPU/GPU memory.
+
+## Exponentially weighted average
+If you have data like the temparature of day throughout the year:
+$$
+\begin{array}{l}
+\theta_1 = 40 \\\\
+\theta_2 = 49 \\\\
+\theta_3 = 45 \\\\
+\cdots \\\\
+\theta_{180} = 60
+\end{array}
+$$
+This data is samll in winter but big in summer. Its noisy if we plot it out.
+Now we use the `exponentially weighted averages` equation
+$$
+v_t = \beta * v_{t - 1} + (1 - \beta) * \theta_t
+$$
+The result is:
+$$
+\begin{array}{l}
+v_0 = 0 \\\\
+v_1 = \beta * v_0 + (1 - \beta) * \theta_1 \\\\
+v_2 = \beta * v_0 + (1 - \beta) * \theta_2 \\\\
+v_3 = \beta * v_0 + (1 - \beta) * \theta_3 \\\\
+\cdots
+\end{array}
+$$
+
+If we plot this it will represent averages about $\frac{1}{1 - \beta}$ entries:
+- $\beta = 0.9$ will average last 10 entries;
+- $\beta = 0.98$ will average last 50 entries;
+- $\beta = 0.5$ will average last 2 entries.
+
+The reason why `exponentially weighted averages` is useful for further optimizing gradient descent is that, it can give different weights to recent data points($\beta$) based on value of $\beta$. If $\beta$ is high(around 0.9),  it smoothens out the averages of skewed data points, which will reduce oscillations in gradient descent and hence make faster and smoother path towards minima.
+![exponentially_weighted_averages](/images/2020/deep_learning/exponentially_weighted_averages.png)
+
+The advantage of this algorithm is that its implementation is efficient and fast because it has only one param: $\beta$.
+
+### Bias correction in exponentially weighted averages
+Because $v_0 = 0$, the bias of the weighted averages is shifted and the accuracy suffers at the start. We use following equation to solve the bias issue:
+$$
+v_t = \frac{\beta * v_{t - 1} + (1 - \beta) * \theta_t}{1 - \beta^t}
+$$
+
+As $t$ becomes larger the $1 - \beta^t$ term will become close to $1$.
+
+## Gradient descent with momentum
+The momentum algorithm almost always works faster than standard gradient descent. The simple idea is to calculate the exponentially weighted averages for your gradients and then update your weights with the new values:
+$$
+\begin{array}{l}
+v_{dW} = \beta \cdot v_{dW} + (1 - \beta) \cdot dW \\\\
+v_{db} = \beta \cdot v_{db} + (1 - \beta) \cdot db \\\\
+W = W - \alpha \cdot v_{dW} \\\\
+b = b - \alpha \cdot v_{db}
+\end{array}
+$$
+
+where $\alpha$ is learning rate, $\beta$ is another `hyperparameter`, $\beta = 0.9$ is very common and works very well in most cases.
+
+> In practice we don't bother implementating `bias correction`
+
+## RMSprop
+`RMSprop` stands for `Root Mean Square prop`. It speeds up the gradient descent:
+$$
+\begin{array}{l}
+s_{dW} = \beta \cdot s_{dW} + (1 - \beta) \cdot dW^2 \\\\
+s_{db} = \beta \cdot s_{db} + (1 - \beta) \cdot db^2 \\\\
+W = W - \alpha \cdot \frac{dW}{\sqrt{s_{dW}}} \\\\
+b = b - \alpha \cdot \frac{dW}{\sqrt{s_{db}}}
+\end{array}
+$$
+
+RMSprop will make the cost function move slower on the vertical direction and faster on the horizontal direction:
+
+![rms_prop](/images/2020/deep_learning/rmsprop.png)
+
+To ensure $s_{dw}$ is not zero, we add $\epsilon$ (e.g. $\epsilon = 10^{-8}$)to the demoninator: 
+$$
+W = W - \alpha \cdot \frac{dW}{\sqrt{s_{dW}} + \epsilon}
+$$
+
+## Adam optimization algorithm
+`Adam` stands for `Adaptive Moment Estimation`. Adam and RMSprop are among the optimization algorithms that works very well with a lot of neural network architecture. Adam simply puts RMSprop and momentum together:
+$$
+\begin{align}
+v_{dW} &= \beta_1 \cdot v_{dW} + (1 - \beta_1) \cdot dW \\\\
+v_{db} &= \beta_1 \cdot v_{db} + (1 - \beta_1) \cdot db \\\\
+s_{dW} &= \beta_2 \cdot s_{dW} + (1 - \beta_2) \cdot dW^2 \\\\
+s_{db} &= \beta_2 \cdot s_{db} + (1 - \beta_2) \cdot db^2 \\\\
+v_{dW} &= \frac{v_{dW}}{1 - \beta_1^t} \\\\
+v_{db} &= \frac{v_{db}}{1 - \beta_1^t} \\\\
+s_{dW} &= \frac{s_{dW}}{1 - \beta_1^t} \\\\
+s_{db} &= \frac{s_{db}}{1 - \beta_1^t} \\\\
+W &= W - \alpha \cdot \frac{v_{dW}}{\sqrt{s_{dW}} + \epsilon} \\\\
+b &= b - \alpha \cdot \frac{v_{db}}{\sqrt{s_{db}} + \epsilon}
+\end{align}
+$$
+
+In equation:
+- (5) and (6) are momentum;
+- (7) and (8) are RMSprop;
+- (9) - (12) are bias correction;
+- $\alpha$ is learning rate and needs to be tuned;
+- $\beta_1$ is the parameter of momentum, $0.9$ is recommanded by default;
+- $\beta_2$ is the parameter of RMSprop, $0.999$ is recommanded by default;
+- $\epsilon = 10^{-8}$ recommanded by default.
+
+## Learning rate decay
+Learning rate decay is to reduce the learning rate slowly. As mentioned before, mini-batch gradient descent won't reach the optimum point(converge). But by making the learning rate decay with iterations it will be much closer to it because the steps near the optimum are smaller.
+
+One technique equations is:
+$$
+\alpha = \frac{1}{1 + k_{decay} \cdot t} \cdot \alpha_0
+$$
+where $k_{decay}$ is decay rate, $t$ is the epoch number.
+Other learning rate decay can be:
+$$
+\alpha = 0.95^{t} \cdot \alpha_0
+$$
+or
+$$
+\alpha = \frac{k}{\sqrt{t}} \cdot \alpha_0
+$$
+Learning rate decay has less priority than other optimization methods.
