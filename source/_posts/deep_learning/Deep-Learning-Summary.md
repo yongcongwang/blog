@@ -664,3 +664,35 @@ $$
 \alpha = \frac{k}{\sqrt{t}} \cdot \alpha_0
 $$
 Learning rate decay has less priority than other optimization methods.
+
+# Hyperparameter tuning and batch nomalization
+
+## Tuning process
+When we train a neural network, we usually need to tune our hyperparameters to get the best out of them. The importance rank of these hyperparameters is:
+1. Learning rate, $\alpha$;
+2. Momentum, $\beta$;
+3. Mini-batch size, $b$;
+4. Number of hidden units;
+5. Number of layers;
+6. Learning rate decay;
+7. Ragularization $\lambda$;
+8. Activation functions;
+9. Adam $\beta_1$, $\beta_2$ and $\epsilon$.
+
+One of the ways to tune is to sample a grid with $N$ hyperparameter settings and then try all setting combinations on your problem. You should try random values, not the grid.
+You can use `Coarse to fine sampling scheme`:
+> When you find some hyperparameters values that give you a better performance, zoom into a smaller region around these values and sample more densely within this space.
+
+## Using an appropriate scale to pick hyperparameters
+Assume that you have a specific range for a hyperparameter from `a` to `b`, it's better to search for the right ones using logarithmic scale rather than in linear scale:
+- $a_{log} = log(a)$: if $a = 0.001$ then $a_{log} = -4$
+- $b_{log} = log(b)$: if $b = 1$ then $a_{log} = 0$
+
+Then: $r = (a_{log} - b_{log}) * rand + b_{log}$, the range will be [-4, 0] and result $r = 10^r$.
+
+For example, we have known that the best range for `Momentum` $\beta$ is $[0.9, 0.999]$, you should search for $1 - \beta$ in the range $[0.001, 0.1]$, and use $a = 0.001$ and $b = 0.1$. Then:
+- $a_{log} = -3$
+- $b_{log} = -1$
+- $r = (a_{log} - b_{log}) * rand + b_{log}$
+- $\beta = 1 - 10^r$
+
