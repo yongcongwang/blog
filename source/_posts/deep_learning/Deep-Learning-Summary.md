@@ -696,3 +696,50 @@ For example, we have known that the best range for `Momentum` $\beta$ is $[0.9, 
 - $r = (a_{log} - b_{log}) * rand + b_{log}$
 - $\beta = 1 - 10^r$
 
+### Hyperparameters tuning in practice: Pandas vs. Caviar
+Intuitions about hyperparameter settings from one application area may or may not trasfer to a different one.
+
+If you don't have much computational resources you can use `Panda` approach:
+- Day 0 you might initialize your parameter as random and then start training;
+- Then you watch your learning curve gradually decrease over the day;
+- And each day you nudge your parameters a little during training.
+
+If you have enough computational resources, you can use `Caviar` approach: 
+- Run some models in parallel and at the end of the day you check the result.
+
+### Normalizing activations in a network
+Normalizing input by subtracting the mean and dividing by variance helps a lot for the shape of the cost function and for reaching the minimum point faster.  The question is:
+> for any hidden layer can we normalize $A^{[l]}$ to train $W^{[l+1]}$ and $b^{[l+1]}$ faster?
+This is what batch normalization is about.
+
+There are some debates about whether you should normalize values before the activation function $Z^{[l]}$ or after applying the activation function $A^{[l]}$. In practice, nomalizing $Z^{[l]}$ is much more often.
+The algorithm porcess is:
+- Given $Z^{[l]} = [z^{(1)}, \cdots, z^{(m)}]$;
+- Compute $mean = \frac{1}{m} * \sum^m\_{i=1}{z^{[i]}}$
+- Compute $variance = \frac{1}{m} * \sum_{i=1}^m(z^{[i]}-mean)^2$
+- Then $Z_{norm}^{[i]} = \frac{z^{[i]}}{\sqrt{variance + epsilon}}$
+  - forcing the inputs to distribution with 0 mean and variance of 1
+- Then $\tilde{z}^{[i]} = \gamma * z_{norm}^{[i]} + \beta$
+  - Make inputs belong to other distribution(with other mean and variance);
+  - $\gamma$ and $\beta$ are learnable parameters of the model;
+  - Make the neural network learn the distribution of the outputs;
+  - Note: if $\gamma = \sqrt{variance + epsilon}$ and $\beta = mean$, then $\tilde{z}^{[i]} = z^{[i]}$
+
+### Fitting Batch normalization into a neural network
+Batch normalization is usually applied with mini-batches.
+If we use batch normalization parameters $b^{[1]}, \cdots, b^{[l]}$ doesn't count because they will be eliminated after mean subtraction step. So the parameters will be:
+- $W^{[l]}$;
+- $\beta^{[l]}$;
+- $\alpha^{[l]}$.
+
+### Why does batch normalization work?
+- The first reason is the same reason as why we normalize $X$;
+- The second reason is that batch normalization reduces the problem of input values changing(shifting);
+- Batch normalization does some regularization:
+  - Each mini-batch is scaled by the mean/variance computed of that mini-batch;
+  - This adds some noise to the value $Z^{[l]}$ within that mini-batch, so similar to dropout it adds some noise to each hidden layer's activation;
+  - This has a slight regularization effect;
+  - Using bigger size of the mini-batch you are reducing noise and therefore regularization effect;
+  - Don't rely on batch normalization as a regularization, it's intended for normalization of hidden units, activations and therefore speeding up learning. For regularization use other regularization techniques.
+
+### BAtch 
