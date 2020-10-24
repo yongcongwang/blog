@@ -742,4 +742,41 @@ If we use batch normalization parameters $b^{[1]}, \cdots, b^{[l]}$ doesn't coun
   - Using bigger size of the mini-batch you are reducing noise and therefore regularization effect;
   - Don't rely on batch normalization as a regularization, it's intended for normalization of hidden units, activations and therefore speeding up learning. For regularization use other regularization techniques.
 
-### BAtch 
+### Batch normalization at test time
+When we train a neural network with batch normalization, we compute the mean and the variance of the mini-batch. But in testing we might need to process examples one each time, whose mean and variance won't make sense. So we have to compute the average across the mini-batch, this is called `Running average`.
+
+### Softmax Regression
+The neural networks we trained so far are binary classifications, but there are a generalization of logistic regression called `Softmax regression` that is used for multiclass classification/regression. In the last layer of the neural network we use the `Softmax regression` activation instead of `sigmoid` to classify the classes.
+$$
+t = e^{Z^{[L]}}
+$$
+$$
+A_{[L]} = \frac{e^{Z^{[L]}}}{\sum{t}}
+$$
+
+### Trainning a Softmax classifier
+There is an activation called `hard max` which get $1$ for the maximum value and $0$ for others. The `softmax` named because it's not so `hard`, it can be values in $[0, 1]$.
+
+Softmax is a generalization of logistic activation function to `C` classes. If `C = 2` then `softmax` reduces to logistic regression.
+
+The loss function used which `softmax`:
+$$
+L(y, \hat{y}) = - \sum_{j=0}^{C-1}(y^{[j]} * log(\hat{y}^{[j]}))
+$$
+
+The cost function used with `softmax`:
+$$
+J(w^{[1]}, b^{[1]}, \cdots) = -\frac{1}{m} * \sum_{i=0}^{m}(L(y^{[i]}, \hat{y}^{[i]}))
+$$
+
+Back propagation with `softmax`:
+$$
+dZ^{[L]} = \hat{Y} - Y
+$$
+
+The derivative of softmax is:
+$$
+\hat{Y} * (1 - \hat{Y})
+$$
+
+![example](https://github.com/mbadry1/DeepLearning.ai-Summary/raw/master/2-%20Improving%20Deep%20Neural%20Networks/Images/07-_softmax.png)
