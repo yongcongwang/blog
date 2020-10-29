@@ -1,14 +1,51 @@
 ---
-title: Interacting Multiple Model(IMM) algorithm for pedestrian and vehicle trajectroy
+title: Using Interacting Multiple Model(IMM) algorithm to predict pedestrian and vehicle's trajectroy
 mathjax: true
 date: 2020-10-29 19:37:24
 ---
 
+For self-driving vehicle, it's important to reliably predict the movement of traffic agents around ego car, such as vehicles, cyclists and pedestrians.
 
-# Introduce to the Kalman Filter
-In 1960, R.E. Kalman published his famous paper describing a recursive solution to the discent-data linear filtering problem. Since that time, due in large part to advances in digital computing, the Kalman filter has been the subject of extensive research and application, particularly in the area of autonomous or assisted navigation.
+We have many neural networks to predict obstacle on lane, but for obstacles which are not on lane, we now have poor method to predict them.
 
 <!-- more -->
+
+# Current predictor for obstacles not on lane
+If an obstacle(vehicle/bicycle/pedestrian) is not on lane, we use a `FreeMovePredictor` to predict its trajectory. `FreeMovePredictor` assumes that the obstacle always moves with constant acceleration, the state is:
+$$
+\begin{bmatrix}
+x \\\\
+y \\\\
+x^\prime \\\\
+y^\prime \\\\
+x^{\prime\prime} \\\\
+y^{\prime\prime}
+\end{bmatrix}
+$$
+and the transition matrix is:
+$$
+\begin{bmatrix}
+1 & 0 & t & 0 & 0.5 * t^2 & 0 \\\\
+0 & 1 & 0 & t & 0 & 0.5 * t^2 \\\\
+0 & 0 & 1 & 0 & t & 0 \\\\
+0 & 0 & 0 & 1 & 0 & t \\\\
+0 & 0 & 0 & 0 & 1 & 0 \\\\
+0 & 0 & 0 & 0 & 0 & 1
+\end{bmatrix}
+$$
+The disadvantages are:
+1. We use the newest position and velocity from perception module, but the result is not so accurate.
+2. It performs not so good especially for vehicles.
+
+![pic]()
+![pic]()
+
+To imporve the prediction accuracy off lane, we use
+- constant velocity kalman filter to predict pedestrian;
+- interacting multiple model of constant velocity(cv), constant acceleration(ca) and constant turn rate(ct) to predict vehicle and bicycle.
+
+# kalman Filter
+In 1960, R.E. Kalman published his famous paper describing a recursive solution to the discent-data linear filtering problem. Since that time, due in large part to advances in digital computing, the Kalman filter has been the subject of extensive research and application, particularly in the area of autonomous or assisted navigation.
 
 The Kalman filter is a set of mathematical equations that provides an efficient computational (recursive) means to estimate the state of a process, in a way that minimizes the mean of the squared error. The filter is very powerful in several aspects: it supports estimations of past, present, and even future states, and it can do so even when the precise nature of the modeled system is unknown.
 
@@ -147,8 +184,6 @@ The determination of the process noise covariance $Q$ is generally more difficul
 
 In either case, whether or not we have a rational basis for choosing the parameters, often times superior filter performance (statistically speaking) can be obtained by `tuning` the filter parameters $Q$ and $R$. The tuning is usually performed off-line, frequently with the help of another (distinct) Kalman filter in a process generally referred to as `system identification`.
 
-## Define Kalman filter in Python
-
 # Dynamic Model
 The motion of a target object(pedestrian or vehicle) can be modeled as:
 - Moving with constant speed(CV) in straight;
@@ -177,8 +212,6 @@ A_{CA} =
 0 & 0 & 0 & 1
 \end{bmatrix}
 $$
-
-### Simulation of CV Kalman filter
 
 ## CA Model
 For this model, the states under consideration are:
@@ -213,3 +246,108 @@ A_{CA} =
 0 & 0 & 0 & 0 & 0 & 1
 \end{bmatrix}
 $$
+
+## CT Model
+For this model, the states under consideration are:
+$$
+X = \begin{bmatrix} 
+x \\\\
+\dot{x} \\\\
+y \\\\
+\dot{y} \\\\
+\dot{\theta} \\\\
+\end{bmatrix}
+$$
+
+where:
+- $x$ is the position in longitudinal component;
+- $y$ is the position in lateral component;
+- $\dot{x}$ is the velocity in x-direction;
+- $\dot{y}$ is the velocity in y-direction;
+- $\dot{\theta}$ is the yawrate of obstacle;
+
+For this model, state transition matrix is:
+$$
+A_{CA} = 
+\begin{bmatrix} 
+1 & sin(\dot{\theta} * dt)& 0 & -\frac{1-cos(\dot{\theta * dt})}{\dot{\theta}}& 0 \\\\
+0 & cos(\dot{\theta} * dt)& 0 & -sin(\dot{theta} * dt)& 0 \\\\
+0 & \frac{1-cos(\dot{\theta * dt})}{\dot{\theta}} & 1 & sin(\dot{theta} * dt)& 0 \\\\
+0 & sin(\dot{\theta} * dt)& 0 & cos(\dot{theta} * dt)& 0 \\\\
+0 & 0 & 0 & 0 & 1
+\end{bmatrix}
+$$
+
+## Simulation for Kalman Filter
+
+### With perfect data
+
+### With data from vehicle
+
+# Interacting Multiple Model
+The IMM estimator was originally proposed by Bloom in [An efficient filter for abruptly changing systems](https://ieeexplore.ieee.org/document/4047965). It is one of the most cost-effective class of estimators for a single maneuvering target. The IMM has been receiving special attention in the last few years, due to its capability of being combined with other algorithms to resolve the multiple target tracking problem.
+
+The main idea of imm is the identification and transition between different models: at every tracking moment, by setting weight-coefficient and probability for each filter, and finally weighting calculation, we obtain the current optimal estimation state.
+
+![pic]()
+
+Assume that we have $r$ models, each model's state equation:
+$$
+X_{k+1} = A^jX_{k} + w^j_{k}
+$$
+where
+- $j \in [1, r]$, $X$ is state vector,
+- $A_j$ is transition matrix,
+- $w$ is noise with the variance of $Q$.
+
+The measurement equation is:
+$$
+Z_{k} = H^jX_{k} + v^j_k
+$$
+where 
+- $Z$ is measurement vector,
+- $H$ is measurement matrix,
+- $v$ is the noise with the variance of $R$.
+
+The transition matrix between models can be:
+P = 
+\begin{bmatrix} 
+p_{11} & \cdots & p_{1r} \\\\
+\rdots & \cdots & \rdots \\\\
+p_{r1} & \cdots & p_{rr}
+\end{bmatrix}
+$$
+
+and probability vector of each model is:
+$$
+U = \begin{bmatrix} u_1 & \cdots & u_{r} \end{bmatrix}
+$$
+
+## Step1: Input mix
+$$
+X^{0j}\_{k-1|k-1} = \sum_{i=1}^{r}{X^j_{k-1|k-1}u^{ij}\_{k-1|k-1}}
+$$
+$$
+P^{0j}\_{k-1|k-1} = \sum_{i=1}^{r}{u^ij_{k-1|k-1}\[P^j_{k-1|k-1} + (X^j_{k-1|k-1}) - X^{0j}\_{k-1|k-1}\]\[P^j_{k-1|k-1} + (X^j_{k-1|k-1}) - X^{0j}\_{k-1|k-1}\]^T}
+$$
+
+where
+- $X^j_{k-1|k-1}$ is the optimal state estimate,
+- $P^j_{k-1|k-1}$ is the optimal state estimate;
+
+$$
+u^{ij}\_{k-1|k-1} = \frac{p_{ij}U^j_{k-1}}{C^j}
+$$ 
+and
+$$
+C^j = \sum_{i=1}^r{p_ijU^j_{k-1}}
+$$
+
+## Step2: Model estimate
+It's the same as normal kalman filter.
+
+## Step3: Probability update
+
+## Simulation for imm
+
+# Cpp class diagram
