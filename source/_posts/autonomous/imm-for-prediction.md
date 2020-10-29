@@ -1,0 +1,215 @@
+---
+title: Interacting Multiple Model(IMM) algorithm for pedestrian and vehicle trajectroy
+mathjax: true
+date: 2020-10-29 19:37:24
+---
+
+
+# Introduce to the Kalman Filter
+In 1960, R.E. Kalman published his famous paper describing a recursive solution to the discent-data linear filtering problem. Since that time, due in large part to advances in digital computing, the Kalman filter has been the subject of extensive research and application, particularly in the area of autonomous or assisted navigation.
+
+<!-- more -->
+
+The Kalman filter is a set of mathematical equations that provides an efficient computational (recursive) means to estimate the state of a process, in a way that minimizes the mean of the squared error. The filter is very powerful in several aspects: it supports estimations of past, present, and even future states, and it can do so even when the precise nature of the modeled system is unknown.
+
+## The Process to be Estimated
+The Kalman filter addresses the general problem of trying to estimate the state $x \in \Re^n$ of a discrete-time controlled process that is governed by the linear stochastic difference equation:
+$$
+x_k = AX_{k-1} + Bu_{k-1} + w_{k-1} \tag1
+$$
+with a measurement $z \in \Re^m$ that is:
+$$
+z_k = Hx_k + v_k \tag2
+$$
+- The $n * n$ matrix $A$ is `transition matrix` which relates the state at the previous time step $k - 1$ to the state at the current step $k$, in the absence of either a driving function or process noise. Note that in practice A might change with each time step, but here we assume it is constant.
+- The $n * l$ matrix $B$ is `control matrix` which relates the optional control input $u \in \Re^l$ to the state $x$.
+- The $m * n$ matrix $H$ is `measurement matrix` which relates the state to the measurement $z_k$. In practice $H$ might change with each time step ore measurement, but we assume it is constant.
+
+The random variable $w_k$ and $v_k$ represent the process and measurement noise. They are assumed to be independent(of each other), white and with normal probability distributions:
+$$
+p(w) \sim N(0, Q) \tag3
+$$
+$$
+p(v) \sim N(0, R) \tag4
+$$
+where the $Q$ is `process noise covariance` and R is `measurement noise convariance`, they might change with each time step or measurement, but we assume that they are constant.
+
+## The computational Origin of the Filter
+We define $\hat{x}\_k^- \in \Re^n$ to be our `priori state` estimate at step $k$ given knowledge of the process prior to step $k$ and $\hat{x}\_k \in \Re^n$ to be our `posteriori state` estimate at step $k$ given measurement $z_k$. We can then define a `priori` and a `posteriori` estimate errors as:
+$$
+e\_k^- \equiv x\_k - \hat{x}\_k^- \tag5
+$$
+
+$$
+e\_k \equiv x\_k - \hat{x}\_k \tag6
+$$
+
+The `priori` estimate error covariance is then:
+$$
+P\_k^- = E[e\_k^-(e\_k^-)^T] \tag7
+$$
+and the `posteriori` estimate error covariance is:
+$$
+P\_k = E[e\_ke\_k^T] \tag8
+$$
+
+In deriving the equation for the Kalman filter, we begin with the goal of finding an equation that compute an `posteriori` state estimate $\hat{x}\_k$ as a linear combination of the `priori` estimate $\hat{x}\_k^-$ and a weighted difference between an actual measurement $z\_k$ and a measurement prediction $H\hat{x}\_k^-$ as shown below:
+$$
+\hat{x}\_k = \hat{x}\_k^- + K(z\_k - H\hat{x}\_k^-) \tag9
+$$
+The difference $(z_k - H\hat{x}_k^-)$ is called the measurement `innovation` or `residual`. The residual reflects the discrepancy between the predicted measurement $H\hat{x}_k^-$ and the actual measurement $z_k$. A residual of zero means that the two are in complete agreement.
+
+The $n*m$ matrix $K$ is chosen to be the `gain` or `blending factor` that minimizes the `posteriori` error covariance in (8). 
+
+This minimization can be accomplished by 
+1. substituting (9) into the (6) and substituting that into (8);
+2. performing the indicated expectations;
+3. taking the derivative of the trace of the result with respcet to $K$,
+4. setting the result equal to $0$ and then solving for $K$.
+
+One form of the resulting $K$ that minimizeds (8) is:
+$$
+\begin{align}
+K_k &= P_k^-H^T(HP_k^-H^T + R)^{-1} \\\\
+    &= \frac{P_k^-H^T}{HP_k^-HT + R}
+\end{align} \tag{10}
+$$
+
+Looking at (10) we see that as the measurement error covariance $R \to 0$, the gain $K$ weights the residual more heavily. Specifically,
+$$
+\lim_{R_k \to 0}K_k = H^-1 \tag{11}
+$$
+On the other hand, as the `priori` estimate error convariance $P_k^- \to 0$, the gain $K$ weights the residual less heavily. Specially,
+$$
+\lim_{P_0^- \to 0} K_k = 0 \tag{12}
+$$
+
+Another way of thinking about the weighting by $K$ is that as the measurement error covariance $R \to 0$, the actual measurement $z_k$ is `trusted` more and more, while the predicted measurement $H\hat{x}_k^-$ is trusted less and less. On the other hand, as the `priori` estimate error covariance $P_k^- \to 0$ the actual measurement $z_k$ is trusted less and less, while the predicted measurement $H\hat{x}_k^-$ is trusted more and more.
+
+## The Discrete Kalman Filter Algorithm
+The Kalman filter estimate a process by using a form of feedback control: the filter estimates the process state at some time and then obtains feedback in the form of (noisy) measurement. As such, the equations for the Kalman filter falls into two groups:
+- `time update`(predict) equations;
+- `measurement update`(correct) equations.
+
+The `time update` equations are responsible for projecting forward(in time) the current state and error covariance estimates to obtain the `priori` estimates for the next time step.
+
+The `measurement update` equations are responsible for the feedback, incorporating a new measurement into the `priori` estimate to obtain an improved `posteriori` estimate.
+
+The final estimation algorithm resembles that of a `predictor-corrector` algorithm for solving numerical problems:
+```
+           Time Update -----> Measurement Update
+            (Predict)             (Correct)
+                ^                     |
+                |                     |
+                -----------------------
+```
+
+The specific equations for the `time update` are:
+
+$$
+\hat{x}\_k^- = A \hat{X}\_{k-1} + B u\_{k-1} \tag{13}
+$$
+
+$$
+P_k^- = AP_{k-1}A^T + Q \tag{14}
+$$
+
+where:
+- $\hat{X}_{k-1}$ is the `posteriori` state from time step $k-1$;
+- $u_{k-1}$ is the control from time step $k-1$;
+- $\hat{x}_k^-$ is the `priori` state from time step $k$;
+- $P_{k-1}$ is the `posteriori` estimate error covariance from time step $k-1$;
+- $P_k^-$ is the `priori` estimate error covariance from time step $k$.
+
+The specific equations for the `measurement update` are:
+
+$$
+K_k = P_k^-H^T(HP_k^-H^T + R)^{-1} \tag{15}
+$$
+
+$$
+\hat{x}_k = \hat{x}_k^- + K_k(z_k - H\hat{x}_k^-) \tag{16}
+$$
+
+$$
+P_k = (I - K_kH)P_k^- \tag{17}
+$$
+where:
+- $K_k$ is the `gain` from time step $k$;
+- $z_k$ is the measurement variable from time step $k$;
+- $\hat{x}_k$ is the `posteriori` state from time step $k$;
+- $P_k$ is the `posteriori` estimate error covariance from time step $k$.
+
+## Filter Prameters and Tunning
+In the actual implementation of the filter, the measurement noise covariance $R$ is usually measured prior to operation of the filter. Measuring the measurement error covariance $R$ is generally practical (possible) because we need to be able to measure the process anyway (while operating the filter) so we should generally be able to take some off-line sample measurements in order to determine the variance of the measurement noise.
+
+The determination of the process noise covariance $Q$ is generally more difficult as we typically do not have the ability to directly observe the process we are estimating. Sometimes a relatively simple (poor) process model can produce acceptable results if one “injects” enough uncertainty into the process via the selection of $Q$. Certainly in this case one would hope that the process measurements are reliable.
+
+In either case, whether or not we have a rational basis for choosing the parameters, often times superior filter performance (statistically speaking) can be obtained by `tuning` the filter parameters $Q$ and $R$. The tuning is usually performed off-line, frequently with the help of another (distinct) Kalman filter in a process generally referred to as `system identification`.
+
+## Define Kalman filter in Python
+
+# Dynamic Model
+The motion of a target object(pedestrian or vehicle) can be modeled as:
+- Moving with constant speed(CV) in straight;
+- Moving with constant acceleration(CA) in straight;
+- Moving with constant turn(CT).
+
+## CV Model
+For this model, the states under consideration are:
+$$
+X = \begin{bmatrix} x \\ \dot{x} \\ y \\ \dot{y} \end{bmatrix}
+$$
+
+where:
+- $x$ is the position in longitudinal component;
+- $y$ is the position in lateral component;
+- $\dot{x}$ is the velocity in x-direction;
+- $\dot{y}$ is the velocity in y-direction;
+
+For this model, state transition matrix is:
+$$
+A_{CA} = 
+\begin{bmatrix} 
+1 & dt & 0 & 0 \\\\
+0 & 1 & 0 & 0 \\\\
+0 & 0 & 1 & dt \\\\
+0 & 0 & 0 & 1
+\end{bmatrix}
+$$
+
+### Simulation of CV Kalman filter
+
+## CA Model
+For this model, the states under consideration are:
+$$
+X = \begin{bmatrix} 
+x \\\\
+\dot{x} \\\\
+\ddot{x} \\\\
+y \\\\
+\dot{y} \\\\
+\ddot{y} 
+\end{bmatrix}
+$$
+
+where:
+- $x$ is the position in longitudinal component;
+- $y$ is the position in lateral component;
+- $\dot{x}$ is the velocity in x-direction;
+- $\dot{y}$ is the velocity in y-direction;
+- $\ddot{x}$ is the acceleration in x-direction;
+- $\ddot{y}$ is the acceleration in y-direction;
+
+For this model, state transition matrix is:
+$$
+A_{CA} = 
+\begin{bmatrix} 
+1 & dt & \frac{dt^2}{2} & 0 & 0 & 0 \\\\
+0 & 1 & dt & 0 & 0 & 0 \\\\
+0 & 0 & 1 & 0 & 0 & 0 \\\\
+0 & 0 & 0 & 1 & dt & \frac{dt^2}{2} \\\\
+0 & 0 & 0 & 0 & 1 & dt \\\\
+0 & 0 & 0 & 0 & 0 & 1
+\end{bmatrix}
+$$
