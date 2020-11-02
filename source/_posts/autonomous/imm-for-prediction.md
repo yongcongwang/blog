@@ -37,22 +37,19 @@ The disadvantages are:
 1. We use the newest position and velocity from perception module, but the result is not so accurate.
 2. It performs not so good especially for vehicles.
 
-![pic]()
-![pic]()
-
-To imporve the prediction accuracy off lane, we use
+To solve these problems and imporve the prediction accuracy off lane, we use
 - constant velocity kalman filter to predict pedestrian;
 - interacting multiple model of constant velocity(cv), constant acceleration(ca) and constant turn rate(ct) to predict vehicle and bicycle.
 
-# kalman Filter
+# Kalman filter
 In 1960, R.E. Kalman published his famous paper describing a recursive solution to the discent-data linear filtering problem. Since that time, due in large part to advances in digital computing, the Kalman filter has been the subject of extensive research and application, particularly in the area of autonomous or assisted navigation.
 
 The Kalman filter is a set of mathematical equations that provides an efficient computational (recursive) means to estimate the state of a process, in a way that minimizes the mean of the squared error. The filter is very powerful in several aspects: it supports estimations of past, present, and even future states, and it can do so even when the precise nature of the modeled system is unknown.
 
-## The Process to be Estimated
+## The process to be estimated
 The Kalman filter addresses the general problem of trying to estimate the state $x \in \Re^n$ of a discrete-time controlled process that is governed by the linear stochastic difference equation:
 $$
-x_k = AX_{k-1} + Bu_{k-1} + w_{k-1} \tag1
+x_k = Ax_{k-1} + Bu_{k-1} + w_{k-1} \tag1
 $$
 with a measurement $z \in \Re^m$ that is:
 $$
@@ -71,7 +68,7 @@ p(v) \sim N(0, R) \tag4
 $$
 where the $Q$ is `process noise covariance` and R is `measurement noise convariance`, they might change with each time step or measurement, but we assume that they are constant.
 
-## The computational Origin of the Filter
+## The computational origin of the filter
 We define $\hat{x}\_k^- \in \Re^n$ to be our `priori state` estimate at step $k$ given knowledge of the process prior to step $k$ and $\hat{x}\_k \in \Re^n$ to be our `posteriori state` estimate at step $k$ given measurement $z_k$. We can then define a `priori` and a `posteriori` estimate errors as:
 $$
 e\_k^- \equiv x\_k - \hat{x}\_k^- \tag5
@@ -123,7 +120,7 @@ $$
 
 Another way of thinking about the weighting by $K$ is that as the measurement error covariance $R \to 0$, the actual measurement $z_k$ is `trusted` more and more, while the predicted measurement $H\hat{x}_k^-$ is trusted less and less. On the other hand, as the `priori` estimate error covariance $P_k^- \to 0$ the actual measurement $z_k$ is trusted less and less, while the predicted measurement $H\hat{x}_k^-$ is trusted more and more.
 
-## The Discrete Kalman Filter Algorithm
+## The discrete kalman filter algorithm
 The Kalman filter estimate a process by using a form of feedback control: the filter estimates the process state at some time and then obtains feedback in the form of (noisy) measurement. As such, the equations for the Kalman filter falls into two groups:
 - `time update`(predict) equations;
 - `measurement update`(correct) equations.
@@ -177,23 +174,23 @@ where:
 - $\hat{x}_k$ is the `posteriori` state from time step $k$;
 - $P_k$ is the `posteriori` estimate error covariance from time step $k$.
 
-## Filter Prameters and Tunning
+## Filter prameters and tunning
 In the actual implementation of the filter, the measurement noise covariance $R$ is usually measured prior to operation of the filter. Measuring the measurement error covariance $R$ is generally practical (possible) because we need to be able to measure the process anyway (while operating the filter) so we should generally be able to take some off-line sample measurements in order to determine the variance of the measurement noise.
 
 The determination of the process noise covariance $Q$ is generally more difficult as we typically do not have the ability to directly observe the process we are estimating. Sometimes a relatively simple (poor) process model can produce acceptable results if one “injects” enough uncertainty into the process via the selection of $Q$. Certainly in this case one would hope that the process measurements are reliable.
 
 In either case, whether or not we have a rational basis for choosing the parameters, often times superior filter performance (statistically speaking) can be obtained by `tuning` the filter parameters $Q$ and $R$. The tuning is usually performed off-line, frequently with the help of another (distinct) Kalman filter in a process generally referred to as `system identification`.
 
-# Dynamic Model
+# Dynamic model
 The motion of a target object(pedestrian or vehicle) can be modeled as:
 - Moving with constant speed(CV) in straight;
 - Moving with constant acceleration(CA) in straight;
 - Moving with constant turn(CT).
 
-## CV Model
+## CV model
 For this model, the states under consideration are:
 $$
-X = \begin{bmatrix} x \\ \dot{x} \\ y \\ \dot{y} \end{bmatrix}
+X = \begin{bmatrix} x \\\\ \dot{x} \\\\ y \\\\ \dot{y} \end{bmatrix}
 $$
 
 where:
@@ -204,7 +201,7 @@ where:
 
 For this model, state transition matrix is:
 $$
-A_{CA} = 
+A_{CV} = 
 \begin{bmatrix} 
 1 & dt & 0 & 0 \\\\
 0 & 1 & 0 & 0 \\\\
@@ -213,7 +210,7 @@ A_{CA} =
 \end{bmatrix}
 $$
 
-## CA Model
+## CA model
 For this model, the states under consideration are:
 $$
 X = \begin{bmatrix} 
@@ -247,7 +244,7 @@ A_{CA} =
 \end{bmatrix}
 $$
 
-## CT Model
+## CT model
 For this model, the states under consideration are:
 $$
 X = \begin{bmatrix} 
@@ -268,23 +265,105 @@ where:
 
 For this model, state transition matrix is:
 $$
-A_{CA} = 
+A_{CT} = 
 \begin{bmatrix} 
-1 & sin(\dot{\theta} * dt)& 0 & -\frac{1-cos(\dot{\theta * dt})}{\dot{\theta}}& 0 \\\\
-0 & cos(\dot{\theta} * dt)& 0 & -sin(\dot{theta} * dt)& 0 \\\\
-0 & \frac{1-cos(\dot{\theta * dt})}{\dot{\theta}} & 1 & sin(\dot{theta} * dt)& 0 \\\\
-0 & sin(\dot{\theta} * dt)& 0 & cos(\dot{theta} * dt)& 0 \\\\
+1 & sin(\dot{\theta} * dt)& 0 & -\frac{1-cos(\dot{\theta} * dt)}{\dot{\theta}}& 0 \\\\
+0 & cos(\dot{\theta} * dt)& 0 & -sin(\dot{\theta} * dt)& 0 \\\\
+0 & \frac{1-cos(\dot{\theta} * dt)}{\dot{\theta}} & 1 & sin(\dot{\theta} * dt)& 0 \\\\
+0 & sin(\dot{\theta} * dt)& 0 & cos(\dot{\theta} * dt)& 0 \\\\
 0 & 0 & 0 & 0 & 1
 \end{bmatrix}
 $$
 
-## Simulation for Kalman Filter
+## Simulation for kalman filter
+To check if the algorithm is correct, we build the equation of kalman in python.
 
-### With perfect data
+### Kalman filter
+```python
+class kalman_filter:
+    def __init__(self, A, B, H, Q, R):
+        self.A = A
+        self.B = B
+        self.H = H
+        self.Q = Q
+        self.R = R
 
-### With data from vehicle
+        self.U = np.zeros((B.shape[0], 1))
+        self.X = np.zeros((A.shape[0], 1))
+        self.X_pre = self.X
+        self.P = np.zeros(A.shape)
+        self.P_pre = self.P
 
-# Interacting Multiple Model
+    def filt(self, Z):
+        self.__predict()
+        self.__update(Z)
+        return self.X
+
+    def __predict(self):
+        self.X_pre = np.dot(self.A, self.X) + np.dot(self.B, self.U)
+        self.P_pre = np.dot(np.dot(self.A, self.P), self.A.T) + self.Q
+
+    def __update(self, Z):
+        K = np.dot(np.dot(self.P_pre, self.H.T),
+                   np.linalg.inv(np.dot(np.dot(self.H, self.P_pre), self.H.T) +\
+                                 self.R))
+        self.X = self.X_pre + np.dot(K, Z - np.dot(self.H, self.X_pre))
+        self.P = self.P_pre - np.dot(np.dot(K, self.H), self.P_pre)
+```
+
+### Constant velocity model
+```python
+def kf_cv():
+    A = np.array([
+            [1., dt, 0., 0.],
+            [0., 1., 0., 0.],
+            [0., 0., 1., dt],
+            [0., 0., 0., 1.]
+            ])
+    B = np.eye(A.shape[0])
+    H = np.array([
+        [1., 0., 0., 0.],
+        [0., 1., 0., 0.],
+        [0., 0., 1., 0.],
+        [0., 0., 0., 1.]
+        ])
+    Q = np.eye(A.shape[0])
+    R = np.eye(4) * 10. ** 2
+
+    kf = kalman_filter(A, B, H, Q, R)
+    return kf
+```
+The simulation result:
+![cv](/images/2020/imm/cv.png)
+
+### Constant acceleration model
+```python
+def kf_ca():
+    A = np.array([
+            [1., dt, 0.5 * dt**2, 0., 0., 0.],
+            [0., 1., dt, 0., 0., 0.],
+            [0., 0., 1., 0., 0., 0.],
+            [0., 0., 0., 1., dt, 0.5 * dt**2],
+            [0., 0., 0., 0., 1., dt],
+            [0., 0., 1., 0., 0., 1.]
+            ])
+    B = np.eye(A.shape[0])
+    H = np.array([
+        [1., 0., 0., 0., 0., 0.],
+        [0., 1., 0., 0., 0., 0.],
+        [0., 0., 0., 1., 0., 0.],
+        [0., 0., 0., 0., 1., 0.]
+        ])
+    Q = np.eye(A.shape[0])
+    R = np.eye(4) * 150
+
+    kf = kalman_filter(A, B, H, Q, R)
+    return kf
+```
+The simulation result:
+![ca](/images/2020/imm/ca.png)
+
+# Interacting multiple model
 The IMM estimator was originally proposed by Bloom in [An efficient filter for abruptly changing systems](https://ieeexplore.ieee.org/document/4047965). It is one of the most cost-effective class of estimators for a single maneuvering target. The IMM has been receiving special attention in the last few years, due to its capability of being combined with other algorithms to resolve the multiple target tracking problem.
 
 The main idea of imm is the identification and transition between different models: at every tracking moment, by setting weight-coefficient and probability for each filter, and finally weighting calculation, we obtain the current optimal estimation state.
