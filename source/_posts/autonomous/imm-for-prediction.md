@@ -267,9 +267,9 @@ For this model, state transition matrix is:
 $$
 A_{CT} = 
 \begin{bmatrix} 
-1 & sin(\dot{\theta} * dt)& 0 & -\frac{1-cos(\dot{\theta} * dt)}{\dot{\theta}}& 0 \\\\
+1 & \frac{sin(\dot{\theta} * dt)}{\dot{\theta}}& 0 & -\frac{1-cos(\dot{\theta} * dt)}{\dot{\theta}}& 0 \\\\
 0 & cos(\dot{\theta} * dt)& 0 & -sin(\dot{\theta} * dt)& 0 \\\\
-0 & \frac{1-cos(\dot{\theta} * dt)}{\dot{\theta}} & 1 & sin(\dot{\theta} * dt)& 0 \\\\
+0 & \frac{1-cos(\dot{\theta} * dt)}{\dot{\theta}} & 1 & \frac{sin(\dot{\theta} * dt)}{\dot{\theta}}& 0 \\\\
 0 & sin(\dot{\theta} * dt)& 0 & cos(\dot{\theta} * dt)& 0 \\\\
 0 & 0 & 0 & 0 & 1
 \end{bmatrix}
