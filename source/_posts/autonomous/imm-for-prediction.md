@@ -1,6 +1,10 @@
 ---
-title: Using Interacting Multiple Model(IMM) algorithm to predict pedestrian and vehicle's trajectroy
+title: >-
+  Using Interacting Multiple Model(IMM) algorithm to predict pedestrian and
+  vehicle's trajectroy
 mathjax: true
+categories:
+  - autonomous
 date: 2020-10-29 19:37:24
 ---
 
