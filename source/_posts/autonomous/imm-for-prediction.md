@@ -39,7 +39,7 @@ The disadvantages are:
 
 To solve these problems and imporve the prediction accuracy off lane, we use
 - constant velocity kalman filter to predict pedestrian;
-- interacting multiple model of constant velocity(cv), constant acceleration(ca) and constant turn rate(ct) to predict vehicle and bicycle.
+- interacting multiple model(IMM) of constant velocity(cv), constant acceleration(ca) and constant turn rate(ct) to predict vehicle and bicycle.
 
 # Kalman filter
 In 1960, R.E. Kalman published his famous paper describing a recursive solution to the discent-data linear filtering problem. Since that time, due in large part to advances in digital computing, the Kalman filter has been the subject of extensive research and application, particularly in the area of autonomous or assisted navigation.
@@ -363,12 +363,39 @@ def kf_ca():
 The simulation result:
 ![ca](/images/2020/imm/ca.png)
 
+### Constant turn rate model
+```python
+def kf_ct():
+    dtheta = math.pi / 180 * 15
+    theta = dtheta * dt
+    A = np.array([
+         [1., math.sin(theta)/dtheta, 0., -(1 - math.cos(theta))/dtheta, 0.],
+         [0., math.cos(theta), 0., -math.sin(theta), 0.],
+         [0., (1 - math.cos(theta)) / dtheta, 1., math.sin(theta)/dtheta, 0.],
+         [0., math.sin(theta), 0., math.cos(theta), 0.],
+         [0., 0., 0., 0., 1.],
+         ])
+    B = np.eye(A.shape[0])
+    H = np.array([
+        [1., 0., 0., 0., 0.],
+        [0., 1., 0., 0., 0.],
+        [0., 0., 1., 0., 0.],
+        [0., 0., 0., 1., 0.]
+        ])
+    Q = np.eye(A.shape[0])
+    R = np.eye(4) * 150
+    return kalman_filter(A, B, H, Q, R)
+```
+
+The simulation result:
+![ct](/images/2020/imm/ct.png)
+
 # Interacting multiple model
 The IMM estimator was originally proposed by Bloom in [An efficient filter for abruptly changing systems](https://ieeexplore.ieee.org/document/4047965). It is one of the most cost-effective class of estimators for a single maneuvering target. The IMM has been receiving special attention in the last few years, due to its capability of being combined with other algorithms to resolve the multiple target tracking problem.
 
 The main idea of imm is the identification and transition between different models: at every tracking moment, by setting weight-coefficient and probability for each filter, and finally weighting calculation, we obtain the current optimal estimation state.
 
-![pic]()
+![ct](/images/2020/imm/imm.png)
 
 Assume that we have $r$ models, each model's state equation:
 $$
@@ -389,10 +416,11 @@ where
 - $v$ is the noise with the variance of $R$.
 
 The transition matrix between models can be:
+$$
 P = 
 \begin{bmatrix} 
 p_{11} & \cdots & p_{1r} \\\\
-\rdots & \cdots & \rdots \\\\
+\vdots & \ddots & \vdots \\\\
 p_{r1} & \cdots & p_{rr}
 \end{bmatrix}
 $$
@@ -404,10 +432,10 @@ $$
 
 ## Step1: Input mix
 $$
-X^{0j}\_{k-1|k-1} = \sum_{i=1}^{r}{X^j_{k-1|k-1}u^{ij}\_{k-1|k-1}}
+X^{0j}\_{k-1|k-1} = \sum_{i=1}^{r}{X^j_{k-1|k-1}\mu^{ij}\_{k-1|k-1}}
 $$
 $$
-P^{0j}\_{k-1|k-1} = \sum_{i=1}^{r}{u^ij_{k-1|k-1}\[P^j_{k-1|k-1} + (X^j_{k-1|k-1}) - X^{0j}\_{k-1|k-1}\]\[P^j_{k-1|k-1} + (X^j_{k-1|k-1}) - X^{0j}\_{k-1|k-1}\]^T}
+P^{0j}\_{k-1|k-1} = \sum_{i=1}^{r}{\mu^{ij}\_{k-1|k-1}\[P^j_{k-1|k-1} + (X^j_{k-1|k-1}) - X^{0j}\_{k-1|k-1}\]\[P^j_{k-1|k-1} + (X^j_{k-1|k-1}) - X^{0j}\_{k-1|k-1}\]^T}
 $$
 
 where
@@ -415,18 +443,251 @@ where
 - $P^j_{k-1|k-1}$ is the optimal state estimate;
 
 $$
-u^{ij}\_{k-1|k-1} = \frac{p_{ij}U^j_{k-1}}{C^j}
+\mu^{ij}\_{k-1|k-1} = \frac{p_{ij}U^j_{k-1}}{C^j}
 $$ 
 and
 $$
-C^j = \sum_{i=1}^r{p_ijU^j_{k-1}}
+C^j = \sum_{i=1}^r{p_{ij}U^j_{k-1}}
 $$
+where
+- $i,j = 1, \cdots, r$;
+- $\mu_{k-1}^j$ is the probabiltiy of model $j$ at time $k-1$;
+- $p_{ij}$ is the probability of a transition from model $i$ to $j$.
 
 ## Step2: Model estimate
 It's the same as normal kalman filter.
 
 ## Step3: Probability update
+With the use of the latest measurement $z_k$, the likelihood function value of the model $j$ at time $k$ is given by:
+$$
+\Lambda_k^j = N(z_k;z_{k|k-1}^j,v_k^j) = \begin{vmatrix} 2\pi S_k^j\end{vmatrix}^{-\frac{n_z}{2}} \cdot e^{-\frac{1}{2}(z_k - z_{k|k-1}^j)^T S_k^j (z_k-z_{k|k-1}^j)}
+$$
+where:
+- $v_k^j = z_k-z_{k|k-1}^j$ denotes the filter residual;
+- $S_k^j$ denotes the innovation convariance;
+- $n_z$ denotes the dimension of measurement vector.
+
+The model probability $\mu_{k|k}^j$ at time $k$ is computed by the following equation:
+$$
+\mu_{k|k}^j = \frac{\Lambda_k^j C_j}{C}
+$$
+
+where:
+$$
+C = \sum_{i=1}^r{\Lambda_k^jCi}
+$$
+
+## Step4: Output Integration
+Finally, the state estimate $\hat{x}\_{k|k}$ and corresponding covariance $P_{k|k}$ are obtained by the model-conditional estimates and covariances of different models:
+$$
+\hat{x}\_{k|k} = \sum_{j=1}^r{\mu_{k|k}^j\hat{x}\_{k|k}^j}
+$$
+
+$$
+P_{k|k} = \sum_{j=1}^r{\mu_{k|k}^j}(P_{k|k}^j + (\hat{x}\_{k|k}^j-\hat{x}\_{k|k})(\hat{x}\_{k|k}^j-\hat{x}\_{k|k})^T)
+$$
 
 ## Simulation for imm
+To volidate the performance of the proposed algorithm, a simulation in python is operated.
 
+### Imm algorithm
+```python
+class Imm:
+    def __init__(self, models, model_trans, P_trans, U_prob):
+        self.models = models
+        self.P_trans = P_trans
+        self.U_prob = U_prob
+        self.model_trans = model_trans
+
+        self.mode_cnt = len(models)
+        self.dim = models[0].A.shape[0]
+
+    def filt(self, Z):
+        # setp1: input mix
+        u = np.dot(self.P_trans.T, self.U_prob)
+        mu = np.zeros(self.P_trans.shape)
+        for i in range(self.mode_cnt):
+            for j in range(self.mode_cnt):
+                mu[i, j] = self.P_trans[i, j] * self.U_prob[i, 0] / u[j, 0];
+
+        X_mix = [np.zeros(model.X.shape) for model in self.models]
+
+        for j in range(self.mode_cnt):
+            for i in range(self.mode_cnt):
+                X_mix[j] += np.dot(self.model_trans[j][i],
+                                   self.models[i].X) * mu[i, j]
+
+        P_mix = [np.zeros(model.P.shape) for model in self.models]
+        for j in range(self.mode_cnt):
+            for i in range(self.mode_cnt):
+                P = self.models[i].P + np.dot((self.models[i].X - X_mix[i]),
+                                              (self.models[i].X - X_mix[i]).T)
+                P_mix[j] += mu[i, j] * np.dot(np.dot(self.model_trans[j][i], P),
+                                              self.model_trans[j][i].T)
+        ## step2: filt
+        for j in range(self.mode_cnt):
+            self.models[j].X = X_mix[j]
+            self.models[j].P = P_mix[j]
+            self.models[j].filt(Z)
+
+        ### step3: update probability
+        for j in range(self.mode_cnt):
+            mode = self.models[j]
+            D = Z - np.dot(mode.H, mode.X_pre)
+            S = np.dot(np.dot(mode.H, mode.P_pre), mode.H.T) + mode.R
+
+            Lambda = (np.linalg.det(2 * math.pi * S)) ** (-0.5) * \
+                     np.exp(-0.5 * np.dot(np.dot(D.T, np.linalg.inv(S)), D))
+            self.U_prob[j, 0] = Lambda * u[j, 0]
+        self.U_prob = self.U_prob / np.sum(self.U_prob)
+
+        return self.U_prob
+```
+### Input
+To test the algorithm performance, following curves are used:
+- generated constant velocity curve + constant turn rate curve + constant acceleration;
+- vehicle pose data from real autonomous car;
+- vehicle pose data from [argoverse](https://www.argoverse.org/) dataset.
+
+$cv + ct + ca$ curve is generated with:
+```python
+def cv_z(x0, dx, y0, dy, dt, cnt):
+    Z = [np.array([
+            [x0],
+            [dx],
+            [y0],
+            [dy]
+        ])]
+    for i in np.arange(1, cnt):
+        Z.append(np.array([
+            [Z[i-1][0, 0] + dx * dt],
+            [dx],
+            [Z[i-1][2, 0] + dy * dt],
+            [dy]
+            ]))
+
+    return Z
+
+def ca_z(x0, dx, ddx, y0, dy, ddy, dt, cnt):
+    Z = [np.array([
+            [x0],
+            [dx],
+            [y0],
+            [dy]
+        ])]
+    for i in np.arange(1, cnt):
+        Z.append(np.array([
+            [Z[i-1][0,0] + Z[i-1][1,0] * dt + 0.5 * ddx * dt**2],
+            [Z[i-1][1,0]+ ddx * dt],
+            [Z[i-1][2,0] + Z[i-1][3,0] * dt + 0.5 * ddy * dt**2],
+            [Z[i-1][3,0]+ ddy * dt]
+            ]))
+
+    return Z
+
+def ct_z(x0, dx, y0, dy, dtheta, dt, cnt):
+    Z = [np.array([
+            [x0],
+            [dx],
+            [y0],
+            [dy]
+        ])]
+    theta = math.atan2(dy, dx)
+    v = math.hypot(dx, dy)
+    for i in np.arange(1, cnt):
+        theta += dtheta * dt
+        Z.append(np.array([
+            [Z[i-1][0, 0] + v * dt * math.cos(theta)],
+            [v * math.cos(theta)],
+            [Z[i-1][2, 0] + v * dt * math.sin(theta)],
+            [v * math.sin(theta)]
+            ]))
+
+    return Z
+```
+
+### Simulation result
+#### CV + CT + CA
+![imm_cvctca](/images/2020/imm/imm_cvctca.png)
+
+From the figure we can see:
+- the algorithm can figure out three models correctly;
+- it's more difficult to figure out the $CA$ model, because the acceleration information is not in the observation vector;
+- it's not easy to distinguish $CV$ and $CA$ model.
+
+#### Real vehicle data
+![imm_real](/images/2020/imm/imm_real.png)
+
+The result is not so good, because its characteristics do not fit any model.
+
+#### Argoverse data
+![imm_argoverse](/images/2020/imm/imm_argoverse.png)
+I choose a turning vehicle's path and add it's velocity information, we can say:
+- it takes 2.5s to predict the right model;
+- after test, I found that if we set the inital probability a more precise number, it can predict the right model more quickly(within 0.5s).
+
+# Generate prediction trajectory
+With the right model probabilities, we can predict the obstacle's trajectory in longer time.
+We use the probabilities and three models to generate trajectory:
+
+![predict](/images/2020/imm/predict.png)
+
+The red line is the real trajectory of a vehicle, and the green line is predicted trajectory every time.
+
+We can see that:
+- At the beginning it can not figure out the right model, so it mixes them up to generate trajectory;
+- After figure out the CT model, the trajectory is getting closer to the real trajectory.
+ 
 # Cpp class diagram
+After testing the correctness of the algorithm, we designed the class diagram of the code:
+![class diagram](/images/2020/imm/imm_cd.png)
+
+## LRT class
+We should create a filter(kalman filter or imm) for every obstacle, it's important to construct and deconstruct the filters dynamiclly.
+
+We already have a `LRU`(Latest Recently Used) class, which will destroy the oldest node when it's capacity is to reach maximum. But it has the following problems:
+- If the capacity is too big and the the number of filters we used is small, `LRU` will waste much memory space;
+- If the capacity is too small and the the number of filters we used is big, `LRU` will destroy some filters in use, which hurts the prediction module.
+
+So we add the time limit to `LRU` structure and names it `LRT`. If a node is not used for a given time, it will be destroyed.
+
+## KalmanFilter
+To fit with different filter parameters, we use a template to generate instance.
+```C++
+//!
+//! \class KalmanFilter
+//! \brief Implement a discrete-time Kalman Filter
+//!        https://www.cs.unc.edu/~welch/media/pdf/kalman_intro.pdf
+//! 
+//! \param T DataType(double/float/int, etc.)
+//! \param Xn dimension of state
+//! \param Zn dimension of observations
+//! \param Un dimension of controls
+//!
+template <typename T, unsigned int Xn, unsigned int Zn, unsigned int Un>
+class KalmanFilter {
+ public:
+```
+
+## ImmKf
+To fit with different kalman filters, we use a parameter pack to input all filters.
+```C++
+//!
+//! \class ImmKf
+//! \brief Implement a discrete-time Imm with kalman filter
+//!        https://sci-hub.do/10.1109/cdc.1984.272089#
+//! 
+//! \param T DataType(double/float/int, etc.)
+//! \param Kf Kalman filters
+//! \param Zn dimension of observations
+//!
+[[deprecated]]
+template<typename T, std::size_t Zn, typename... Kf>
+class ImmKf {
+  using TupleType = typename std::tuple<Kf...>;
+  using Mat1xN = Eigen::Matrix<T, 1, std::tuple_size<TupleType>::value>;
+  using MatNxN = Eigen::Matrix<T, std::tuple_size<TupleType>::value,
+                               std::tuple_size<TupleType>::value>;
+  using MatZx1 = Eigen::Matrix<T, Zn, 1>;
+ public:
+```
