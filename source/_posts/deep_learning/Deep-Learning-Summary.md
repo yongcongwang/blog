@@ -906,6 +906,25 @@ Depends on the error difference, we have following guidelines:
  2. Regularization(L2, Dropout, data augmentation);
  3. Find better neural network architecture or hyperparameters.
 
+## Carrying out error analysis
+Error analysis is the process of manually examining mistakes that your algorihtm is making. It can give you insights into what you should do next.
+For example, if you have 10% error on your dev set and you want to decrease error. You discovered that some of the mislabled data are dog pictures that look like cats, you should:
+1. Get 100 mislabeled dev set examples at random;
+2. Count up how many are dogs.
+3. Check the result:
+ - If 5 of 100 are dogs, then training your classifier to do better on dogs will decrease your error up to 9.5%, which means it may not worth it.
+ - If 50 of 100 are dogs, then you could decrease your error up to 5%, which is reasonable and you should work on that.
+
+Sometimes you can evaluate multiple error analysis ideas in parallel and choose the best idea:
+| Image | Dot | Great Cats | Blurry | Instagram Filters | Comments |
+|---|---|---|---|---|---|
+| 1 | Y |   |   | Y | Pitbull |
+| 2 | Y |   | Y | Y |   |
+| 3 |   |   |   |   | Rainy day at zoo |
+| 4 |   | Y |   |   |   |
+| ... | |   |   |   |   |
+| total
+
 # Sequence models
 
 ## Recurrent neural networks
