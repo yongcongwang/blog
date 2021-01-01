@@ -8,6 +8,8 @@ date: 2020-12-26 14:19:31
 
 This is a summary of algorithms which solve problems in coding interview.
 
+<!-- more -->
+
 # Data structure
 For any data structure, the basic operation is no more than `traversal` and `access`, and more specific point are:
 - Add;
