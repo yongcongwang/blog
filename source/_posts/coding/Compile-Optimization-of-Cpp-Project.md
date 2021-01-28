@@ -1,10 +1,11 @@
 ---
 title: Compile Optimization of Cpp Project
 mathjax: true
+categories:
+  - coding
 date: 2021-01-28 13:42:57
 ---
 
-<!-- more -->
 
 # Compilation Process
 
@@ -14,7 +15,9 @@ In general, the compilation of a C++ program involves these four steps:
 3. Assembling
 4. Linking
 
-![factory](/images/2021/compile_optimization/compile_process.png)
+![process](/images/2021/compile_optimization/compile_process.png)
+
+<!-- more -->
 
 ## Preprocessing
 Preprocessor directives are one of the unique feature of C++. Before a C++ program gets compiled by the compiler, the source code gets preprocessed by the preprocessor. 
@@ -248,21 +251,121 @@ What we should know is that producing debug symbols will increase both executabl
 
 
 ## Include denpencies optimization
+There are two kinds of dependencies:
+- logical dependencies: which is between classes, functions, etc.
+- compile time dependencis: which is between files and libraries.
 
-### compiler static analyzer
+The compile time dependencies have a huge impact on building, refactoring, testing and on the structure of your software.
+For small programs that just consists of a couple of filess, it is not a problem. But as soon as our software grows and so the number of includes files do, the impact of inappropriate handled includes can be huge:
+- Increasing compilation time
+- Increasing code complexity
+- Harder to refactor/restructure your program
+- More difficult to test code in isolation
+
+When you change a header file, all translation units depending on this header file need to be recompiled. This can be very expensive.
+
+### GCC compiler options
+GCC provides some helpful options to determine/analyze include dependencies:
+- -M: output a rule suitable for make describing the dependencies of the main source file.
+- -MM: like -M but do not mention header files that are found in system header directories, nor header files that are included, directly or indirectly, from such a header.
+- -MF: when used with -M or -MM, specifies a file to write the dependencies to.
+- -H: prints the name of each header file used. Each name is indented to show how deep in the #include stack it is.
+
+An example can be:
+```bash
+gcc -M main.cpp
+
+main.o: main.cpp /usr/include/stdc-predef.h a.h b.h c.h d.h \
+ /usr/include/c++/4.9.0/iostream \
+ /usr/include/c++/4.9.0/x86_64-unknown-linux-gnu/bits/c++config.h \
+ /usr/include/c++/4.9.0/x86_64-unknown-linux-gnu/bits/os_defines.h \
+ /usr/include/features.h /usr/include/sys/cdefs.h \
+ /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h \
+ /usr/include/gnu/stubs-64.h \
+ /usr/include/c++/4.9.0/x86_64-unknown-linux-gnu/bits/cpu_defines.h \
+ ...
+ <truncated>
+```
 
 ### Doxygen
+Doxygen can generate nice interactive include graphs. This is how you can enable it in the doxygen configuration file (Doxyfile) - directly from the doxygen documentation:
+> If the INCLUDE_GRAPH, ENABLE_PREPROCESSING and SEARCH_INCLUDES tags are set to YES then doxygen will generate a graph for each documented file showing the direct and indirect include dependencies of the file with other documented files. The default value is: YES. This tag requires that the tag HAVE_DOT is set to YES.
+
+![process](/images/2021/compile_optimization/doxygen_tree.png)
 
 ### include-what-you-need
+"Include what you use" means this: for every symbol (type, function, variable, or macro) that you use in foo.cc (or foo.cpp), either foo.cc or foo.h should include a .h file that exports the declaration of that symbol.
 
-## Code optimization
+#### Install
 
-### Predeclaration
+##### Dependencies install
+```bash
+sudo apt install llvm-9.0-dev libclang-9.0-dev clang-9.0
+```
 
-### Replace boost library
+##### Build
+```bash
+git clone https://github.com/include-what-you-use/include-what-you-use.git iwyu &&
+cd iwyu &&
+git checkout clang_9.0 &&
+mkdir build &&
+cd build &&
+cmake -G "Unix Makefiles" -DIWYU_LLVM_ROOT_PATH=/usr/lib/llvm-9 .. &&
+make install
+```
+#### Usage
+
+##### Iwyu.cmake
+```bash
+# Include denpendency analysis, you should include iwyu first
+# https://github.com/include-what-you-use/include-what-you-use
+find_program(CMAKE_CXX_INCLUDE_WHAT_YOU_USE NAMES include-what-you-use iwyu)
+
+if(CMAKE_CXX_INCLUDE_WHAT_YOU_USE)
+  set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE  # options
+    ${CMAKE_CXX_INCLUDE_WHAT_YOU_USE}
+    -Xiwyu
+    --cxx17ns
+    #-Xiwyu
+    #--no_fwd_decls
+    -Xiwyu
+    --keep=${CMAKE_CURRENT_SOURCE_DIR}/build/onboard/generated/proto/*.*
+    -Xiwyu
+    --keep=${WORK_ROOT}/opt/include/cyber/proto/*.*
+    #-Xiwyu
+    #--transitive_includes_only
+    -Xiwyu
+    --mapping_file=${CMAKE_CURRENT_SOURCE_DIR}/cmake/iwyu.imp
+    )
+endif(CMAKE_CXX_INCLUDE_WHAT_YOU_USE)
+```
+
+##### CMakeLists.txt
+This tool is only used when we compile static library or executable binary, so we need to add a static library additionally:
+```cmake
+TODO
+```
+
+##### how to correct iwyu mistakes
+Use the command:
+```bash
+cmake -DCMAKE_INSTALL_PREFIX=$INSTALL_DIR -DCMAKE_BUILD_TYPE=Debug \
+      -DBUILD_ONBOARD=ON -DBUILD_OFFBOARD=OFF -DBUILD_UNIT_TEST=OFF \
+      -Bbuild -H. &&
+make -C build -j$(nproc) 2> build/iwyu.log &&
+python2 fix_includes.py < /build/iwyu.log
+```
+
+#### Results
+| | Before optimization | After optimization |
+|---|---|---|
+| time(s) | 66 | 65 |
+| size(M) | 151 | 151 |
 
 # Reference
 - [C++ Preprocessor](https://www.w3schools.in/cplusplus-tutorial/preprocessor/)
 - [The Compilation Process](https://medium.com/coding-den/the-compilation-process-a1307824d40e)
 - [GCC Command Options](https://gcc.gnu.org/onlinedocs/gcc/Invoking-GCC.html#Invoking-GCC)
+- [Open source tools to examine and adjust include dependencies](https://gernotklingler.com/blog/open-source-tools-examine-and-adjust-include-dependencies/)
+- [include-what-you-use](https://github.com/include-what-you-use/include-what-you-use)
 - [C++服务编译耗时优化原理及实践](https://tech.meituan.com/2020/12/10/apache-kylin-practice-in-meituan.html)
