@@ -181,7 +181,7 @@ A compiler is a special program that processes statements written in a particula
 In linux platform, we use GCC to compile our code. When you invoke GCC, it normally does preprocessing, compilation, assembly and linking.
 
 ### Parallel compilation
-In Linux platform we use `GNU/Make` tool to compile code. When we execute make command, we should use the `-j` option to define parallel jobs. In the bash script we use `$(nporc)` to get the number of cpu core as the `-j` parameter and increase the compilation performance.
+In Linux platform we use `GNU/Make` tool to compile code. When we execute make command, we should use the `-j` option to define parallel jobs. In the bash script we use `$(nproc)` to get the number of cpu core as the `-j` parameter and increase the compilation performance.
 ```bash
 make -C build -j$(nproc) install
 ```
