@@ -343,7 +343,22 @@ endif(CMAKE_CXX_INCLUDE_WHAT_YOU_USE)
 ##### CMakeLists.txt
 This tool is only used when we compile static library or executable binary, so we need to add a static library additionally:
 ```cmake
-TODO
+if(CMAKE_CXX_INCLUDE_WHAT_YOU_USE)
+  add_library(${PROJECT_NAME}_iwyu ${SRCS})
+  target_link_libraries(${PROJECT_NAME}_iwyu
+    ${PROJECT_NAME}_proto
+    cyber
+    gflags
+    glog
+    map_data
+    semantic_map
+    topological_map
+    ${TORCH_LIBRARIES}
+    ${TENSORRT_LIBRARIES}
+    stdc++fs
+  )
+endif(CMAKE_CXX_INCLUDE_WHAT_YOU_USE)
+
 ```
 
 ##### how to correct iwyu mistakes

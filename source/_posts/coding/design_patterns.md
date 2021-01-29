@@ -30,7 +30,7 @@ In addition, all patterns can be categorized by their `intent`, we cover three m
 - `Structural patterns`, explain how to assemble objects and classes into large structures, while keeping the structures flexible and efficient.
 - `Behavioral patterns`, take care of effective communication and the assignment of responsibilities between objects.
 
-# Creatinal Pattern
+# Creational Pattern
 Creational patterns provide various object creation mechanisms, which increase flexibility and reuse of existing code.
 
 ## Factory Method
