@@ -263,3 +263,6 @@ There are many valid reasons for writting custom versions of `new` and `delete`:
 
 # 55. Familiarize yourself with Boost.
 - Boost is a community and website for the development of free, open source, peer-reviewed C++ libraries. Boost plays an influential role in C++ standardization.
+
+# Reference
+- [Effective C++](https://b-ok.asia/book/3487768/b70c18) 
