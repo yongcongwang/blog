@@ -1,7 +1,8 @@
 ---
 title: Effective Cpp
 mathjax: true
-categories: []
+categories:
+  - coding
 date: 2021-02-15 22:39:15
 ---
 
