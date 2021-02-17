@@ -229,7 +229,7 @@ This is a summary of the book "Effective Modern C++" which gives 42 specific way
 - Copying parameters via construction may be significantly more expensive than copying them via assignment.
 - Pass by value is suject to the slicing problem, so it's typically inappropriate for base class parameter types.
 
-# Consider emplacement instead of insertion.
+# 42. Consider emplacement instead of insertion.
 - In principle, emplacement functions should sometimes be more efficient than their insertion counterparts, and they should never be less efficient.
 - In practice, they're most likely to be faster when:
  - the value being added is constructed into the container, not assigned;
