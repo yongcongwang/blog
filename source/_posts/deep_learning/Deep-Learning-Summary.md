@@ -42,7 +42,7 @@ Deep learning is taking off for 3 reasons:
  - For small data NN can performs as traditional algorithms like Linear regression or SVM(Support vector mechine);
  - For bigger data a small NN performs better than traditional algos;
  - For really big data, a large NN is better than middle NN that is better than small NN;
- - Hopefully we have a lot of data because the world is uing the computer a little bit more.
+ - Hopefully we have a lot of data because the world is using the computer a little bit more.
 2. Computation:
  - GPUs;
  - Powerful CPUs;
@@ -80,7 +80,7 @@ Alternately, we use the function:
 $$
 L(\hat{y}, y) = - (y \cdot \log(\hat{y}) + (1 - y) \cdot \log(1 - \hat{y}))
 $$
-this leads to two case:
+this leads to two cases:
 - if $y = 1$, $L(\hat{y}, 1) = -log(\hat{y})$, we want $\hat{y}$ to be the largest, and the largest value of $\hat{y}$ is $1$;
 - if $y = 0$, $L(\hat{y}, 1) = -log(1 - \hat{y})$, we want $1 - \hat{y}$ to be the largest, and the smallest value of $\hat{y}$ is $0$;
 
@@ -132,7 +132,7 @@ where $W$, $X$ and $B$ are matirx.
 
 In neural networks with one layer we will have:
 $$
-Z_1 = W_1^TX + B \Rightarrow A1 = sigmoid(Z_1) \Rightarrow Z_2 = W_2^TA_1 + B_2 \Rightarrow A_2 = sigmoid(Z_2) \Rightarrow L(A2, Y)
+Z_1 = W_1^TX + B \Rightarrow A1 = sigmoid(Z_1) \Rightarrow Z_2 = W_2^TA_1 + B_2 \Rightarrow A_2 = sigmoid(Z_2) \Rightarrow L(A2,Y)
 $$
 
 Neural Network is a stack of logistic regression objects.
@@ -247,8 +247,7 @@ While initializing bias with $0$ is OK, neural network won't work if we initiali
 We need small values because in sigmoid(or tanh) activation function, for example, if the weights is too large you are more likely to end up with very large values of $Z$. Which causes your tanh or sigmoid activation function to be saturated, thus slowing down learning. If you don't have any sigmoid or tanh activation function throughout your neural network, this is less of an issue.
 
 ## Deep neural network
-Shallow Neural Network is a Neural Network with $1$ or $2$ layers.
-Deep Neural Network is a Neural Network with $3$ or more layers.
+Shallow Neural Network is a Neural Network with $1$ or $2$ layers. Deep Neural Network is a Neural Network with $3$ or more layers.
 
 ### Getting your matrix dimensions right
 With the equation:
@@ -552,7 +551,7 @@ $$
 \theta_{180} = 60
 \end{array}
 $$
-This data is samll in winter but big in summer. Its noisy if we plot it out.
+This data is samll in winter but big in summer. It's noisy if we plot it out.
 Now we use the `exponentially weighted averages` equation
 $$
 v_t = \beta * v_{t - 1} + (1 - \beta) * \theta_t
@@ -916,6 +915,7 @@ For example, if you have 10% error on your dev set and you want to decrease erro
  - If 50 of 100 are dogs, then you could decrease your error up to 5%, which is reasonable and you should work on that.
 
 Sometimes you can evaluate multiple error analysis ideas in parallel and choose the best idea:
+
 | Image | Dot | Great Cats | Blurry | Instagram Filters | Comments |
 |---|---|---|---|---|---|
 | 1 | Y |   |   | Y | Pitbull |
