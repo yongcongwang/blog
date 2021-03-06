@@ -138,8 +138,124 @@ JPS explores intelligently, becasue it always looks ahead and jump.
 - JPS' limitation: only applicable to uniform grid map.
 
 ## Based on sampling
+Planners based on sampling don't attempt to explicitly construct the C-space and its boundariess, they simply need to know if a single robot configuration is in collision. Exploits simple tests for collision with full knowledge of the space.
+There are three completenesses in planning:
+- Complete planner: always answers a path planning query correctly in bounded time;
+- Probabilitic complete planner: if a solution exists, planner will eventually find it, using random sampling;
+- Resolution complete planner: same as probabilitic complete planner but based on a deterministic sampling(e.g. samplingg on a fixed grid).
+
+### Probabilitic Road Map(PRM)
+A PRM is:
+- a graph structure,
+- it divides planning into two phases:
+ - learning phase
+ - query phase
+- and checks sampled configurations and connections between samples for collision efficiently,
+- a relatively small number of milestones and local paths are sufficient to capture the connectivity of the free space.
+
+#### Learning phase
+- Sample N points in C-space
+- Delete points that are not collision-free
+- Connect to nearest points and get collision-free segments
+- Delete segments that are not collision free
+
+![learning1](/images/2021/planning/learning_phase1.png)
+
+![learning2](/images/2021/planning/learning_phase2.png)
+
+#### Query phase
+- Search on the road map to find a path from the start to the goal(using Dijkstra or A star algortihm)
+- Road map is now similar with the grid map(or a simplified grid map)
+![query](/images/2021/planning/query_phase.png)
+
+#### Pros
+- probabilitically complete
+
+#### Cons
+- Required to solve 2 point boundary value problem
+- Build graph over state space but no particular focus on generating a path
+- Not efficiet
+
+#### Lazy collision-checking
+- Collision-checking process is time-consuming, especially in complex or high-dimensional environments
+- Sample points and generate segments without considering the collision(lazy)
+- Find a path on the road map generated without collision checking
+- Delete the corresponding edgess and nodes if the path is not collision free
+- Restart path-finding
+
+### Rapidly-exploring Random Tree(RRT)
+RRT builds up a tree through generating `next states` in the tree by executing random controls.
+The algorithm process is:
+![rrtalgo](/images/2021/planning/rrt_algorithm.png)
+
+- get a random point from C-space $x_{rand}$
+- check the nearest point $x_{near}$ from rrt-tree 
+- move from $x_{near}$ to $x_{rand}$ by a distance $step_size$ to get a new point $x_{new}$
+- if $x_{new}$ is collision-free, add it to the rrt-tree
+
+#### Pros
+- Aims to find a path from the start to the goal
+- More target-oriented than PRM
+
+#### Cons
+- Not optimal solution
+- Not efficient(leave room for improvement)
+- Sample in the whole space
+
+### Optimal sampling-based path planning methods
+
+#### RRT\*
+![rrt star algo](/images/2021/planning/rrt_star_algo.png)
+The difference between RRT and RRT star is:
+> after adding a new node to rrt tree, rrt star check all nodes around the new added node. If surrounding points can get to start point with lower cost through the new node, they change their parents to the new node. That's the rewire step.
+
+#### Kinodynamic-RRT\*
+![kino-rrt](/images/2021/planning/kino-rrt.png)
+Kinodynamic-RRT\* change the steer step of RRT\* to fit with motion or other constraints in robot navigation.
+
+#### Anytime RRT\*
+Keep optimizing the leaf RRT Tree when the robot executes the current trajectory Anytime Fashion.
+
+### Advanced path planning methods
+
+#### Informed RRT\*
+![informed-rrt-star](/images/2021/planning/informed-rrt-star.png)
+Informed RRT\* makes the rrt tree to grow only in an ellipse, start point and end point are ellipse's two focal points, and the distance from curve to focal points is the length of path. If a new path shorter is found, the distance will decrease. 
+
+#### Cross-entropy motion planning
+![cross-entropy](/images/2021/planning/cross-entropy-rrt-star.png)
+
+#### Other variants
+- Lower Bound Tree RRT
+- Sparse Stable RRT
+- Transition-based RRT
+- Vector Field RRT
+- Parallel RRT
 
 ## Based on kinodynamic model
+
+### Introduction
+The `kinodynamic` planning problem is to synthesize a robot subject to simultaneous 
+- `kinematic` constraints, such as `avoiding obstacles`
+- `dynamic` constraints, such as modulus `bounds on velocity, acceleration, and force`
+A kinodynamic solution is a mapping from time to generalized forces or accelerations.
+
+We choose kinodynamic planning because:
+- Straight-line connections between pairs of states are typically not valid trajectories due to the system's differential constraints.
+- The smoother the path we found, the easier we optimize it.
+
+The typical models we used are:
+- Unicycle model:
+![unicycle](/images/2021/planning/unicycle.png)
+
+- Bicycle model:
+![bicycle](/images/2021/planning/bicycle.png)
+
+### State Lattice Planning
+
+### Kinodynamic RRT\*
+
+### Hybrid A\*
 
 # Motion Planning
 
