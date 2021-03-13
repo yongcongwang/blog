@@ -215,20 +215,99 @@ Vector Rotate(Vector A, double alpha) {
 
 # Basic Problems
 ## Area of Triangle
+![area triangle](/images/2021/2d_geometry/area_triangle.png)
+
+When we know the base and height, the area of triangle is:`
+$$
+S = \frac{1}{2} |AB| \cdot h
+$$
+as we have:
+$$
+|\vec{AB} \times \vec{AC}| = |\vec{AB}||\vec{AC}|sin\theta
+$$
+and
+$$
+h = |\vec{AC}|sin\theta
+$$
+The area of triangle can be calculated:
+$$
+S = \frac{1}{2} |\vec{AB} \times \vec{AC}| 
+$$
 
 ```C++
 double TriangleArea(const Point& A, const Point& B, const Point& C) {
-  return Cross(B - A, C - A);
+  return Cross(B - A, C - A) / 2;
 }
 ```
 
-## Which Side is the point of line
-## interaction of two line
-## interaction of two line segment
-## point in polygon
-## point in circle
-## circle and line interact
-## circle and circle interacting
+## Area of Polygon
+We can divide a polygon to multiple triagnles and calculate the sum of their areas.
+```C++
+double PolygonArea(const Polygon& poly) {
+  double res{0};
+  int m = poly.points.size();
+  for (int i = 1; i < m - 1; ++i) {
+    res += Cross(poly.points[i] - poly.points[0], 
+                 poly.points[i + 1], poly.points[0]);
+  }
+  return res / 2.;
+}
+```
+
+## Point on Line Side
+We can use the cross product to check a point on wihch side of the line:
+if the cross product is 
+- $> 0$, point is on line left;
+- $< 0$, point is on line right.
+
+```C++
+bool IsPointOnLineLeft(const Line& L, const Point& P) {
+  return Cross((P - L.point), L.unit) > 0.;
+}
+```
+
+## Point and Line Distance
+The result of cross product is the area of parallelogram, we divide this by parallelogram's base to get height, which is the distance from point to line.
+
+```C++
+double DistanceFromPointToLine(const Point& P, const Line& L) {
+  Vector v1{L.unit - L.point};
+  Vector v2{P - L.point};
+  return fabs(Cross(v1, v2) / Length(v1));
+}
+```
+
+## Point and Line Segment Distance
+If the point is not in the rectangle of line segment, we should calculate the distance from point to nearest line segment point; otherwise we can use the line distance to get the result.
+
+```C++
+double DistanceFromPointToLineSegment(const Point& P, const LineSegment& L) {
+  Vector v1{L.end - L.start};
+  Vector v2{P - L.start};
+  Vector v3{P - L.end};
+  if (sign(v1 * v2) < 0) return Length(v2);
+  if (sign(v1 * v3) > 0) return Length(v3);
+  return fabs(Cross(v1, v2) / Length(v1));
+}
+```
+
+## Point on Line Segment
+If a point is on line segment, it should meet:
+- the point is on the line;
+- the point is between two end points of line segment.
+
+```C++
+int Sign(double x) {
+  return x < -1e-4 ? -1 : x > 1e-4 ? 1 : 0;
+}
+
+bool IsPointOnSegment(const LineSegment& L, const Point A) {
+  return Sign(Cross(L.start - A, L.end - A)) == 0 &&
+         Sign((L.start - A) * (L.end - A)) <= 0;
+}
+```
+
+
 # Reference
 - [Geometry](https://oi-wiki.org/geometry/2d/)
 - [Computer Geometry Tutorial](https://oi-wiki.org/geometry/2d/)
