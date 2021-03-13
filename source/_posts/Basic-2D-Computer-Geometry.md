@@ -1,0 +1,234 @@
+---
+title: Basic 2D Computational Geometry
+mathjax: true
+categories: []
+date: 2021-03-13 20:52:57
+---
+To solve geometry problems in 2D with computers, we need some basic knowledge about geometry relationships and equations.
+
+<!-- more -->
+
+# Notion
+## Point
+In Cartesian Coordinate System, we use coordinates $(x, y)$ to represent a point, for example, $(2, 3)$, $(-7, 0)$.
+```C++
+struct Point {
+  double x{0.};
+  double y{0.};
+};
+```
+
+## Vector
+The representation of vector is like point, we use $(x, y)$ to represent a vector.
+```C++
+using Vector = Point;
+```
+
+## Line
+There are many variant ways to write the equation of a line:
+- Normal form: $ax + by + c = 0$;
+- Slope-intercept form: $y = kx + b$;
+- Intercept form: $\frac{x}{a} + \frac{y}{b} = 1$;
+
+Consider that we just want to know where the line locates and how the line slopes, we can use the form of:
+- a point on line and the unit vector of the line.
+
+```C++
+struct Line {
+  Point point{0., 0.};
+  Vector unit{0., 1.};
+};
+```
+
+## Line Segment
+We use two end points $(x_1, y_1), (x_2, y_2)$of the line segment to represent it.
+
+```C++
+struct LineSegment {
+  Point start{0., 0.};
+  Point end{0., 0.};
+};
+```
+
+## Polygon
+We record all vertices of the polygon to represent it.
+```C++
+struct Polygon {
+  vector<Vector> points{};
+};
+```
+
+## Curve
+Some special curves like Bezier curve and Bell curve, we use its analytical expressions to represent them. For simple curve like circle, we can use the central point and radius of the circle to represent it.
+```C++
+struct Circle {
+  Point center{0., 0.};
+  double radius{0.};
+};
+```
+
+# Basic Equations
+## Triangle
+### Law of sines
+![law of sines](/images/2021/2d_geometry/law_of_sines.png)
+$$
+\frac{a}{\sin{A}} = \frac{b}{\sin{B}} = \frac{c}{\sin{C}} = 2R
+$$
+where:
+- $a, b, c$ are the lengths of the sides of a triangle;
+- $A, B, C$ are the opposite angle of $a, b, c$;
+- $R$ is the radius of the triangle's circumcircle.
+
+### Law of cosines
+![law of cosines](/images/2021/2d_geometry/law_of_cosines.png)
+$$
+a^2 = b^2 + c^2 - 2bc\cos{A}
+$$
+$$
+b^2 = a^2 + c^2 - 2ac\cos{B}
+$$
+$$
+c^2 = a^2 + b^2 - 2ab\cos{C}
+$$
+
+## Vector
+### Addition and Subtraction
+The sum of two vectors is a third vector, represented as the diagonal of the parallelogram constructed with the two original vectors as sides. As for subtraction, set the second vector coordinates with its opposite number and use the same equation.
+![vector addition](/images/2021/2d_geometry/vector_addition.png)
+$$
+A(x_1, y_1) + B(x_2, y_2) = C(x_1 + x_2, y_1 + y_2)
+$$
+
+```C++
+Vector operator+(const Vector& A, const Vector& B) {
+  return Vector{A.x + B.x, A.y + B.y};
+}
+
+Vector operator-(const Vector& A, const Vector& B) {
+  return Vector{A.x - B.x, A.y - B.y};
+}
+
+Vector operator*(const Vector& A, const double k) {
+  return Vector{A.x * k, A.y * k};
+}
+
+Vector operator/(const Vector& A, const double k) {
+  return Vector{A.x / k, A.y / k};
+}
+```
+
+### Dot Production
+The dot product, also called the scalar product, is a scalar real number equal to the product of the lengths of vector $|\vec{a}|$ and $|\vec{b}|$ and the cosine of the angle $\theta$ between them:
+$$
+\vec{a} \cdot \vec{b} = |\vec{a}||\vec{b}|\cos{\theta} 
+$$
+
+We use dot product to:
+- check if the two vectors are perpendicular: 
+$$a \cdot b = 0$$
+- calculate the angle between two vectors:
+$$\cos{\theta} = \frac{\vec{a} \cdot \vec{b}}{|\vec{a}||\vec{b}|}$$
+
+The result of dot product is calculated as:
+```C++
+double operator*(const Vector& A, const Vector& B) {
+  return A.x * B.x + A.y * B.y;
+}
+
+double Length(const Vector& A) {
+  return sqrt(A * A);
+}
+
+double Angle(const Vector& A, const Vector& B) {
+  return acos(A * B / Length(A) / Length(B));
+}
+```
+
+### Cross Production
+The cross product, also called the vector product, is a third vector $\vec{c}$, perpendicular to the plane of the original vectors. The magnitude of $\vec{c}$ is equal to the product of the lengths of vectorss $\vec{a}$ and $\vec{b}$ and the sine of the angle $\theta$ between them:
+$$
+|\vec{c}| = |\vec{a}||\vec{b}|\sin{\theta}
+$$
+
+We can find the direction of cross product with right-hand rule:
+![right hand rule](/images/2021/2d_geometry/right_hand_rule.png)
+
+The cross product $\vec{c} = \vec{a} \times \vec{b}$ (vertical, in purple) changes as the angle between the vector $\vec{a}$(blue) and $\vec{b}$(red) changes. 
+The cross product is:
+- always orthogonal to both vectors;
+- has magnitude $0$ when the vectors are parallel;
+- has maximum magnitude $|\vec{a}||\vec{b}|$ when they are orthogonal.
+
+![cross product](/images/2021/2d_geometry/cross_product.gif)
+
+The result of dot product is calculated as:
+```C++
+double Cross(const Vector& A, const Vector& B) {
+  return A.x * B.y - A.y * B.x;
+}
+```
+
+### Rotation of Vector
+![rotation of vector](/images/2021/2d_geometry/rotation_vector.png)
+
+Let's say that we have a point $(x_1, y_1)$, which also defines the vector $\vec{a_1}$. The angle of $\vec{a_1}$ is $\beta$. The vector $\vec{a_1}$ has length $L$. We rotate this vector anticlockwise around the origin by $\alpha$ degrees, the new vector $\vec{a_2}$ has coordinates $(x_2, y_x)$. The length $L$ is not changed, so we have:
+$$
+x_1 = L \cos{\beta}
+$$
+$$
+y_1 = L \sin{\beta}
+$$
+As we rotate $(x_1, y_1)$ by angle $\beta$ to get $(x_2, y_2)$, the new vector $\vec{a_2}$ has:
+$$
+x_2 = L \cos{(\alpha + \beta)}
+$$
+$$
+y_2 = L \sin{(\alpha + \beta)}
+$$
+Combine all these equations above we have:
+$$
+\begin{align}
+x_2 
+& = L \cos{\alpha + \beta} \\\\
+& = L (\cos{\alpha}\cos{\beta} - \sin{\alpha}\sin{\beta}) \\\\
+& = L \cos{\beta}\cos{\alpha} - L \sin{\beta}\sin{\alpha} \\\\
+& = x_1 \cos{\alpha} - y_1 \sin{\alpha} \\\\
+\end{align}
+$$
+$$
+\begin{align}
+y_2 
+& = L \sin{\alpha + \beta} \\\\
+& = L (\sin{\alpha}\cos{\beta} + \cos{\alpha}\sin{\beta}) \\\\
+& = L \cos{\beta}\sin{\alpha} + L \sin{\beta}\cos{\alpha} \\\\
+& = x_1 \sin{\alpha} + y_1 \cos{\alpha} \\\\
+\end{align}
+$$
+
+So the result of rotation of vector is:
+```C++
+Vector Rotate(Vector A, double alpha) {
+  return Vector{A.x * cos(alpha) - A.y * sin(alpha),
+                A.x * sin(alpha) + A.y * cos(alpha)};
+}
+```
+
+# Basic Problems
+## Area of Triangle
+
+```C++
+double TriangleArea(const Point& A, const Point& B, const Point& C) {
+  return Cross(B - A, C - A);
+}
+```
+
+## Which Side is the point of line
+## interaction of two line
+## interaction of two line segment
+## point in polygon
+## point in circle
+## circle and line interact
+## circle and circle interacting
+# Reference
+- [Geometry](https://oi-wiki.org/geometry/2d/)
+- [Computer Geometry Tutorial](https://oi-wiki.org/geometry/2d/)
