@@ -317,6 +317,68 @@ There are two methods to check if the point is in polygon:
  - $\ne 0$, the point is not in polygon;
  - $= 0$, the point is in polygon.
 
+
+ ```C++
+ bool PointInPolygon(const Point& P, const Polygon& poly) {
+   double accumulate_angle{0};
+   int m = poly.points.size();
+   for (int i = 0; i < m; ++i) {
+     auto& p1 = poly.points[i];
+     auto& p2 = poly.points[(i + 1) % m];
+     if (IsPointOnSegment(P, {p1, p2})) return false;
+     accumulate_angle += acos((p1 - P) * (p2 - P) / Length(p1 - P) / Length(p2 - P));
+   }
+   return sign(accumulate_angle) == 0;
+ }
+ ```
+
+## Line Segment Intersection
+![line segment intersection](/images/2021/2d_geometry/line_segment_intersection.png)
+There are three relationships between two line segments:
+- no intersection;
+- intersection;
+- overlaps.
+
+And as for the intersection case, we can use following methods to calculate its intersection point:
+![line segment intersection algo](/images/2021/2d_geometry/line_segment_intersection_algo.png)
+
+We assume that the intersection point is $O$, the area of the $\triangle ABC$ and $\triangle ABD$ can be calculated by:
+$$
+S_{ABC} = \frac{\vec{AB} \times \vec{AC}} {2}
+$$
+$$
+S_{ABD} = \frac{\vec{AB} \times \vec{AD}} {2}
+$$
+
+As we have known that $\triangle ABC$ and $\triangle ABD$ have the same base $AB$:
+$$
+\frac{S_{ABC}} {S_{ABD}} = \frac{\frac{|AB| * |CN|}{2}}{\frac{|AB| * |DM|}{2}} =  \frac{|CN|} {|DM|}
+$$
+
+And according to triangle rules:
+$$
+\frac{|DM|}{|CN|} = \frac{|DO|}{|CO|}
+$$
+
+Finally:
+$$
+\frac{|DO|}{|CO|} = \frac{S_{ABD}}{S_{ABC}}
+$$
+$$
+\frac{|DO|}{|DC|} = \frac{S_{ABD}}{S_{ABC} + S_{ABD}} = k
+$$
+$$
+\vec{DO} = k * \vec{DC}
+$$
+```C++
+bool IsLineSegmentIntersection(const LineSegment& L1, const LineSegment& L2) {
+  return sign(Cross(L1.end - L1.start, L2.start - L1.start)) *
+             sign(Cross(L1.end - L1.start, L2.end - L1.start)) < 0 &&
+         sign(Cross(L2.end - L2.start, L1.start - L2.start)) *
+             sign(Cross(L2.end - L2.start, L1.end - L2.start)) < 0;
+}
+```
+
 # Reference
 - [Geometry](https://oi-wiki.org/geometry/2d/)
 - [Computer Geometry Tutorial](https://oi-wiki.org/geometry/2d/)
