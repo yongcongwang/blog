@@ -241,6 +241,8 @@ double TriangleArea(const Point& A, const Point& B, const Point& C) {
 ```
 
 ## Area of Polygon
+![area polygon](/images/2021/2d_geometry/area_polygon.png)
+
 We can divide a polygon to multiple triagnles and calculate the sum of their areas.
 ```C++
 double PolygonArea(const Polygon& poly) {
@@ -255,6 +257,7 @@ double PolygonArea(const Polygon& poly) {
 ```
 
 ## Point on Line Side
+![point line side](/images/2021/2d_geometry/point_line_side.png)
 We can use the cross product to check a point on wihch side of the line:
 if the cross product is 
 - $> 0$, point is on line left;
@@ -307,6 +310,12 @@ bool IsPointOnSegment(const LineSegment& L, const Point A) {
 }
 ```
 
+## Point in Polygon
+There are two methods to check if the point is in polygon:
+- Ray casting algorithm, a general mind can be described as [PNPOLY](https://wrf.ecse.rpi.edu/Research/Short_Notes/pnpoly.html)
+- Winding number algorithm, which links the point to all points of the polygon and calculate the sum of all the angles, if the angle is: 
+ - $\ne 0$, the point is not in polygon;
+ - $= 0$, the point is in polygon.
 
 # Reference
 - [Geometry](https://oi-wiki.org/geometry/2d/)
