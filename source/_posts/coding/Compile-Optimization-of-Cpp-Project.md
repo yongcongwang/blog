@@ -37,7 +37,7 @@ There are different preprocessor directives that perform different tasks.
  - `#ifndef`: used to test for whether a macro is not defined
  - `#else`: it provides an alternative option when `#if` fails
 - Other directives:
- - `#error`
+ - `#error`: syntax "#error err_msg", shows the given error message and renders the program ill-formed
  - `#line`: Supplies a line number for compiler message
  - `#pragma`: Supplies implementation-defined instructions to the compiler
 
