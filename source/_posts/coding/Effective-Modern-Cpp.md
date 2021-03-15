@@ -54,7 +54,7 @@ This is a summary of the book "Effective Modern C++" which gives 42 specific way
 
 # 9. Prefer alias declarations to typedefs.
 - `typedef`s don't support templatization, but alias declarations do.
-- Alias templates avoid the `::type` suffix and, in templatess, the "typename" prefix often required to refer to  typedefs.
+- Alias templates avoid the `::type` suffix and, in templates, the "typename" prefix often required to refer to  typedefs.
 - C++14 offers alias templates for all the C++11 type traits transformations.
 
 # 10. Prefer `scoped enums` to `unscoped enums`.
@@ -80,7 +80,7 @@ This is a summary of the book "Effective Modern C++" which gives 42 specific way
 - Most functions are exception-neutral rather than `noexcept`.
 
 # 15. Use `constexpr` whenever possible.
-- `constexpr` objects are `const` and are initialized with valuess known during compilation.
+- `constexpr` objects are `const` and are initialized with values known during compilation.
 - `constexpr` functions can produce compile-time results when called with arguments whose values are known during compilation.
 - `constexpr` objects and functions may be used in a wider range of contexts than non-constexpr objects and functions.
 - `constexpr` is part of an object's or function's interface.
@@ -147,7 +147,7 @@ This is a summary of the book "Effective Modern C++" which gives 42 specific way
 - Overloading on universal references almost always leads to the universal reference overload being called more frequently than expected.
 - Perfect-forwarding constructors are especially problematic, because they're typically better matches than copy constructors for non-cost lvalues, and they can hijack derived class calls to base class copy and move constructors.
 
-# 27. Familiarize yourselff with alternatives to overloading on universal referencess.
+# 27. Familiarize yourselff with alternatives to overloading on universal references.
 - Alternatives to the combination of universal references and overloading include:
  - the use of distinct function names,
  - passing parameters by lvalue-reference-to-cost,
@@ -156,7 +156,7 @@ This is a summary of the book "Effective Modern C++" which gives 42 specific way
 - Constraining template via `std::enable_if` permits the use of universal references and  overloading together, but it controls the conditions under which compilers may use the universal reference overloads.
 - Universal reference parameters often have efficiency advantages, but they typically have usability diadvantages.
 
-# 28. Understandd reference collapsing.
+# 28. Understand reference collapsing.
 - Reference collapsing occurs in four contexts:
  - template instantiation,
  - `auto` type generation,
@@ -165,13 +165,13 @@ This is a summary of the book "Effective Modern C++" which gives 42 specific way
 - When compilers generate a reference to a reference in a reference collapsing context, the result becomes a single reference. If either of the original references is an lvalue reference, the result is an lvalue reference. Otherwise it's an rvalue reference.
 - Universaal references are rvalue references in contexts where type deduction distinguishes lvalues from rvalues and where reference collapsing occurs.
 
-# 29. Assume that move operations are not present, not chep, and not used.
+# 29. Assume that move operations are not present, not cheap, and not used.
 - Assume that move operations are not present, not cheap, and not used.
 - In code with known types or support for move semantics, there is no need for assumptions.
 
 # 30. Familiarize yourself with perfect forwarding failure cases.
 - Perfect forwarding fails when template type deduction fails or when it deduces the wrong type.
-- The kinds of argumentss that lead to perfect forwarding failure are:
+- The kinds of arguments that lead to perfect forwarding failure are:
  - braced initializers,
  - null pointers expressed as `0` or `NULL`,
  - declaration-only integral `const static` data members,
@@ -196,13 +196,13 @@ This is a summary of the book "Effective Modern C++" which gives 42 specific way
 - In C++11 only, `std::bind` may be useful for implementing move capture or for binding objects with templatized function call operators.
 
 # 35. Prefer task-based programming to thread-based.
-- The `std::thread` API offers no direct way to get return values from asynchronouly run functions, and if those functionss throw, the program is terminated.
+- The `std::thread` API offers no direct way to get return values from asynchronouly run functions, and if those functions throw, the program is terminated.
 - Threadd-base programming calls for manual management of thread exhaustion, oversubscription, load balancing, and adaptation to new platform.
 - Task-based programming via `std::async` with the default launch policy handles most of these issues for you.
 
 # 36. Specify `std::launch::async` if asynchronicity is essential.
-- The default launch policy for `std::async` permitss both asynchronous and synchronous task execution.
-- This flexibility leads to uncertainty when accessing `thread_local`s, impies that the task may never execute, and affects program logic for timeout-based wait calls.
+- The default launch policy for `std::async` permits both asynchronous and synchronous task execution.
+- This flexibility leads to uncertainty when accessing `thread_local`s, implies that the task may never execute, and affects program logic for timeout-based wait calls.
 - Specify `std::launch::async` if asynchronous task execution is essential.
 
 # 37. Make `std::threads` unjoinable on all paths.
@@ -218,13 +218,13 @@ This is a summary of the book "Effective Modern C++" which gives 42 specific way
 # 39. Consider `void` function for one-shot event communication.
 - For simple event communication, condvar-based designs require a superfluous mutex, impose constraints on the relative progress of detecting and reacting tasks, and require reacting tasks to verify that the event has taken place.
 - Design employing a flag avoid those problems, but are based on polling, not blocking.
-- Using `std::promise`s and futuress dodges these issuess, but the approach uses heap memory for shared states, and it's limited to one-shot communication.
+- Using `std::promise`s and futures dodges these issues, but the approach uses heap memory for shared states, and it's limited to one-shot communication.
 
 # 40. Use `std::atomic` for concurrency, `volatile` for special memory.
 - `std::atomic` is for data accessed from multiple threads without using mutexes, It's a tool for writing concurrent software.
 - `volatile` is for memory where reads and writes should not be optimized away. It's a tool for working with special memory.
 
-# 41. Consider pass by value for copyable parameterss that are cheap to move and always copied.
+# 41. Consider pass by value for copyable parameters that are cheap to move and always copied.
 - For copyable, cheap-to-move parameters that are always copied, pass by value may be nearly as efficient as pass by reference, it's easier to implement, and it can generate less object code.
 - Copying parameters via construction may be significantly more expensive than copying them via assignment.
 - Pass by value is suject to the slicing problem, so it's typically inappropriate for base class parameter types.
