@@ -11,7 +11,7 @@ categories:
 date: 2020-06-16 21:09:06
 ---
 
-The prediction module studies and predicts the behavior of all the obstacles detected by the perception module. Prediction receives data of obstacles along with basic perception information including position, heading, velocities, accelerations and then generates predicted trajectories with probabilities for those obstacles.
+The prediction module studies and predicts the behavior of all the obstacles detected by the perception module. Prediction receives data of obstacles along with basic perception information including positions, headings, velocities, accelerations and then generates predicted trajectories with probabilities for those obstacles.
 
 <!-- more -->
 ## Input
@@ -51,7 +51,7 @@ obstacles    |             |          |             |           |             | 
 
 Container stores structured data from subscribed channels. Current supported inputs:
 - perception obstacles
-- vehicle localization
+- ego vehicle localization
 - ego vehicle planning trajectory
 
 #### Architecture
@@ -152,7 +152,7 @@ Now we can determine the obstacle is:
 
 The `Scenario` sub-module analyzes scenarios that includes the ego vehicle.
 Currently, two scenarios are defined:
-- **Cruise** : this scenario includes Lane keeping and following.
+- **Cruise** : this scenario includes lane keeping and following.
 - **Junction** : this scenario involves junctions. Junctions can either have traffic lights and/or STOP signs.
 
 The architecture of `Scenario` is as below:
@@ -160,8 +160,8 @@ The architecture of `Scenario` is as below:
 
 #### ScenarioManager
 The `ScenarioManager` class **depends on** `FeatureExtractor` to generate environment features and **depends on** `ScenarioAnalyzer` to analyze current scenario. If necessary, `ScenarioManager` will set obstacls' priorities as:
-- IGNORE, if the obstacle is no need to consider;
-- NORMAL, if the obstacle needs to be considered.
+- IGNORE, if the obstacle is no need to be considered;
+- NORMAL, if the obstacle should be considered.
 ![priority](/images/2020/prediction/priority.png?raw=true)
 
 The obstacle is set to `NORMAL` if the obstacle is:
@@ -193,7 +193,7 @@ Otherwise the priority of the obstacle is `IGNORE`.
 The `Evaluator` predicts path and speed separately for any given obstacle. An evaluator evaluates a path by outputting a probability for it (lanesequence) using the given model stored in `prediction/data/`.
 
 Now in `prediction`, the `Evaluator` for `Cyclist` are:
-- `CyclistKeepLaneEvaluator`: ;
+- `CyclistKeepLaneEvaluator`;
 
 and the `Evaluator` for `Vehicle` are:
 - `CostEvaluator`: probability is calculated by a set of cost functions;
@@ -516,12 +516,12 @@ l^{\prime\prime} = 2 \cdot a_2 \cdot t + 6 \cdot a_3 \cdot t + 12 \cdot a_4 \cdo
 
 we can get the coefficients $a_0$ to $a_5$.
 
-2. Calculate the 4th degree polynomial of longitude distance with each end time.
+3. Calculate the 4th degree polynomial of longitude distance with each end time.
 Since we have known the start state:
 $$
 \begin{cases}
-s_{0} = l_{obstacle} \\\\
-s_{0}^\prime = v_{lateral} \\\\
+s_{0} = s_{obstacle} \\\\
+s_{0}^\prime = v_{longitude} \\\\
 s_{0}^{\prime\prime} = 0
 \end{cases}
 $$
@@ -544,7 +544,7 @@ s^{\prime\prime} = 2 \cdot a_2 \cdot t + 6 \cdot a_3 \cdot t + 12 \cdot a_4 \cdo
 
 we can get the coefficients $a_0$ to $a_4$.
 
-3. Find the coefficients of lateral and longitude with the lowest cost.
+4. Find the coefficients of lateral and longitude with the lowest cost.
 The cost of each group of coefficients can be calculated with:
 $$
 C = a_{max lateral} + \alpha * t_{end}
@@ -554,7 +554,7 @@ In equation,
 - $\alpha$ is ratio of time, it's $0.25$ in program;
 - $t_{end}$ is the time to reach end point.
 
-4. Generate each point of the trajectory with the lowest cost.
+5. Generate each point of the trajectory with the lowest cost.
 Now that we know the equation of longitude and lateral and the time to reach end point, we can generate each point of the trajectory with  time gap($0.1$ in program)
 
 #### SingleLanePredictor
