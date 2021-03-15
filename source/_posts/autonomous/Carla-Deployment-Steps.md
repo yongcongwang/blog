@@ -1,5 +1,5 @@
 ---
-title: Carla Deployment Steps software
+title: Carla Deployment Steps
 mathjax: true
 comments: true
 categories:
