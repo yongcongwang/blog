@@ -128,7 +128,7 @@ C++ offers four new cast froms:
 - `static_cast<T>(expression)`: used to force implicit conversions, e.g. non-const object to const object, int to double, etc.
 
 - Avoid casts whenever practical, especially `dynamic_cast` in performance-sensitive code. If a design requires casting, try to develop a cast-free alternative.
-- When casting is neccessary, try to hide it insdie a function. Clients can then call the function instead of putting casts in their own code.
+- When casting is neccessary, try to hide it inside a function. Clients can then call the function instead of putting casts in their own code.
 - Prefer C++-style casts to old-style casts. They are easier to see, and they are more specific aboud what they do.
 
 # 28. Avoid returning "handle" to object internals
@@ -139,7 +139,7 @@ C++ offers four new cast froms:
 - The strong guarantee can often be implemented via copy-and-swap, but the strong guarantee is not practical for all functions.
 - A function can usually offer a guarantee no stronger than the weakest guarantee of the functions it calls.
 
-# 30. Understand teh ins and outsss of inlining.
+# 30. Understand the ins and outs of inlining.
 - Limit most inlining to small, frequently called functions. This facilitates debugging and binary upgradability, minimizes potential code bloat, and maximizes the chances of greater program speed.
 - Don't declare fucntion template inline just because they appear in header files.
 
@@ -225,7 +225,7 @@ Here are some alternatives of virtual function:
 - Template metaprogramming can shift work from runtime to compile-time, thus enabling earlier error detection and higher runtime performance.
 - TMP can be used to generate custom code based on combinations of policy choices, and it can also be used to avoid generating code inappropriate for particular types.
 
-# 49. Understand the vehavior of the new-handler.
+# 49. Understand the behavior of the new-handler.
 - `set_new_handler` allows you to specify a function to be called when memory allocation requests cannot be satisfied.
 - Nothrow new is of limited utility, because it applies only to memory allocation; associated constructor calls may still throw exceptions.
 
