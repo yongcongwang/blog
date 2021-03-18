@@ -19,13 +19,6 @@ Bubblesort is the simplest sorting algorithm that works by repeatedly swapping t
 
 ```C++
 template <typename T>
-void swap(T &a, T &b) {
-  T tmp = a;
-  a = b; 
-  b = tmp;
-}
-
-template <typename T>
 void bubbleSort(std::vector<T> arr) {
   for (std::size_t i = 0, size = arr.size(); i < size - 1; ++i) {
     for (std::size_t j = 0; j < size - 1 - i; ++j) {
@@ -84,13 +77,6 @@ A clever way to avoid using a second array makes use of the fact that after each
 Using this strategy, after the last deleteMin the array will contain the elements in decreasing sorted order. If we want the elements in the more typical increasing sorted order, we can change the ordering property so that the parent has a larger elements than the child. Thus, we have a max-heap.
 
 ```C++
-template <typename T>
-void swap(T &a, T &b) {
-  T tmp = a;
-  a = b;
-  b = tmp;
-}
-
 inline int getLeftChild(int hole) {
   return hole * 2 + 1;
 }
@@ -132,11 +118,11 @@ Mergesort runs in $O(NlogN)$ worse-case running time, and the number of comparis
 The fundamental operation in this algorithm is merging two sorted lists. Because the lists are sorted, this can be done in one pass through the input, if the output is put in a third list. The basic merging algorithm takes two input array A and B, an output array C, and three counters, Actr, Bctr, and Cctr, which are initially set to the beginning of their respective arrays. The smaller of A[Actr] and B[Bctr] is copied to the next entry in C, and the appropriate counters are advanced. When either input list is exhausted, the remainder of the other list is copied to C.
 ```C++
 template <typename T>
-void merge(std::vector<T> &arr, std::vector<T> &temp_arr, int left_pos, int right_pos,
-           int right_end) {
+void merge(vector<T> &arr, vector<T> &temp_arr,
+           int left_pos, int right_pos, int right_end) {
+  int start = left_pos;
   int temp_pos = left_pos;
   int left_end = right_pos - 1;
-  int ele_cnt = right_end - left_pos + 1;
   while (left_pos <= left_end && right_pos <= right_end) {
     if (arr[left_pos] < arr[right_pos]) {
       temp_arr[temp_pos++] = arr[left_pos++];
@@ -152,28 +138,28 @@ void merge(std::vector<T> &arr, std::vector<T> &temp_arr, int left_pos, int righ
     temp_arr[temp_pos++] = arr[right_pos++];
   }
 
-  for (int i = 0; i < ele_cnt; ++i, --right_end) {
-    arr[right_end] = temp_arr[right_end];
+  for (int i = start; i <= right_end; ++i) {
+    arr[i] = temp_arr[i];
   }
 }
 
 template <typename T>
-void mergeSort(std::vector<T> &arr, std::vector<T> &temp_arr, int left, int right) {
-  if (left < right) {
-    int center = (right + left) / 2;
-    std::cout << "left center right is " << left << ", " << center << ", " << right << std::endl;
-    mergeSort(arr, temp_arr, left, center);
-    mergeSort(arr, temp_arr, center + 1, right);
-    merge(arr, temp_arr, left, center + 1, right);
-  }
+void merge_sort(vector<T> &arr, vector<T> &temp_arr,
+               int left, int right) {
+  if (left >= right) return;
+  int center = left + (right - left) / 2;
+  merge_sort(arr, temp_arr, left, center);
+  merge_sort(arr, temp_arr, center + 1, right);
+  merge(arr, temp_arr, left, center + 1, right);
 }
 
 template <typename T>
-void mergeSort(std::vector<T> &arr) {
-  std::vector<T> temp_arr(arr.size());
-  mergeSort(arr, temp_arr, 0, arr.size() - 1);
+void MergeSort(vector<T> &arr) {
+  vector<T> temp_arr(arr);
+  merge_sort(arr, temp_arr, 0, arr.size() - 1);
 }
 ```
+
 Mergesort is a classic example of the techniques used to analyze recursive routines: We have to write a recurrence relation for the running time. We will assume that N is a power of 2 so that we always split into even halves. For N = 1, the time to mergesort is constant, which we will denote by 1. Otherwise, the time to mergesort N numbers is equal to the time to do two recursive mergesort of size N/2, plus the time to merge, which is linear:
 $$T(1) = 1$$
 $$T(N) = 2T(N/2) + N$$
@@ -193,76 +179,33 @@ The classic quicksort algorithm to sort an array S consists of the following fou
 For very small arrays($N \le 20$), quicksort does not perform as well as insertion sort. Furthermore, because quicksort is recursive, these cases will occur frequently. A comman solution is not to sue quicksort recursively for small arrays, but instead use a sorting algorithm that is efficient for small arrays, such as insertion sort. Using this strategy can actually save about 15 percent in the running time(over doing no cutoff at all). A good cutoff range is $N = 10$, although any cutoff between 5 and 20 is likely to produce similar results. This also saves nastly degenerate cases, such as taking the median of three elements when there are only one or two.
 ```C++
 template <typename T>
-T sortThreeElements(std::vector<T> &arr, int left, int right) {
-  int mid = (left + right) / 2;
-  if (arr[mid] < arr[left]) {
-    swap(arr[mid], arr[left]);
-  }
-  if (arr[right] < arr[left]) {
-    swap(arr[right], arr[left]);
-  }
-  if (arr[mid] > arr[right]) {
-    swap(arr[mid], arr[right]);
-  }
-
-  swap(arr[mid], arr[right - 1]);
-  return arr[right - 1];
-}
-
-template <typename T>
-void insertSort(std::vector<T> &arr, int left, int right) {
-  for (int i = left; i <= right; ++i) {
-    T tmp = arr[i];
-    int j;
-    for (j = i; j > 0 && tmp < arr[j - 1]; --j) {
-      arr[j] = arr[j - 1];
+int partition(vector<T>& arr, int left, int right) {
+  T& pivot = arr[left];
+  left++;
+  while (left < right) {
+    while (left < right && arr[left] <= pivot) ++left;
+    while (left < right && arr[right] >= pivot) --right;
+    if (left < right) {
+      swap(arr[left], arr[right]);
+      left++;
+      right--;
     }
-    arr[j] = tmp;
   }
+  if (left == right && arr[right] > pivot) right--;
+  swap(pivot, arr[right]);
+  return right;
 }
 
 template <typename T>
-void quickSort(std::vector<T> &arr, int left, int right) {
-  if (right - left > 10) {
-    int ptr_left = left;
-    int ptr_right = right - 1;
-    T pivot = sortThreeElements(arr, left, right);
-    while (true) {
-      while (arr[++ptr_left] < pivot);
-      while (arr[--ptr_right] > pivot);
-      if (ptr_left < ptr_right) {
-        swap(arr[ptr_left], arr[ptr_right]);
-      } else {
-        break;
-      }
-    }
-    swap(arr[ptr_left], arr[right - 1]);
-    quickSort(arr, left, ptr_left - 1);
-    quickSort(arr, ptr_right - 1, right);
-  } else {
-    insertSort(arr, left, right);
-  }
+void quick_sort(std::vector<T> &arr, int left, int right) {
+  if (left >= right) return;
+  int pi = partition(arr, left, right);
+  quick_sort(arr, left, pi - 1);
+  quick_sort(arr, pi + 1, right);
 }
 
 template <typename T>
-void quickSort(std::vector<T> &arr) {
-  quickSort(arr, 0, arr.size() - 1);
+void QuickSort(std::vector<T> &arr) {
+  quick_sort(arr, 0, arr.size() - 1);
 }
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
