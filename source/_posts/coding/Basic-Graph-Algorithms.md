@@ -22,8 +22,7 @@ BFS is an algorithm for traversing or searching tree or graph data structures. I
 
 ![bfs](/images/2021/graph/bfs.gif)
 ```C++
-void bfs(int start) {
-  // build graph
+void bfs(Graph& graph, int start) {
   deque<int> d{start};
   unordered_set<int> visited{start};
   while (!d.empty()) {
@@ -200,10 +199,75 @@ bool topo_sort(Graph& graph) {
 ```
 
 # Minimum Spanning Tree(MST)
-## Prim
-## kruscal
+A minimum spanning tree(MST) is a subset of the edges of a connected, edge-weighted undirected graph that connects all the nodes together, without any cycles and with the minimum possible total edge weight. That is, it is a spanning tree whose sum of the edge weights is as small as possible. More generallly, any edge-weighted undirected graph(not neccessarily connected) has a minimum spanning forest, which is a union of the minimum spanning trees for its connected components.
+![graph definition](/images/2021/graph/mst.png)
 
-# Strongly connected components
+## Kruskal
+Kruscal's algorithm finds a minimum spanning forest of an undirected edge-weighted graph. If the graph is connected, it finds a minimum spanning tree. For a disconnected graph, a minimum spanning forest is composed of a minimum spanning tree for each connected component. It is a greedy algorithm in graph theory as in each step it adds the next lowest-weight edge that will not form a cycle to the minimum spanning forest.
+![kruskal](/images/2021/graph/kruskal.gif)
+
+```C++
+class UnionFind {
+ public:
+  Union(int n) : size(n - 1, 1), cnt{n} {
+    for (int i = 0; i < n; ++i) parent.push_back(i);
+  }
+
+ public:
+  int find(int x) {
+    if (parent[x] != x) parent[x] = find(parent[x]);
+    return parent[x];
+  }
+
+  bool unite(int x, int y) {
+    int xx = find(x);
+    int yy = find(y);
+    if (xx == yy) return false;
+    if (size[xx] > size[yy]) swap(xx, yy);
+    parent[xx] = yy;
+    size[yy] += size[xx];
+    cnt--;
+    return true;
+  }
+
+  int count() const {
+    return cnt;
+  }
+
+ private:
+  vector<int> parent{};
+  vector<int> size{};
+  int cnt{0};
+};
+
+struct Edge{
+  int from{0};
+  int to{0};
+  int cost{0};
+};
+
+// n: node_num
+int kruskal(vector<Edge>& edges, int n) {
+  UnionFind uf{n};
+  sort(edges.begin(), edges.end(), [](auto& a, auto& b) {
+    return a.cost < b.cost;
+  });
+
+  int res{0};
+  for (auto [from, to, cost] : edges) {
+    if (uf.unite(from, to)) res += cost;
+  }
+
+  return uf.count() == 1 ? res : -1;
+}
+
+```
+
+## Prim
+Prim algorithm is a greedy algorithm that finds a minimum spanning tree for a weighted undirected graph. This means it finds a subset of the edges that forms a tree that includes every nodes, where the total weight of all the edges in the tree is minimized. The algorithm operates by building this tree one node at a time, from an arbitrary starting node, at each step adding the cheapest possible connection from the tree to another node.
+![prim](/images/2021/graph/prim.gif)
+
+# Strongly Connected Components(SCC)
 ## Tarjan
 ## Kosaraju
 
