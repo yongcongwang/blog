@@ -1,6 +1,8 @@
 ---
 title: Basic Graph Theory
 mathjax: true
+categories:
+  - coding
 date: 2021-03-18 16:31:51
 ---
 A `Graph` consists of:

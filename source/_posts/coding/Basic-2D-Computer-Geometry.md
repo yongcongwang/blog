@@ -1,7 +1,8 @@
 ---
 title: Basic 2D Computational Geometry
 mathjax: true
-categories: []
+categories:
+  - coding
 date: 2021-03-13 20:52:57
 ---
 To solve geometry problems in 2D with computers, we need some basic knowledge about geometry relationships and equations.
